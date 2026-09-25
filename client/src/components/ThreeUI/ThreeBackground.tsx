@@ -7,14 +7,13 @@ interface ThreeBackgroundProps {
 }
 
 export const ThreeBackground: React.FC<ThreeBackgroundProps> = ({
-  opacity = 0.35,
+  opacity = 0.6,
   interactive = true,
   className = '',
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-    // Respect reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
@@ -34,8 +33,8 @@ export const ThreeBackground: React.FC<ThreeBackgroundProps> = ({
     };
     window.addEventListener('resize', handleResize);
 
-    // Particle nodes for Constellation Network
-    const particleCount = Math.min(width > 768 ? 45 : 20, 60);
+    // Warm Pearl & Terracotta Computational Nodes
+    const particleCount = Math.min(width > 768 ? 40 : 20, 50);
     const particles: Array<{
       x: number;
       y: number;
@@ -45,15 +44,20 @@ export const ThreeBackground: React.FC<ThreeBackgroundProps> = ({
       color: string;
     }> = [];
 
-    const colors = ['#6366f1', '#06b6d4', '#8b5cf6', '#3b82f6'];
+    const colors = [
+      'rgba(216, 92, 50, 0.45)',  // Terracotta
+      'rgba(242, 138, 61, 0.40)', // Warm Orange
+      'rgba(183, 217, 75, 0.50)', // Digital Lime
+      'rgba(111, 106, 97, 0.35)', // Warm Gray
+    ];
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        radius: Math.random() * 1.5 + 1,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        radius: Math.random() * 2 + 1,
         color: colors[Math.floor(Math.random() * colors.length)],
       });
     }
@@ -72,26 +76,26 @@ export const ThreeBackground: React.FC<ThreeBackgroundProps> = ({
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // Draw connecting constellation lines
+      // Draw delicate computational connection lines
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (dist < 130) {
-            const alpha = (1 - dist / 130) * 0.18;
+          if (dist < 140) {
+            const alpha = (1 - dist / 140) * 0.12;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(99, 102, 241, ${alpha})`;
+            ctx.strokeStyle = `rgba(216, 92, 50, ${alpha})`;
             ctx.lineWidth = 0.8;
             ctx.stroke();
           }
         }
       }
 
-      // Draw particle nodes
+      // Draw ceramic / glass nodes
       for (const p of particles) {
         p.x += p.vx;
         p.y += p.vy;
@@ -99,25 +103,21 @@ export const ThreeBackground: React.FC<ThreeBackgroundProps> = ({
         if (p.x < 0 || p.x > width) p.vx *= -1;
         if (p.y < 0 || p.y > height) p.vy *= -1;
 
-        // Subtle mouse repulsion / attraction
         if (interactive) {
           const mdx = p.x - mouseX;
           const mdy = p.y - mouseY;
           const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-          if (mdist < 100) {
-            const force = (100 - mdist) / 100;
-            p.x += (mdx / mdist) * force * 1.2;
-            p.y += (mdy / mdist) * force * 1.2;
+          if (mdist < 120) {
+            const force = (120 - mdist) / 120;
+            p.x += (mdx / mdist) * force * 1.5;
+            p.y += (mdy / mdist) * force * 1.5;
           }
         }
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = p.color;
         ctx.fill();
-        ctx.shadowBlur = 0;
       }
 
       animationFrameId = requestAnimationFrame(render);

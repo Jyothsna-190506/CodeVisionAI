@@ -3,17 +3,8 @@ import apiClient from '../../services/apiClient';
 import { User } from '../../types';
 import {
   ShieldAlert,
-  Users,
-  FolderKanban,
-  Zap,
-  FileText,
   Search,
-  CheckCircle2,
-  XCircle,
   Trash2,
-  Clock,
-  TrendingUp,
-  Activity,
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -22,7 +13,6 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  Cell,
   LineChart,
   Line,
 } from 'recharts';
@@ -105,16 +95,16 @@ export const AdminPage: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-extrabold text-white flex items-center gap-2.5">
-            <ShieldAlert className="w-6 h-6 text-rose-400" />
+          <h1 className="text-2xl font-black text-charcoal flex items-center gap-2.5">
+            <ShieldAlert className="w-6 h-6 text-terracotta" />
             <span>Admin Administration Console</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-secondary-text mt-1 font-medium">
             Global ecosystem metrics, user role governance, and audit trails.
           </p>
         </div>
 
-        <span className="px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-bold font-mono">
+        <span className="px-3.5 py-1 rounded-full bg-terracotta/10 border border-terracotta/30 text-terracotta text-xs font-bold font-mono">
           ADMIN PRIVILEGES ACTIVE
         </span>
       </div>
@@ -122,62 +112,62 @@ export const AdminPage: React.FC = () => {
       {/* KPI Cards */}
       {analytics && (
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3.5">
-          <div className="glass-panel p-4 rounded-2xl border border-slate-800 bg-slate-900/60">
-            <span className="text-[11px] text-slate-400 font-mono">Total Users</span>
-            <div className="text-2xl font-black text-white mt-1">{analytics.totalUsers}</div>
-            <div className="text-[10px] text-emerald-400 mt-0.5">{analytics.activeUsers} active</div>
+          <div className="p-5 rounded-3xl border border-border-pearl bg-white shadow-sm">
+            <span className="text-[11px] text-secondary-text font-mono font-bold">Total Users</span>
+            <div className="text-2xl font-black text-charcoal mt-1">{analytics.totalUsers}</div>
+            <div className="text-[10px] text-lime-700 font-bold mt-0.5">{analytics.activeUsers} active</div>
           </div>
-          <div className="glass-panel p-4 rounded-2xl border border-slate-800 bg-slate-900/60">
-            <span className="text-[11px] text-slate-400 font-mono">Total Projects</span>
-            <div className="text-2xl font-black text-indigo-400 mt-1">{analytics.totalProjects}</div>
-            <div className="text-[10px] text-slate-500 mt-0.5">Persistent repos</div>
+          <div className="p-5 rounded-3xl border border-border-pearl bg-white shadow-sm">
+            <span className="text-[11px] text-secondary-text font-mono font-bold">Total Projects</span>
+            <div className="text-2xl font-black text-terracotta mt-1">{analytics.totalProjects}</div>
+            <div className="text-[10px] text-secondary-text mt-0.5 font-medium">Persistent repos</div>
           </div>
-          <div className="glass-panel p-4 rounded-2xl border border-slate-800 bg-slate-900/60">
-            <span className="text-[11px] text-slate-400 font-mono">Total Analyses</span>
-            <div className="text-2xl font-black text-cyan-400 mt-1">{analytics.totalAnalyses}</div>
-            <div className="text-[10px] text-slate-500 mt-0.5">AST pipelines</div>
+          <div className="p-5 rounded-3xl border border-border-pearl bg-white shadow-sm">
+            <span className="text-[11px] text-secondary-text font-mono font-bold">Total Analyses</span>
+            <div className="text-2xl font-black text-orange-warm mt-1">{analytics.totalAnalyses}</div>
+            <div className="text-[10px] text-secondary-text mt-0.5 font-medium">AST pipelines</div>
           </div>
-          <div className="glass-panel p-4 rounded-2xl border border-slate-800 bg-slate-900/60">
-            <span className="text-[11px] text-slate-400 font-mono">Total Reports</span>
-            <div className="text-2xl font-black text-amber-400 mt-1">{analytics.totalReports}</div>
-            <div className="text-[10px] text-slate-500 mt-0.5">PDF/HTML exports</div>
+          <div className="p-5 rounded-3xl border border-border-pearl bg-white shadow-sm">
+            <span className="text-[11px] text-secondary-text font-mono font-bold">Total Reports</span>
+            <div className="text-2xl font-black text-charcoal mt-1">{analytics.totalReports}</div>
+            <div className="text-[10px] text-secondary-text mt-0.5 font-medium">PDF/HTML exports</div>
           </div>
-          <div className="glass-panel p-4 rounded-2xl border border-slate-800 bg-slate-900/60">
-            <span className="text-[11px] text-slate-400 font-mono">Avg Quality</span>
-            <div className="text-2xl font-black text-emerald-400 mt-1">{analytics.averageQualityScore}/100</div>
-            <div className="text-[10px] text-slate-500 mt-0.5">Global index</div>
+          <div className="p-5 rounded-3xl border border-border-pearl bg-white shadow-sm">
+            <span className="text-[11px] text-secondary-text font-mono font-bold">Avg Quality</span>
+            <div className="text-2xl font-black text-lime-700 mt-1">{analytics.averageQualityScore}/100</div>
+            <div className="text-[10px] text-secondary-text mt-0.5 font-medium">Global index</div>
           </div>
         </div>
       )}
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-800 pb-2">
+      <div className="flex items-center gap-2 border-b border-border-pearl pb-2">
         <button
           onClick={() => setActiveTab('users')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+          className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
             activeTab === 'users'
-              ? 'bg-indigo-600 text-white shadow-md'
-              : 'text-slate-400 hover:text-white hover:bg-slate-800/40'
+              ? 'bg-terracotta text-white shadow-sm'
+              : 'text-secondary-text hover:text-charcoal hover:bg-secondary-card'
           }`}
         >
           Users Management
         </button>
         <button
           onClick={() => setActiveTab('analytics')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+          className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
             activeTab === 'analytics'
-              ? 'bg-indigo-600 text-white shadow-md'
-              : 'text-slate-400 hover:text-white hover:bg-slate-800/40'
+              ? 'bg-terracotta text-white shadow-sm'
+              : 'text-secondary-text hover:text-charcoal hover:bg-secondary-card'
           }`}
         >
           System Analytics
         </button>
         <button
           onClick={() => setActiveTab('activity')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+          className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
             activeTab === 'activity'
-              ? 'bg-indigo-600 text-white shadow-md'
-              : 'text-slate-400 hover:text-white hover:bg-slate-800/40'
+              ? 'bg-terracotta text-white shadow-sm'
+              : 'text-secondary-text hover:text-charcoal hover:bg-secondary-card'
           }`}
         >
           Platform Activity Logs
@@ -189,21 +179,21 @@ export const AdminPage: React.FC = () => {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="relative w-80">
-              <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-secondary-text absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={userSearch}
                 onChange={(e) => setUserSearch(e.target.value)}
                 placeholder="Search user name or email..."
-                className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white border border-border-pearl text-xs text-charcoal placeholder-secondary-text focus:outline-none focus:border-terracotta shadow-sm font-medium"
               />
             </div>
           </div>
 
-          <div className="glass-panel rounded-2xl border border-slate-800 overflow-hidden bg-slate-900/60">
+          <div className="rounded-3xl border border-border-pearl overflow-hidden bg-white shadow-sm">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-800 text-[11px] text-slate-400 uppercase font-semibold bg-slate-950/40">
+                <tr className="border-b border-border-pearl text-[11px] text-secondary-text uppercase font-bold bg-ivory font-mono">
                   <th className="p-4">User</th>
                   <th className="p-4">Email</th>
                   <th className="p-4">Role</th>
@@ -212,16 +202,16 @@ export const AdminPage: React.FC = () => {
                   <th className="p-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 text-xs">
+              <tbody className="divide-y divide-border-pearl text-xs">
                 {users.map((u) => (
-                  <tr key={u.id} className="hover:bg-slate-800/30 transition-colors">
-                    <td className="p-4 font-bold text-slate-200">{u.name}</td>
-                    <td className="p-4 text-slate-400 font-mono text-[11px]">{u.email}</td>
+                  <tr key={u.id} className="hover:bg-pearl/60 transition-colors">
+                    <td className="p-4 font-black text-charcoal">{u.name}</td>
+                    <td className="p-4 text-secondary-text font-mono text-[11px]">{u.email}</td>
                     <td className="p-4">
                       <select
                         value={u.role}
                         onChange={(e) => handleChangeRole(u.id, e.target.value)}
-                        className="px-2 py-1 rounded bg-slate-950 border border-slate-800 text-[11px] font-mono text-cyan-300 focus:outline-none"
+                        className="px-2.5 py-1 rounded-xl bg-pearl border border-border-pearl text-[11px] font-mono text-terracotta font-bold focus:outline-none"
                       >
                         <option value="USER">USER</option>
                         <option value="ADMIN">ADMIN</option>
@@ -230,22 +220,22 @@ export const AdminPage: React.FC = () => {
                     <td className="p-4">
                       <button
                         onClick={() => handleToggleActive(u.id, u.isActive)}
-                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${
+                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase cursor-pointer ${
                           u.isActive !== false
-                            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
-                            : 'bg-rose-500/10 text-rose-400 border border-rose-500/30'
+                            ? 'bg-lime-digital/20 text-lime-800 border border-lime-digital/40'
+                            : 'bg-red-100 text-red-700 border border-red-200'
                         }`}
                       >
                         {u.isActive !== false ? 'Active' : 'Disabled'}
                       </button>
                     </td>
-                    <td className="p-4 text-slate-500 font-mono text-[11px]">
+                    <td className="p-4 text-secondary-text font-mono text-[11px]">
                       {u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '—'}
                     </td>
                     <td className="p-4 text-right">
                       <button
                         onClick={() => handleDeleteUser(u.id)}
-                        className="p-1.5 rounded-lg text-slate-500 hover:text-rose-400 hover:bg-slate-800 transition-colors"
+                        className="p-1.5 rounded-lg text-secondary-text hover:text-terracotta hover:bg-secondary-card transition-colors cursor-pointer"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -261,29 +251,29 @@ export const AdminPage: React.FC = () => {
       {/* 2. ANALYTICS TAB */}
       {activeTab === 'analytics' && analytics && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="glass-panel p-5 rounded-2xl border border-slate-800 bg-slate-900/60">
-            <h3 className="text-sm font-bold text-white mb-4">Projects by Programming Language</h3>
+          <div className="p-6 rounded-3xl border border-border-pearl bg-white shadow-sm">
+            <h3 className="text-sm font-black text-charcoal mb-4">Projects by Programming Language</h3>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={analytics.projectsByLanguage || []}>
-                  <XAxis dataKey="language" stroke="#475569" fontSize={11} />
-                  <YAxis stroke="#475569" fontSize={11} allowDecimals={false} />
-                  <Tooltip contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155' }} />
-                  <Bar dataKey="count" fill="#6366f1" radius={[6, 6, 0, 0]} />
+                  <XAxis dataKey="language" stroke="#6F6A61" fontSize={11} />
+                  <YAxis stroke="#6F6A61" fontSize={11} allowDecimals={false} />
+                  <Tooltip contentStyle={{ backgroundColor: '#FFFDF8', borderColor: 'rgba(35,32,28,0.1)', color: '#242321', borderRadius: '12px' }} />
+                  <Bar dataKey="count" fill="#D85C32" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
           </div>
 
-          <div className="glass-panel p-5 rounded-2xl border border-slate-800 bg-slate-900/60">
-            <h3 className="text-sm font-bold text-white mb-4">Recent Daily Activity Volume</h3>
+          <div className="p-6 rounded-3xl border border-border-pearl bg-white shadow-sm">
+            <h3 className="text-sm font-black text-charcoal mb-4">Recent Daily Activity Volume</h3>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={analytics.recentActivityTrend || []}>
-                  <XAxis dataKey="date" stroke="#475569" fontSize={10} />
-                  <YAxis stroke="#475569" fontSize={11} allowDecimals={false} />
-                  <Tooltip contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155' }} />
-                  <Line type="monotone" dataKey="count" stroke="#06b6d4" strokeWidth={2} />
+                  <XAxis dataKey="date" stroke="#6F6A61" fontSize={10} />
+                  <YAxis stroke="#6F6A61" fontSize={11} allowDecimals={false} />
+                  <Tooltip contentStyle={{ backgroundColor: '#FFFDF8', borderColor: 'rgba(35,32,28,0.1)', color: '#242321', borderRadius: '12px' }} />
+                  <Line type="monotone" dataKey="count" stroke="#F28A3D" strokeWidth={2.5} />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -293,23 +283,23 @@ export const AdminPage: React.FC = () => {
 
       {/* 3. ACTIVITY TAB */}
       {activeTab === 'activity' && (
-        <div className="glass-panel rounded-2xl border border-slate-800 overflow-hidden bg-slate-900/60">
+        <div className="rounded-3xl border border-border-pearl overflow-hidden bg-white shadow-sm">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-800 text-[11px] text-slate-400 uppercase font-semibold bg-slate-950/40">
+              <tr className="border-b border-border-pearl text-[11px] text-secondary-text uppercase font-bold bg-ivory font-mono">
                 <th className="p-4">User</th>
                 <th className="p-4">Action</th>
                 <th className="p-4">Project</th>
                 <th className="p-4">Timestamp</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60 text-xs">
+            <tbody className="divide-y divide-border-pearl text-xs">
               {activityLogs.map((log) => (
-                <tr key={log._id} className="hover:bg-slate-800/30 transition-colors">
-                  <td className="p-4 font-semibold text-slate-300">{log.userId?.name || 'User'}</td>
-                  <td className="p-4 font-mono text-cyan-300">{log.action}</td>
-                  <td className="p-4 text-slate-400">{log.projectId?.name || log.details?.name || '—'}</td>
-                  <td className="p-4 text-slate-500 font-mono text-[11px]">
+                <tr key={log._id} className="hover:bg-pearl/60 transition-colors">
+                  <td className="p-4 font-bold text-charcoal">{log.userId?.name || 'User'}</td>
+                  <td className="p-4 font-mono text-terracotta font-bold">{log.action}</td>
+                  <td className="p-4 text-secondary-text">{log.projectId?.name || log.details?.name || '—'}</td>
+                  <td className="p-4 text-secondary-text font-mono text-[11px]">
                     {new Date(log.createdAt).toLocaleString()}
                   </td>
                 </tr>

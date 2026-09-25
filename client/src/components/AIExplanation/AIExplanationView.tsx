@@ -11,8 +11,6 @@ import {
   AlertTriangle,
   Lightbulb,
   CheckCircle2,
-  ArrowRight,
-  HelpCircle,
 } from 'lucide-react';
 
 interface AIExplanationViewProps {
@@ -24,12 +22,11 @@ interface AIExplanationViewProps {
 export const AIExplanationView: React.FC<AIExplanationViewProps> = ({
   explanation,
   language = 'cpp',
-  onAskAIAboutSection,
 }) => {
   if (!explanation) {
     return (
-      <div className="glass-panel p-8 rounded-3xl border border-slate-800 text-center text-xs text-slate-400">
-        <Sparkles className="w-8 h-8 text-indigo-400 mx-auto mb-2" />
+      <div className="p-8 rounded-3xl border border-border-pearl bg-white text-center text-xs text-secondary-text shadow-sm">
+        <Sparkles className="w-8 h-8 text-terracotta mx-auto mb-2" />
         <p>No structured AI explanation available. Please run code analysis in the editor.</p>
       </div>
     );
@@ -38,38 +35,39 @@ export const AIExplanationView: React.FC<AIExplanationViewProps> = ({
   return (
     <div className="space-y-6">
       {/* 1. Code Overview Card */}
-      <div className="glass-panel p-6 rounded-3xl border border-slate-800 bg-gradient-to-r from-indigo-950/30 via-slate-900/60 to-cyan-950/20 shadow-xl space-y-3">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-extrabold text-white flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-cyan-400" />
+      <div className="p-6 rounded-3xl border border-border-pearl bg-white shadow-sm space-y-3 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-terracotta/5 to-transparent rounded-bl-full pointer-events-none" />
+        <div className="flex items-center justify-between relative z-10">
+          <h3 className="text-sm font-black text-charcoal flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-terracotta" />
             <span>1. Code Overview</span>
           </h3>
-          <span className="px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-cyan-300 text-[10px] uppercase font-bold font-mono border border-indigo-500/30">
+          <span className="px-2.5 py-0.5 rounded-full bg-terracotta/10 text-terracotta text-[10px] uppercase font-bold font-mono border border-terracotta/20">
             {language}
           </span>
         </div>
-        <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-normal">
+        <p className="text-xs sm:text-sm text-secondary-text leading-relaxed font-normal relative z-10">
           {explanation.overview}
         </p>
       </div>
 
       {/* 2. How the Code Works */}
-      <div className="glass-panel p-6 rounded-3xl border border-slate-800 bg-slate-900/60 space-y-3">
-        <h3 className="text-sm font-bold text-white flex items-center gap-2">
-          <BookOpen className="w-4 h-4 text-indigo-400" />
+      <div className="p-6 rounded-3xl border border-border-pearl bg-white shadow-sm space-y-3">
+        <h3 className="text-sm font-bold text-charcoal flex items-center gap-2">
+          <BookOpen className="w-4 h-4 text-terracotta" />
           <span>2. How the Code Works (Execution Flow)</span>
         </h3>
-        <p className="text-xs text-slate-300 leading-relaxed">{explanation.howItWorks}</p>
+        <p className="text-xs text-secondary-text leading-relaxed">{explanation.howItWorks}</p>
       </div>
 
       {/* 3. Step-by-Step Explanation */}
-      <div className="glass-panel p-6 rounded-3xl border border-slate-800 bg-slate-900/60 space-y-4">
+      <div className="p-6 rounded-3xl border border-border-pearl bg-white shadow-sm space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-bold text-white flex items-center gap-2">
-            <Layers className="w-4 h-4 text-purple-400" />
+          <h3 className="text-sm font-bold text-charcoal flex items-center gap-2">
+            <Layers className="w-4 h-4 text-orange-warm" />
             <span>3. Step-by-Step Logic Breakdown</span>
           </h3>
-          <span className="text-[10px] text-slate-500 font-mono">
+          <span className="text-[10px] text-secondary-text font-mono">
             {explanation.stepByStep?.length || 0} Key Milestones
           </span>
         </div>
@@ -78,14 +76,14 @@ export const AIExplanationView: React.FC<AIExplanationViewProps> = ({
           {explanation.stepByStep?.map((item, idx) => (
             <div
               key={idx}
-              className="p-3.5 rounded-2xl bg-slate-950/60 border border-slate-800/80 flex items-start gap-3 hover:border-indigo-500/40 transition-colors"
+              className="p-3.5 rounded-2xl bg-secondary-card/60 border border-border-pearl flex items-start gap-3 hover:border-terracotta/40 transition-colors"
             >
-              <span className="w-6 h-6 rounded-xl bg-indigo-600/30 text-cyan-300 border border-indigo-500/40 flex items-center justify-center font-bold font-mono text-[11px] flex-shrink-0 mt-0.5">
+              <span className="w-6 h-6 rounded-xl bg-terracotta/10 text-terracotta border border-terracotta/20 flex items-center justify-center font-bold font-mono text-[11px] flex-shrink-0 mt-0.5">
                 {item.step || idx + 1}
               </span>
               <div className="flex-1 min-w-0 text-xs">
-                <div className="font-bold text-slate-200 mb-0.5">{item.title}</div>
-                <p className="text-slate-400 leading-relaxed">{item.explanation}</p>
+                <div className="font-bold text-charcoal mb-0.5">{item.title}</div>
+                <p className="text-secondary-text leading-relaxed">{item.explanation}</p>
               </div>
             </div>
           ))}
@@ -95,25 +93,25 @@ export const AIExplanationView: React.FC<AIExplanationViewProps> = ({
       {/* 4 & 5. Functions & Key Variables Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Functions Card */}
-        <div className="glass-panel p-6 rounded-3xl border border-slate-800 bg-slate-900/60 space-y-4">
-          <h3 className="text-sm font-bold text-white flex items-center gap-2">
-            <Code2 className="w-4 h-4 text-cyan-400" />
+        <div className="p-6 rounded-3xl border border-border-pearl bg-white shadow-sm space-y-4">
+          <h3 className="text-sm font-bold text-charcoal flex items-center gap-2">
+            <Code2 className="w-4 h-4 text-terracotta" />
             <span>4. Functions & Methods</span>
           </h3>
 
           <div className="space-y-3">
             {explanation.functions?.map((fn, idx) => (
-              <div key={idx} className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800 space-y-2 text-xs">
+              <div key={idx} className="p-4 rounded-2xl bg-secondary-card/50 border border-border-pearl space-y-2 text-xs">
                 <div className="flex items-center justify-between">
-                  <span className="font-bold font-mono text-cyan-300 text-xs">{fn.name}</span>
-                  <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 font-mono text-[10px] text-indigo-300">
+                  <span className="font-bold font-mono text-terracotta text-xs">{fn.name}</span>
+                  <span className="px-2 py-0.5 rounded bg-white border border-border-pearl font-mono text-[10px] text-charcoal font-semibold">
                     Returns: {fn.returnType || 'void'}
                   </span>
                 </div>
-                <p className="text-slate-300 leading-snug">{fn.purpose}</p>
-                <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-slate-850">
-                  <span>Params: <strong className="text-slate-300">{fn.parameters || 'None'}</strong></span>
-                  <span>Complexity: <strong className="text-emerald-400">{fn.complexity || 'O(1)'}</strong></span>
+                <p className="text-secondary-text leading-snug">{fn.purpose}</p>
+                <div className="flex items-center justify-between text-[11px] text-secondary-text pt-1 border-t border-border-pearl">
+                  <span>Params: <strong className="text-charcoal">{fn.parameters || 'None'}</strong></span>
+                  <span>Complexity: <strong className="text-lime-700 font-mono font-bold">{fn.complexity || 'O(1)'}</strong></span>
                 </div>
               </div>
             ))}
@@ -121,21 +119,21 @@ export const AIExplanationView: React.FC<AIExplanationViewProps> = ({
         </div>
 
         {/* Variables Card */}
-        <div className="glass-panel p-6 rounded-3xl border border-slate-800 bg-slate-900/60 space-y-4">
-          <h3 className="text-sm font-bold text-white flex items-center gap-2">
-            <Database className="w-4 h-4 text-amber-400" />
+        <div className="p-6 rounded-3xl border border-border-pearl bg-white shadow-sm space-y-4">
+          <h3 className="text-sm font-bold text-charcoal flex items-center gap-2">
+            <Database className="w-4 h-4 text-orange-warm" />
             <span>5. Key Variables & State</span>
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {explanation.variables?.map((v, idx) => (
-              <div key={idx} className="p-3.5 rounded-2xl bg-slate-950/70 border border-slate-800 text-xs space-y-1">
+              <div key={idx} className="p-3.5 rounded-2xl bg-secondary-card/50 border border-border-pearl text-xs space-y-1">
                 <div className="flex items-center justify-between">
-                  <span className="font-bold font-mono text-amber-300">{v.name}</span>
-                  <span className="text-[10px] font-mono text-slate-500">{v.type}</span>
+                  <span className="font-bold font-mono text-charcoal">{v.name}</span>
+                  <span className="text-[10px] font-mono text-secondary-text">{v.type}</span>
                 </div>
-                <p className="text-[11px] text-slate-300 leading-snug">{v.purpose}</p>
-                <span className="text-[10px] text-indigo-400 font-semibold block">{v.role}</span>
+                <p className="text-[11px] text-secondary-text leading-snug">{v.purpose}</p>
+                <span className="text-[10px] text-terracotta font-semibold block">{v.role}</span>
               </div>
             ))}
           </div>
@@ -144,13 +142,13 @@ export const AIExplanationView: React.FC<AIExplanationViewProps> = ({
 
       {/* 6 & 7. Data Structures & Algorithm */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div className="glass-panel p-5 rounded-3xl border border-slate-800 bg-slate-900/60 space-y-2">
-          <h3 className="text-xs font-bold text-slate-400 uppercase font-mono">6. Data Structures Utilized</h3>
+        <div className="p-5 rounded-3xl border border-border-pearl bg-white shadow-sm space-y-2">
+          <h3 className="text-xs font-bold text-secondary-text uppercase font-mono">6. Data Structures Utilized</h3>
           <div className="flex flex-wrap gap-2 pt-1">
             {explanation.dataStructures?.map((ds, idx) => (
               <span
                 key={idx}
-                className="px-3 py-1 rounded-xl bg-slate-950 border border-slate-800 text-xs font-semibold text-cyan-300"
+                className="px-3 py-1 rounded-xl bg-secondary-card border border-border-pearl text-xs font-semibold text-charcoal"
               >
                 {ds}
               </span>
@@ -158,9 +156,9 @@ export const AIExplanationView: React.FC<AIExplanationViewProps> = ({
           </div>
         </div>
 
-        <div className="glass-panel p-5 rounded-3xl border border-slate-800 bg-slate-900/60 space-y-2">
-          <h3 className="text-xs font-bold text-slate-400 uppercase font-mono">7. Algorithm & Pattern</h3>
-          <div className="text-base font-extrabold text-indigo-300 pt-1">
+        <div className="p-5 rounded-3xl border border-border-pearl bg-white shadow-sm space-y-2">
+          <h3 className="text-xs font-bold text-secondary-text uppercase font-mono">7. Algorithm & Pattern</h3>
+          <div className="text-base font-extrabold text-terracotta pt-1">
             {explanation.algorithm}
           </div>
         </div>
@@ -168,32 +166,32 @@ export const AIExplanationView: React.FC<AIExplanationViewProps> = ({
 
       {/* 8 & 9. Time & Space Complexity */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div className="glass-panel p-6 rounded-3xl border border-slate-800 bg-slate-900/60 space-y-3">
+        <div className="p-6 rounded-3xl border border-border-pearl bg-white shadow-sm space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <Clock className="w-4 h-4 text-cyan-400" />
+            <h3 className="text-sm font-bold text-charcoal flex items-center gap-2">
+              <Clock className="w-4 h-4 text-terracotta" />
               <span>8. Time Complexity</span>
             </h3>
-            <span className="text-xl font-black text-cyan-400 font-mono">
+            <span className="text-xl font-black text-terracotta font-mono">
               {explanation.timeComplexity?.value || 'O(n)'}
             </span>
           </div>
-          <p className="text-xs text-slate-300 leading-relaxed">
+          <p className="text-xs text-secondary-text leading-relaxed">
             {explanation.timeComplexity?.reason}
           </p>
         </div>
 
-        <div className="glass-panel p-6 rounded-3xl border border-slate-800 bg-slate-900/60 space-y-3">
+        <div className="p-6 rounded-3xl border border-border-pearl bg-white shadow-sm space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <Cpu className="w-4 h-4 text-indigo-400" />
+            <h3 className="text-sm font-bold text-charcoal flex items-center gap-2">
+              <Cpu className="w-4 h-4 text-orange-warm" />
               <span>9. Space Complexity</span>
             </h3>
-            <span className="text-xl font-black text-indigo-400 font-mono">
+            <span className="text-xl font-black text-orange-warm font-mono">
               {explanation.spaceComplexity?.value || 'O(1)'}
             </span>
           </div>
-          <p className="text-xs text-slate-300 leading-relaxed">
+          <p className="text-xs text-secondary-text leading-relaxed">
             {explanation.spaceComplexity?.reason}
           </p>
         </div>
@@ -201,30 +199,30 @@ export const AIExplanationView: React.FC<AIExplanationViewProps> = ({
 
       {/* 10 & 11. Potential Issues & Suggestions */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="glass-panel p-6 rounded-3xl border border-slate-800 bg-slate-900/60 space-y-3">
-          <h3 className="text-sm font-bold text-rose-400 flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4 text-rose-400" />
+        <div className="p-6 rounded-3xl border border-border-pearl bg-white shadow-sm space-y-3">
+          <h3 className="text-sm font-bold text-terracotta flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-terracotta" />
             <span>10. Potential Issues & Boundary Risks</span>
           </h3>
-          <ul className="space-y-2 text-xs text-slate-300">
+          <ul className="space-y-2 text-xs text-secondary-text">
             {explanation.potentialIssues?.map((issue, idx) => (
               <li key={idx} className="flex items-start gap-2">
-                <span className="text-rose-400 font-bold">•</span>
+                <span className="text-terracotta font-bold">•</span>
                 <span>{issue}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="glass-panel p-6 rounded-3xl border border-slate-800 bg-slate-900/60 space-y-3">
-          <h3 className="text-sm font-bold text-emerald-400 flex items-center gap-2">
-            <Lightbulb className="w-4 h-4 text-emerald-400" />
+        <div className="p-6 rounded-3xl border border-border-pearl bg-white shadow-sm space-y-3">
+          <h3 className="text-sm font-bold text-charcoal flex items-center gap-2">
+            <Lightbulb className="w-4 h-4 text-lime-600" />
             <span>11. Engineering Suggestions & Modern Idioms</span>
           </h3>
-          <ul className="space-y-2 text-xs text-slate-300">
+          <ul className="space-y-2 text-xs text-secondary-text">
             {explanation.suggestions?.map((sug, idx) => (
               <li key={idx} className="flex items-start gap-2">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-lime-600 flex-shrink-0 mt-0.5" />
                 <span>{sug}</span>
               </li>
             ))}

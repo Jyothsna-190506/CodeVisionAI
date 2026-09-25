@@ -11,13 +11,13 @@ interface StepCardProps {
 export const StepCard: React.FC<StepCardProps> = ({ step, summary, totalSteps }) => {
   if (!step) {
     return (
-      <div className="h-full glass-panel p-6 rounded-2xl border border-slate-800 flex flex-col items-center justify-center text-center">
-        <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mb-3 text-cyan-400">
+      <div className="h-full p-6 rounded-3xl border border-border-pearl bg-white shadow-sm flex flex-col items-center justify-center text-center">
+        <div className="w-14 h-14 rounded-2xl bg-terracotta/10 border border-terracotta/20 flex items-center justify-center mb-3 text-terracotta">
           <Bot className="w-7 h-7" />
         </div>
-        <h3 className="text-base font-bold text-slate-200 mb-1">AI Explanation Engine</h3>
-        <p className="text-xs text-slate-400 max-w-xs">
-          Step-by-step line explanations and complexity insights powered by VisualCode AI will appear here.
+        <h3 className="text-base font-black text-charcoal mb-1">AI Explanation Engine</h3>
+        <p className="text-xs text-secondary-text max-w-xs font-medium">
+          Step-by-step line explanations and complexity insights powered by CodeVision AI will appear here.
         </p>
       </div>
     );
@@ -27,33 +27,33 @@ export const StepCard: React.FC<StepCardProps> = ({ step, summary, totalSteps })
     <div className="h-full flex flex-col gap-4 overflow-y-auto pr-1">
       {/* Top Header Card: Summary & Final Result Output */}
       {summary && (summary.time_complexity || summary.title || summary.final_result) && (
-        <div className="glass-panel p-3.5 rounded-xl border border-indigo-500/30 bg-indigo-950/20 flex flex-col gap-2">
-          <h4 className="text-xs font-bold text-indigo-300 uppercase tracking-wider">
+        <div className="p-4 rounded-3xl border border-border-pearl bg-white shadow-sm flex flex-col gap-2">
+          <h4 className="text-xs font-black text-charcoal uppercase tracking-wider font-mono">
             {summary.title || 'Algorithm Summary'}
           </h4>
           {summary.description && (
-            <p className="text-xs text-slate-300 leading-relaxed">
+            <p className="text-xs text-secondary-text leading-relaxed font-medium">
               {summary.description}
             </p>
           )}
 
           {/* Final Calculated Result Output Banner */}
           {summary.final_result && (
-            <div className="p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+            <div className="p-3 rounded-2xl bg-lime-digital/20 border border-lime-digital/40 text-lime-800 text-xs font-bold flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-lime-700 flex-shrink-0" />
               <span>{summary.final_result}</span>
             </div>
           )}
 
           <div className="flex items-center gap-3 text-[11px] font-mono mt-1">
             {summary.time_complexity && (
-              <span className="flex items-center gap-1 text-cyan-300 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-800/50">
-                <Clock className="w-3 h-3 text-cyan-400" /> Time: {summary.time_complexity}
+              <span className="flex items-center gap-1 text-terracotta bg-terracotta/10 px-2.5 py-0.5 rounded-full border border-terracotta/20 font-bold">
+                <Clock className="w-3 h-3 text-terracotta" /> Time: {summary.time_complexity}
               </span>
             )}
             {summary.space_complexity && (
-              <span className="flex items-center gap-1 text-indigo-300 bg-indigo-950/60 px-2 py-0.5 rounded border border-indigo-800/50">
-                <HardDrive className="w-3 h-3 text-indigo-400" /> Space: {summary.space_complexity}
+              <span className="flex items-center gap-1 text-orange-warm bg-orange-warm/10 px-2.5 py-0.5 rounded-full border border-orange-warm/20 font-bold">
+                <HardDrive className="w-3 h-3 text-orange-warm" /> Space: {summary.space_complexity}
               </span>
             )}
           </div>
@@ -61,65 +61,65 @@ export const StepCard: React.FC<StepCardProps> = ({ step, summary, totalSteps })
       )}
 
       {/* Main AI Explanation Box */}
-      <div className="glass-panel p-4 rounded-xl border border-slate-800 flex-1 flex flex-col gap-3">
+      <div className="p-5 rounded-3xl border border-border-pearl bg-white shadow-sm flex-1 flex flex-col gap-3">
         {/* Step Badge & Type */}
-        <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+        <div className="flex items-center justify-between pb-2 border-b border-border-pearl">
           <div className="flex items-center gap-2">
-            <span className="px-2.5 py-1 text-xs font-bold rounded-lg bg-indigo-600 text-white shadow-md shadow-indigo-500/20">
+            <span className="px-3 py-1 text-xs font-bold rounded-xl bg-terracotta text-white shadow-sm shadow-terracotta/20">
               Step {step.step} of {totalSteps}
             </span>
-            <span className="text-xs font-semibold text-cyan-400 uppercase tracking-wide">
+            <span className="text-xs font-bold text-charcoal uppercase tracking-wide font-mono">
               {step.type || 'Execution'}
             </span>
           </div>
-          <span className="text-[11px] font-mono text-slate-400">
+          <span className="text-[11px] font-mono text-secondary-text font-bold">
             Line {step.line}
           </span>
         </div>
 
         {/* Executed Code Snippet */}
-        <div className="bg-slate-950 p-2.5 rounded-lg border border-slate-800/80 font-mono text-xs text-indigo-200">
-          <span className="text-slate-500 font-sans mr-2 text-[10px]">Executing:</span>
-          <code className="text-amber-300 font-bold">{step.code}</code>
+        <div className="bg-pearl p-3 rounded-2xl border border-border-pearl font-mono text-xs text-charcoal">
+          <span className="text-secondary-text font-sans mr-2 text-[10px] font-bold">Executing:</span>
+          <code className="text-charcoal font-black">{step.code}</code>
         </div>
 
         {/* AI Detailed Explanation */}
         <div className="flex-1 flex flex-col gap-1">
-          <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-            <Bot className="w-3.5 h-3.5 text-cyan-400" />
+          <label className="text-[11px] font-black text-secondary-text uppercase tracking-wider flex items-center gap-1.5 font-mono">
+            <Bot className="w-3.5 h-3.5 text-terracotta" />
             AI Breakdown
           </label>
-          <div className="bg-slate-900/80 p-3 rounded-lg border border-slate-800 text-xs text-slate-200 leading-relaxed">
+          <div className="bg-ivory p-3.5 rounded-2xl border border-border-pearl text-xs text-charcoal leading-relaxed font-medium">
             {step.explanation}
           </div>
         </div>
 
         {/* Current Variables Delta Table */}
         <div>
-          <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-            <Zap className="w-3.5 h-3.5 text-amber-400" />
+          <label className="text-[11px] font-black text-secondary-text uppercase tracking-wider mb-1.5 flex items-center gap-1.5 font-mono">
+            <Zap className="w-3.5 h-3.5 text-orange-warm" />
             Variable Values
           </label>
-          <div className="bg-slate-950 rounded-lg border border-slate-800 overflow-hidden">
+          <div className="bg-pearl rounded-2xl border border-border-pearl overflow-hidden">
             {Object.keys(step.variables || {}).length === 0 ? (
-              <div className="p-2.5 text-[11px] text-slate-500 italic text-center">
+              <div className="p-3 text-[11px] text-secondary-text italic text-center font-medium">
                 No variables in scope.
               </div>
             ) : (
               <table className="w-full text-left text-xs font-mono">
-                <thead className="bg-slate-900 text-slate-400 border-b border-slate-800">
+                <thead className="bg-secondary-card text-secondary-text font-bold border-b border-border-pearl">
                   <tr>
-                    <th className="p-1.5 px-3">Variable</th>
-                    <th className="p-1.5 px-3">Value</th>
+                    <th className="p-2 px-3">Variable</th>
+                    <th className="p-2 px-3">Value</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/50">
+                <tbody className="divide-y divide-border-pearl">
                   {Object.entries(step.variables).map(([k, v]) => {
                     const isChanged = step.changed_variables?.includes(k);
                     return (
-                      <tr key={k} className={isChanged ? 'bg-indigo-950/40 text-amber-300 font-bold' : 'text-slate-300'}>
-                        <td className="p-1.5 px-3">{k}</td>
-                        <td className="p-1.5 px-3">{typeof v === 'object' ? JSON.stringify(v) : String(v)}</td>
+                      <tr key={k} className={isChanged ? 'bg-terracotta/10 text-charcoal font-black' : 'text-charcoal'}>
+                        <td className="p-2 px-3 font-bold">{k}</td>
+                        <td className="p-2 px-3">{typeof v === 'object' ? JSON.stringify(v) : String(v)}</td>
                       </tr>
                     );
                   })}
@@ -131,8 +131,8 @@ export const StepCard: React.FC<StepCardProps> = ({ step, summary, totalSteps })
 
         {/* Complexity / Memory Note */}
         {step.complexity_note && (
-          <div className="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-200 text-xs flex items-start gap-2">
-            <Lightbulb className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+          <div className="p-3 rounded-2xl bg-amber-50 border border-amber-300 text-amber-900 text-xs flex items-start gap-2 font-medium">
+            <Lightbulb className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
             <span>{step.complexity_note}</span>
           </div>
         )}

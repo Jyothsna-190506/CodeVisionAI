@@ -7,17 +7,50 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#0F172A',
-        card: '#1E293B',
-        accent: {
-          primary: '#4F46E5',
-          secondary: '#06B6D4',
-          glow: '#818CF8',
+        pearl: {
+          DEFAULT: '#F7F3EA',
+          light: '#FFFDF8',
+          dark: '#EBE5D8',
+        },
+        ivory: {
+          DEFAULT: '#FFFDF8',
+          warm: '#F2EEE5',
+        },
+        charcoal: {
+          DEFAULT: '#242321',
+          light: '#3D3B37',
+          muted: '#6F6A61',
+        },
+        terracotta: {
+          DEFAULT: '#D85C32',
+          hover: '#C24D25',
+          light: '#F8E8E2',
+          glow: 'rgba(216, 92, 50, 0.25)',
+        },
+        orange: {
+          warm: '#F28A3D',
+        },
+        lime: {
+          digital: '#B7D94B',
+          soft: '#F1F7D9',
+        },
+        border: {
+          pearl: 'rgba(35, 32, 28, 0.10)',
+          warm: 'rgba(35, 32, 28, 0.16)',
         }
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        mono: ['JetBrains Mono', 'SF Mono', 'Fira Code', 'monospace'],
+        display: ['Inter', 'system-ui', 'sans-serif'],
+      },
+      boxShadow: {
+        'pearl-sm': '0 2px 8px rgba(35, 32, 28, 0.04)',
+        'pearl-md': '0 8px 24px rgba(35, 32, 28, 0.06)',
+        'pearl-lg': '0 16px 40px rgba(35, 32, 28, 0.08)',
+        'pearl-glass': '0 20px 50px rgba(35, 32, 28, 0.07), 0 1px 3px rgba(35, 32, 28, 0.05)',
+        'terracotta-glow': '0 10px 30px -5px rgba(216, 92, 50, 0.3)',
+        'lime-glow': '0 10px 30px -5px rgba(183, 217, 75, 0.3)',
       }
     },
   },

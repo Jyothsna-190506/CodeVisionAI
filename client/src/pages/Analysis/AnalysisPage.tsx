@@ -90,7 +90,6 @@ export const AnalysisPage: React.FC = () => {
 
   useEffect(() => {
     const loadAnalysis = async () => {
-      // 1. If passed via state from editor directly
       if (location.state?.resultData) {
         setResult(location.state.resultData);
         setAnalysisMeta({
@@ -107,7 +106,6 @@ export const AnalysisPage: React.FC = () => {
         return;
       }
 
-      // 2. Load from MongoDB
       try {
         setLoading(true);
         const res = await apiClient.get(`/analysis/${id}`);
@@ -163,7 +161,7 @@ export const AnalysisPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[75vh] flex flex-col items-center justify-center p-6">
+      <div className="min-h-[75vh] flex flex-col items-center justify-center p-6 bg-pearl">
         <ThreeUplinkLoader
           status="Executing 11-Domain AI Analysis Pipeline..."
           stage="AST Extraction → Flowchart → Asymptotic Complexity → Step Simulation"
@@ -175,13 +173,13 @@ export const AnalysisPage: React.FC = () => {
   if (errorMsg || !result) {
     return (
       <div className="p-8 max-w-xl mx-auto text-center">
-        <div className="glass-panel p-8 rounded-3xl border border-rose-500/30 bg-rose-950/20">
-          <AlertTriangle className="w-10 h-10 text-rose-400 mx-auto mb-3" />
-          <h2 className="text-lg font-bold text-white mb-2">Analysis Not Available</h2>
-          <p className="text-xs text-slate-300 mb-6">{errorMsg || 'Could not retrieve analysis data.'}</p>
+        <div className="pearl-card p-8 rounded-3xl border border-rose-200 bg-white shadow-pearl-md">
+          <AlertTriangle className="w-10 h-10 text-terracotta mx-auto mb-3" />
+          <h2 className="text-lg font-bold text-charcoal mb-2">Analysis Not Available</h2>
+          <p className="text-xs text-charcoal-muted mb-6">{errorMsg || 'Could not retrieve analysis data.'}</p>
           <Link
             to="/editor"
-            className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg inline-flex items-center gap-2"
+            className="px-5 py-2.5 rounded-xl bg-terracotta hover:bg-terracotta-hover text-white text-xs font-bold shadow-pearl-sm inline-flex items-center gap-2"
           >
             <Code2 className="w-4 h-4" />
             <span>Open Code Editor</span>
@@ -191,7 +189,7 @@ export const AnalysisPage: React.FC = () => {
     );
   }
 
-  // Quality Radar Data
+  // Quality Radar Data (Terracotta / Lime styling)
   const qualityRadarData = [
     { subject: 'Readability', score: result.qualityScore?.breakdown?.readability || 85, fullMark: 100 },
     { subject: 'Maintainability', score: result.qualityScore?.breakdown?.maintainability || 85, fullMark: 100 },
@@ -212,28 +210,28 @@ export const AnalysisPage: React.FC = () => {
     { id: 'callgraph', label: 'Call Graph', icon: Network },
     { id: 'tests', label: `Test Cases (${(result.testCases || []).length})`, icon: CheckCircle2 },
     { id: 'similarity', label: 'Similar Code', icon: FileCode },
-    { id: 'assistant', label: 'Project-Aware AI Assistant', icon: MessageSquare },
+    { id: 'assistant', label: 'AI Assistant', icon: MessageSquare },
   ];
 
   const steps = result.stepByStepExplanation || [];
   const activeStep = steps[currentStepIndex];
 
   return (
-    <div className="p-6 max-w-[1700px] mx-auto space-y-6">
+    <div className="p-6 max-w-[1700px] mx-auto space-y-6 bg-pearl min-h-screen">
       {/* Top Banner & Header Controls */}
-      <div className="glass-panel p-6 rounded-3xl border border-slate-800 bg-slate-900/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="pearl-card p-6 rounded-3xl border border-border-pearl bg-white shadow-pearl-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1.5">
-            <span className="px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-cyan-300 text-[10px] font-bold uppercase tracking-wider border border-indigo-500/30">
+            <span className="px-2.5 py-0.5 rounded-full bg-ivory-warm text-terracotta text-[10px] font-bold uppercase tracking-wider border border-border-pearl font-mono">
               {analysisMeta?.language || 'Algorithm'}
             </span>
-            <span className="text-xs text-slate-400 font-mono">
+            <span className="text-xs text-charcoal-muted font-mono">
               Quality Score:{' '}
-              <strong className="text-emerald-400 font-bold">{result.qualityScore?.overall || 85}/100</strong>
+              <strong className="text-charcoal bg-lime-soft px-2 py-0.5 rounded border border-lime-digital/30">{result.qualityScore?.overall || 85}/100</strong>
             </span>
           </div>
-          <h1 className="text-2xl font-black text-white">{result.overview?.title || 'Comprehensive Code Analysis'}</h1>
-          <p className="text-xs text-slate-400 mt-1 max-w-2xl">{result.overview?.description}</p>
+          <h1 className="text-2xl font-black text-charcoal">{result.overview?.title || 'Comprehensive Code Analysis'}</h1>
+          <p className="text-xs text-charcoal-muted mt-1 max-w-2xl font-normal">{result.overview?.description}</p>
         </div>
 
         {/* Action Controls */}
@@ -241,33 +239,33 @@ export const AnalysisPage: React.FC = () => {
           <button
             onClick={() => handleExportReport('PDF')}
             disabled={isExportingPDF || !id}
-            className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 flex items-center gap-2 transition-all disabled:opacity-50"
+            className="px-3.5 py-2 rounded-xl bg-white hover:bg-ivory-warm text-charcoal text-xs font-semibold border border-border-pearl flex items-center gap-2 transition-all disabled:opacity-50 shadow-pearl-sm"
           >
-            <Download className="w-3.5 h-3.5 text-cyan-400" />
+            <Download className="w-3.5 h-3.5 text-terracotta" />
             <span>{isExportingPDF ? 'Generating...' : 'Export PDF'}</span>
           </button>
 
           <button
             onClick={() => handleExportReport('HTML')}
             disabled={isExportingHTML || !id}
-            className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 flex items-center gap-2 transition-all disabled:opacity-50"
+            className="px-3.5 py-2 rounded-xl bg-white hover:bg-ivory-warm text-charcoal text-xs font-semibold border border-border-pearl flex items-center gap-2 transition-all disabled:opacity-50 shadow-pearl-sm"
           >
-            <Download className="w-3.5 h-3.5 text-indigo-400" />
+            <Download className="w-3.5 h-3.5 text-orange-warm" />
             <span>{isExportingHTML ? 'Generating...' : 'Export HTML'}</span>
           </button>
 
           <Link
-            to={analysisMeta?.projectId ? `/editor/${analysisMeta.projectId}` : '/editor'}
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white text-xs font-bold shadow-md shadow-indigo-500/20 transition-all flex items-center gap-1.5"
+            to={analysisMeta?.projectId ? `/editor?projectId=${analysisMeta.projectId}` : '/editor'}
+            className="px-4 py-2 rounded-xl bg-terracotta hover:bg-terracotta-hover text-white text-xs font-bold shadow-pearl-sm transition-all flex items-center gap-1.5"
           >
-            <Code2 className="w-3.5 h-3.5" />
+            <Code2 className="w-4 h-4" />
             <span>Edit Code</span>
           </Link>
         </div>
       </div>
 
       {/* Navigation Tab Bar */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-slate-800 scrollbar-none">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-border-pearl scrollbar-none">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -275,86 +273,75 @@ export const AnalysisPage: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
+              className={`px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all whitespace-nowrap ${
                 isActive
-                  ? 'bg-gradient-to-r from-indigo-600/30 to-cyan-500/20 text-cyan-300 border border-indigo-500/40 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+                  ? 'bg-white text-terracotta border border-border-pearl border-b-2 border-b-terracotta shadow-pearl-sm'
+                  : 'text-charcoal-muted hover:text-charcoal hover:bg-white/60'
               }`}
             >
-              <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-cyan-400' : ''}`} />
+              <Icon className={`w-4 h-4 ${isActive ? 'text-terracotta' : 'text-charcoal-muted'}`} />
               <span>{tab.label}</span>
             </button>
           );
         })}
       </div>
 
-      {/* TAB CONTENT PANELS */}
-
       {/* 1. OVERVIEW TAB */}
       {activeTab === 'overview' && (
         <div className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="glass-panel p-4 rounded-2xl border border-slate-800 bg-slate-900/60">
-              <span className="text-xs text-slate-400 font-medium">Time Complexity</span>
-              <div className="text-xl font-bold text-cyan-400 mt-1">{result.complexity?.timeComplexity || 'O(n)'}</div>
-              <p className="text-[10px] text-slate-500 mt-0.5">Asymptotic computation limit</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="pearl-card p-5 rounded-2xl border border-border-pearl space-y-1 shadow-pearl-sm">
+              <span className="text-[10px] font-mono uppercase font-bold text-charcoal-muted">Time Complexity</span>
+              <div className="text-2xl font-black font-mono text-terracotta">{result.complexity?.timeComplexity || 'O(n)'}</div>
+              <p className="text-[11px] text-charcoal-muted line-clamp-1">{result.complexity?.explanation || 'Linear iteration bound'}</p>
             </div>
-            <div className="glass-panel p-4 rounded-2xl border border-slate-800 bg-slate-900/60">
-              <span className="text-xs text-slate-400 font-medium">Space Complexity</span>
-              <div className="text-xl font-bold text-indigo-400 mt-1">{result.complexity?.spaceComplexity || 'O(1)'}</div>
-              <p className="text-[10px] text-slate-500 mt-0.5">Auxiliary stack & heap memory</p>
+
+            <div className="pearl-card p-5 rounded-2xl border border-border-pearl space-y-1 shadow-pearl-sm">
+              <span className="text-[10px] font-mono uppercase font-bold text-charcoal-muted">Space Complexity</span>
+              <div className="text-2xl font-black font-mono text-charcoal">{result.complexity?.spaceComplexity || 'O(1)'}</div>
+              <p className="text-[11px] text-charcoal-muted">Scalar memory accumulation</p>
             </div>
-            <div className="glass-panel p-4 rounded-2xl border border-slate-800 bg-slate-900/60">
-              <span className="text-xs text-slate-400 font-medium">Cyclomatic Complexity</span>
-              <div className="text-xl font-bold text-amber-400 mt-1">{result.metrics?.cyclomaticComplexity || 1}</div>
-              <p className="text-[10px] text-slate-500 mt-0.5">Independent linear execution paths</p>
+
+            <div className="pearl-card p-5 rounded-2xl border border-border-pearl space-y-1 shadow-pearl-sm">
+              <span className="text-[10px] font-mono uppercase font-bold text-charcoal-muted">Quality Score</span>
+              <div className="text-2xl font-black font-mono text-charcoal">{result.qualityScore?.overall || 85} / 100</div>
+              <p className="text-[11px] text-lime-digital font-bold">Grade: {result.qualityScore?.grade || 'A'}</p>
             </div>
-            <div className="glass-panel p-4 rounded-2xl border border-slate-800 bg-slate-900/60">
-              <span className="text-xs text-slate-400 font-medium">Maintainability Index</span>
-              <div className="text-xl font-bold text-emerald-400 mt-1">{result.metrics?.maintainabilityIndex || 85}/100</div>
-              <p className="text-[10px] text-slate-500 mt-0.5">Halstead Volume & LOC metric</p>
+
+            <div className="pearl-card p-5 rounded-2xl border border-border-pearl space-y-1 shadow-pearl-sm">
+              <span className="text-[10px] font-mono uppercase font-bold text-charcoal-muted">Maintainability</span>
+              <div className="text-2xl font-black font-mono text-orange-warm">{result.metrics?.maintainabilityIndex || 85}/100</div>
+              <p className="text-[11px] text-charcoal-muted">Halstead clean metric</p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2 glass-panel p-6 rounded-2xl border border-slate-800 bg-slate-900/60 space-y-4">
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-cyan-400" />
-                <span>Complexity & Execution Analysis</span>
+          {/* Radar Chart & Details */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div className="lg:col-span-8 pearl-card p-6 rounded-2xl border border-border-pearl space-y-4 shadow-pearl-sm">
+              <h3 className="text-sm font-bold text-charcoal flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-terracotta" /> Core Architectural Overview
               </h3>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                {result.complexity?.explanation || 'Algorithmic execution verified across all branching conditions.'}
+              <p className="text-xs text-charcoal-muted leading-relaxed">
+                {result.aiExplanation?.overview || result.overview?.description || 'CodeVision AI has successfully analyzed and parsed your active source code.'}
               </p>
 
-              {result.complexity?.bottlenecks && result.complexity.bottlenecks.length > 0 && (
-                <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs">
-                  <span className="font-bold block mb-1">Identified Performance Bottlenecks:</span>
-                  <ul className="list-disc list-inside space-y-1 text-slate-300">
-                    {result.complexity.bottlenecks.map((b, i) => (
-                      <li key={i}>{b}</li>
-                    ))}
-                  </ul>
+              <div className="pt-2 border-t border-border-pearl">
+                <h4 className="text-xs font-bold text-charcoal mb-2 font-mono uppercase">Algorithmic Pattern:</h4>
+                <div className="p-3 rounded-xl bg-ivory-warm border border-border-pearl text-xs font-mono text-charcoal">
+                  {result.aiExplanation?.algorithm || 'Linear Accumulator Pattern'}
                 </div>
-              )}
-
-              {result.overview?.finalResult && (
-                <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
-                  <span className="text-[11px] text-slate-400 uppercase font-semibold block mb-1">Final Computed Result / Output</span>
-                  <pre className="text-xs font-mono text-cyan-300 whitespace-pre-wrap">{result.overview.finalResult}</pre>
-                </div>
-              )}
+              </div>
             </div>
 
-            {/* Quality Radar Chart */}
-            <div className="glass-panel p-6 rounded-2xl border border-slate-800 bg-slate-900/60 flex flex-col justify-between">
-              <h3 className="text-sm font-bold text-white mb-2">Quality Dimension Breakdown</h3>
+            <div className="lg:col-span-4 pearl-card p-6 rounded-2xl border border-border-pearl space-y-2 flex flex-col justify-between shadow-pearl-sm">
+              <h3 className="text-sm font-bold text-charcoal">Quality Score Radar</h3>
               <div className="h-56 w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <RadarChart data={qualityRadarData}>
-                    <PolarGrid stroke="#334155" />
-                    <PolarAngleAxis dataKey="subject" stroke="#94a3b8" fontSize={10} />
-                    <PolarRadiusAxis stroke="#475569" angle={30} domain={[0, 100]} fontSize={9} />
-                    <Radar name="Quality" dataKey="score" stroke="#06b6d4" fill="#06b6d4" fillOpacity={0.4} />
+                    <PolarGrid stroke="#D9D2C5" />
+                    <PolarAngleAxis dataKey="subject" stroke="#6F6A61" fontSize={10} />
+                    <PolarRadiusAxis stroke="#D9D2C5" angle={30} domain={[0, 100]} fontSize={9} />
+                    <Radar name="Quality" dataKey="score" stroke="#D85C32" fill="#D85C32" fillOpacity={0.25} />
                   </RadarChart>
                 </ResponsiveContainer>
               </div>
@@ -379,44 +366,42 @@ export const AnalysisPage: React.FC = () => {
       {activeTab === 'trace' && (
         <div className="space-y-4">
           {steps.length === 0 ? (
-            <div className="glass-panel p-8 rounded-2xl border border-slate-800 text-center text-xs text-slate-400">
+            <div className="pearl-card p-8 rounded-2xl border border-border-pearl text-center text-xs text-charcoal-muted shadow-pearl-sm">
               No step execution trace available for this code snippet.
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
               {/* Left Step Player Controls & Memory */}
-              <div className="lg:col-span-8 glass-panel p-5 rounded-2xl border border-slate-800 bg-slate-900/60 flex flex-col justify-between space-y-4">
+              <div className="lg:col-span-8 pearl-card p-6 rounded-2xl border border-border-pearl bg-white shadow-pearl-sm flex flex-col justify-between space-y-4">
                 <div>
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+                  <div className="flex items-center justify-between pb-3 border-b border-border-pearl">
                     <div className="flex items-center gap-2">
-                      <span className="px-2.5 py-1 rounded-lg bg-indigo-600/30 text-cyan-300 text-xs font-mono font-bold">
+                      <span className="px-2.5 py-1 rounded-lg bg-terracotta-light text-terracotta text-xs font-mono font-bold border border-terracotta/20">
                         Step {activeStep?.step || currentStepIndex + 1} of {steps.length}
                       </span>
-                      <span className="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-300 uppercase font-mono">
+                      <span className="px-2 py-0.5 rounded text-[10px] bg-ivory-warm text-charcoal uppercase font-mono border border-border-pearl">
                         Line {activeStep?.line || 1}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => handleAskAboutLine(activeStep?.line || 1)}
-                        className="px-2.5 py-1 rounded-lg bg-indigo-500/20 hover:bg-indigo-600 text-cyan-300 hover:text-white border border-indigo-500/30 text-[11px] font-semibold flex items-center gap-1.5 transition-colors"
-                      >
-                        <HelpCircle className="w-3.5 h-3.5 text-cyan-400" />
-                        <span>Ask AI about this line</span>
-                      </button>
-                    </div>
+                    <button
+                      onClick={() => handleAskAboutLine(activeStep?.line || 1)}
+                      className="px-2.5 py-1 rounded-lg bg-ivory-warm hover:bg-white text-terracotta border border-border-pearl text-[11px] font-semibold flex items-center gap-1.5 transition-colors shadow-pearl-sm"
+                    >
+                      <HelpCircle className="w-3.5 h-3.5 text-terracotta" />
+                      <span>Ask AI about this line</span>
+                    </button>
                   </div>
 
                   {/* Active Code Line */}
-                  <div className="mt-4 p-3.5 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs text-slate-200">
-                    <span className="text-indigo-400 font-bold mr-2">{activeStep?.line} |</span>
-                    <span className="text-amber-300">{activeStep?.code}</span>
+                  <div className="mt-4 p-3.5 rounded-xl bg-ivory-warm border border-border-pearl font-mono text-xs text-charcoal">
+                    <span className="text-terracotta font-bold mr-2">{activeStep?.line} |</span>
+                    <span className="font-semibold">{activeStep?.code}</span>
                   </div>
 
                   {/* Step Action Explanation */}
-                  <div className="mt-4 p-4 rounded-xl bg-indigo-950/20 border border-indigo-500/20 text-xs text-slate-200 leading-relaxed">
-                    <strong className="text-cyan-400 block mb-1 flex items-center gap-1.5">
+                  <div className="mt-4 p-4 rounded-xl bg-ivory border border-border-pearl text-xs text-charcoal leading-relaxed">
+                    <strong className="text-terracotta block mb-1 flex items-center gap-1.5 font-bold">
                       <Sparkles className="w-3.5 h-3.5" /> Statement Execution Action:
                     </strong>
                     {activeStep?.explanation || 'Executing runtime instruction and memory register update.'}
@@ -424,35 +409,28 @@ export const AnalysisPage: React.FC = () => {
 
                   {/* Active Variables in Memory */}
                   <div className="mt-4">
-                    <h4 className="text-xs font-bold text-slate-300 mb-2">Variables in Memory:</h4>
+                    <h4 className="text-xs font-bold text-charcoal mb-2 font-mono uppercase">Variables in Memory:</h4>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                       {activeStep?.variables &&
-                        Object.entries(activeStep.variables).map(([key, val]) => {
-                          const isChanged = (activeStep?.changed_variables || []).includes(key);
-                          return (
-                            <div
-                              key={key}
-                              className={`p-2.5 rounded-xl border text-xs font-mono ${
-                                isChanged
-                                  ? 'bg-amber-500/10 border-amber-500/40 text-amber-300'
-                                  : 'bg-slate-950/80 border-slate-800 text-slate-300'
-                              }`}
-                            >
-                              <span className="text-slate-500 text-[10px] block">{key}</span>
-                              <span className="font-bold">{JSON.stringify(val)}</span>
-                            </div>
-                          );
-                        })}
+                        Object.entries(activeStep.variables).map(([key, val]) => (
+                          <div
+                            key={key}
+                            className="p-2.5 rounded-xl border border-border-pearl bg-white text-xs font-mono shadow-pearl-sm"
+                          >
+                            <span className="text-charcoal-muted text-[10px] block">{key}</span>
+                            <span className="font-bold text-charcoal">{JSON.stringify(val)}</span>
+                          </div>
+                        ))}
                     </div>
                   </div>
                 </div>
 
                 {/* Step Slider / Controls */}
-                <div className="pt-4 border-t border-slate-800 flex items-center justify-between gap-4">
+                <div className="pt-4 border-t border-border-pearl flex items-center justify-between gap-4">
                   <button
                     onClick={() => setCurrentStepIndex((prev) => Math.max(0, prev - 1))}
                     disabled={currentStepIndex === 0}
-                    className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold disabled:opacity-40"
+                    className="px-3 py-1.5 rounded-lg bg-ivory-warm hover:bg-white text-charcoal text-xs font-semibold border border-border-pearl disabled:opacity-40 shadow-pearl-sm"
                   >
                     Previous Step
                   </button>
@@ -463,13 +441,13 @@ export const AnalysisPage: React.FC = () => {
                     max={steps.length - 1}
                     value={currentStepIndex}
                     onChange={(e) => setCurrentStepIndex(Number(e.target.value))}
-                    className="flex-1 accent-indigo-500"
+                    className="flex-1 accent-terracotta"
                   />
 
                   <button
                     onClick={() => setCurrentStepIndex((prev) => Math.min(steps.length - 1, prev + 1))}
                     disabled={currentStepIndex === steps.length - 1}
-                    className="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold disabled:opacity-40"
+                    className="px-3 py-1.5 rounded-lg bg-terracotta hover:bg-terracotta-hover text-white text-xs font-semibold disabled:opacity-40 shadow-pearl-sm"
                   >
                     Next Step
                   </button>
@@ -477,23 +455,23 @@ export const AnalysisPage: React.FC = () => {
               </div>
 
               {/* Right Steps Navigation List */}
-              <div className="lg:col-span-4 glass-panel p-4 rounded-2xl border border-slate-800 bg-slate-900/60 max-h-[500px] overflow-y-auto space-y-2">
-                <h4 className="text-xs font-bold text-white mb-3">All Execution Steps</h4>
+              <div className="lg:col-span-4 pearl-card p-4 rounded-2xl border border-border-pearl bg-white shadow-pearl-sm max-h-[500px] overflow-y-auto space-y-2">
+                <h4 className="text-xs font-bold text-charcoal mb-3 font-mono uppercase">All Execution Steps</h4>
                 {steps.map((s, idx) => (
                   <div
                     key={idx}
                     onClick={() => setCurrentStepIndex(idx)}
-                    className={`p-2.5 rounded-xl border text-xs cursor-pointer transition-colors ${
-                      idx === currentStepIndex
-                        ? 'bg-indigo-600/20 border-indigo-500/50 text-cyan-300'
-                        : 'bg-slate-950/40 border-slate-800 text-slate-400 hover:bg-slate-800/40'
+                    className={`p-2.5 rounded-xl cursor-pointer text-xs transition-all flex items-center justify-between border ${
+                      currentStepIndex === idx
+                        ? 'bg-terracotta-light border-terracotta text-terracotta font-bold'
+                        : 'bg-ivory-warm border-border-pearl text-charcoal hover:bg-white'
                     }`}
                   >
-                    <div className="flex items-center justify-between font-mono text-[11px] mb-1">
-                      <span>Step #{s.step || idx + 1}</span>
-                      <span className="text-[10px] text-slate-500">Line {s.line}</span>
+                    <div className="truncate max-w-[200px]">
+                      <span className="text-[10px] font-mono mr-1">L{s.line}:</span>
+                      <span>{s.code || s.explanation}</span>
                     </div>
-                    <p className="text-[11px] truncate text-slate-300">{s.code}</p>
+                    <span className="text-[10px] font-mono text-charcoal-muted">Step {s.step}</span>
                   </div>
                 ))}
               </div>
@@ -505,36 +483,29 @@ export const AnalysisPage: React.FC = () => {
       {/* 4. METRICS & QUALITY TAB */}
       {activeTab === 'metrics' && (
         <div className="space-y-6">
-          <div className="glass-panel p-6 rounded-2xl border border-slate-800 bg-slate-900/60">
-            <h3 className="text-base font-bold text-white mb-1">Transparent Quality Formula</h3>
-            <p className="text-xs text-slate-400 mb-4">{result.qualityScore?.formula}</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="pearl-card p-5 rounded-2xl border border-border-pearl space-y-1 shadow-pearl-sm">
+              <span className="text-[10px] font-mono font-bold text-charcoal-muted uppercase">Cyclomatic Complexity</span>
+              <div className="text-2xl font-black font-mono text-terracotta">{result.metrics?.cyclomaticComplexity || 2}</div>
+              <p className="text-[11px] text-charcoal-muted">Independent execution branches</p>
+            </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3.5">
-              {Object.entries(result.qualityScore?.breakdown || {}).map(([key, val]) => (
-                <div key={key} className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-center">
-                  <span className="text-[11px] text-slate-400 uppercase font-mono">{key}</span>
-                  <div className="text-xl font-black text-cyan-400 mt-1">{val}/100</div>
-                </div>
-              ))}
+            <div className="pearl-card p-5 rounded-2xl border border-border-pearl space-y-1 shadow-pearl-sm">
+              <span className="text-[10px] font-mono font-bold text-charcoal-muted uppercase">Lines of Code (SLOC)</span>
+              <div className="text-2xl font-black font-mono text-charcoal">{result.metrics?.linesOfCode || 12}</div>
+              <p className="text-[11px] text-charcoal-muted">Active source statements</p>
             </div>
-          </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="glass-panel p-4 rounded-xl border border-slate-800 bg-slate-900/40">
-              <span className="text-[11px] text-slate-400 font-mono">Total Lines</span>
-              <div className="text-lg font-bold text-white mt-1">{result.metrics?.lines || 0}</div>
+            <div className="pearl-card p-5 rounded-2xl border border-border-pearl space-y-1 shadow-pearl-sm">
+              <span className="text-[10px] font-mono font-bold text-charcoal-muted uppercase">Halstead Volume</span>
+              <div className="text-2xl font-black font-mono text-charcoal">{Math.round(result.metrics?.halsteadVolume || 120)}</div>
+              <p className="text-[11px] text-charcoal-muted">Computational token entropy</p>
             </div>
-            <div className="glass-panel p-4 rounded-xl border border-slate-800 bg-slate-900/40">
-              <span className="text-[11px] text-slate-400 font-mono">Comments LOC</span>
-              <div className="text-lg font-bold text-emerald-400 mt-1">{result.metrics?.comments || 0}</div>
-            </div>
-            <div className="glass-panel p-4 rounded-xl border border-slate-800 bg-slate-900/40">
-              <span className="text-[11px] text-slate-400 font-mono">Functions Count</span>
-              <div className="text-lg font-bold text-indigo-400 mt-1">{result.metrics?.functions || 0}</div>
-            </div>
-            <div className="glass-panel p-4 rounded-xl border border-slate-800 bg-slate-900/40">
-              <span className="text-[11px] text-slate-400 font-mono">Max Nesting Depth</span>
-              <div className="text-lg font-bold text-amber-400 mt-1">{result.metrics?.nestingDepth || 1}</div>
+
+            <div className="pearl-card p-5 rounded-2xl border border-border-pearl space-y-1 shadow-pearl-sm">
+              <span className="text-[10px] font-mono font-bold text-charcoal-muted uppercase">Halstead Difficulty</span>
+              <div className="text-2xl font-black font-mono text-orange-warm">{result.metrics?.halsteadDifficulty?.toFixed(1) || '3.5'}</div>
+              <p className="text-[11px] text-charcoal-muted">Cognitive implementation effort</p>
             </div>
           </div>
         </div>
@@ -544,45 +515,27 @@ export const AnalysisPage: React.FC = () => {
       {activeTab === 'bugs' && (
         <div className="space-y-4">
           {(result.bugs || []).length === 0 ? (
-            <div className="glass-panel p-8 rounded-2xl border border-slate-800 text-center text-xs text-emerald-400">
-              <CheckCircle2 className="w-8 h-8 mx-auto mb-2" />
-              No static bugs or critical security issues detected.
+            <div className="pearl-card p-8 rounded-2xl border border-border-pearl text-center text-xs text-charcoal font-semibold shadow-pearl-sm bg-lime-soft">
+              <CheckCircle2 className="w-8 h-8 mx-auto mb-2 text-lime-digital" />
+              No static bugs or critical vulnerabilities detected in active source code.
             </div>
           ) : (
             (result.bugs || []).map((bug, idx) => (
-              <div key={idx} className="glass-panel p-5 rounded-2xl border border-slate-800 bg-slate-900/60 space-y-3">
+              <div key={idx} className="pearl-card p-5 rounded-2xl border border-border-pearl space-y-3 shadow-pearl-sm">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-2">
-                    <span
-                      className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide ${
-                        bug.severity === 'Critical'
-                          ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
-                          : bug.severity === 'High'
-                          ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                          : 'bg-blue-500/20 text-cyan-300 border border-blue-500/30'
-                      }`}
-                    >
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide bg-terracotta-light text-terracotta border border-terracotta/20 font-mono">
                       {bug.severity}
                     </span>
-                    <span className="text-xs font-bold text-white">{bug.title}</span>
+                    <span className="text-xs font-bold text-charcoal">{bug.title}</span>
                   </div>
-
-                  <div className="flex items-center gap-2 text-[11px] text-slate-400 font-mono">
-                    <span>Line {bug.line}</span>
-                    <span>•</span>
-                    <span>{bug.source || 'static-analysis'}</span>
-                  </div>
+                  <span className="text-[11px] text-charcoal-muted font-mono">Line {bug.line}</span>
                 </div>
 
-                <p className="text-xs text-slate-300 leading-relaxed">{bug.description}</p>
-                <div className="text-xs text-slate-400">
-                  <strong className="text-slate-300">Why it matters: </strong>
-                  {bug.whyItMatters}
-                </div>
-
+                <p className="text-xs text-charcoal-muted leading-relaxed">{bug.description}</p>
                 {bug.suggestedFix && (
-                  <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs text-emerald-300">
-                    <span className="text-[10px] text-slate-500 block mb-1">Suggested Fix:</span>
+                  <div className="p-3 rounded-xl bg-ivory-warm border border-border-pearl font-mono text-xs text-charcoal">
+                    <span className="text-[10px] text-charcoal-muted block mb-1">Suggested Fix:</span>
                     {bug.suggestedFix}
                   </div>
                 )}
@@ -596,39 +549,37 @@ export const AnalysisPage: React.FC = () => {
       {activeTab === 'optimization' && (
         <div className="space-y-4">
           {(result.optimizations || []).map((opt, idx) => (
-            <div key={idx} className="glass-panel p-5 rounded-2xl border border-slate-800 bg-slate-900/60 space-y-4">
+            <div key={idx} className="pearl-card p-6 rounded-2xl border border-border-pearl space-y-4 shadow-pearl-sm">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-bold text-white">{opt.title}</h3>
-                  <span className="text-[10px] text-cyan-400 font-mono">{opt.category}</span>
+                  <h3 className="text-sm font-bold text-charcoal">{opt.title}</h3>
+                  <span className="text-[10px] text-terracotta font-mono font-semibold">{opt.category}</span>
                 </div>
-
-                <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-semibold">
+                <span className="px-3 py-1 rounded-full bg-lime-soft border border-lime-digital/30 text-charcoal text-xs font-bold font-mono">
                   ⚡ {opt.expectedBenefit}
                 </span>
               </div>
 
-              <p className="text-xs text-slate-300">{opt.explanation}</p>
+              <p className="text-xs text-charcoal-muted">{opt.explanation}</p>
 
-              {/* Side-by-side Diff / Comparison */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800">
-                  <span className="text-[10px] text-slate-500 uppercase font-mono block mb-1">Current Code</span>
-                  <pre className="text-xs font-mono text-rose-300/90 whitespace-pre-wrap overflow-x-auto">{opt.currentCode}</pre>
+                <div className="p-3.5 rounded-xl bg-ivory-warm border border-border-pearl">
+                  <span className="text-[10px] text-charcoal-muted uppercase font-mono block mb-1">Current Code</span>
+                  <pre className="text-xs font-mono text-charcoal whitespace-pre-wrap overflow-x-auto">{opt.currentCode}</pre>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-slate-950 border border-indigo-500/30 relative">
+                <div className="p-3.5 rounded-xl bg-white border border-terracotta/30 relative shadow-pearl-sm">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-[10px] text-emerald-400 uppercase font-mono">Optimized Code</span>
+                    <span className="text-[10px] text-terracotta uppercase font-mono font-bold">Optimized Code</span>
                     <button
                       onClick={() => handleCopy(opt.optimizedCode, `opt-${idx}`)}
-                      className="text-slate-400 hover:text-white p-1 text-[10px] flex items-center gap-1"
+                      className="text-charcoal-muted hover:text-charcoal p-1 text-[10px] flex items-center gap-1"
                     >
                       <Copy className="w-3 h-3" />
                       <span>{copiedId === `opt-${idx}` ? 'Copied' : 'Copy'}</span>
                     </button>
                   </div>
-                  <pre className="text-xs font-mono text-emerald-300 whitespace-pre-wrap overflow-x-auto">{opt.optimizedCode}</pre>
+                  <pre className="text-xs font-mono text-charcoal font-semibold whitespace-pre-wrap overflow-x-auto">{opt.optimizedCode}</pre>
                 </div>
               </div>
             </div>
@@ -662,19 +613,19 @@ export const AnalysisPage: React.FC = () => {
 
       {/* 9. CALL GRAPH TAB */}
       {activeTab === 'callgraph' && (
-        <div className="glass-panel p-6 rounded-2xl border border-slate-800 bg-slate-900/60">
-          <h3 className="text-sm font-bold text-white mb-1">Function Call Graph</h3>
-          <p className="text-xs text-slate-400 mb-6">Invocations and caller/callee dependencies</p>
+        <div className="pearl-card p-6 rounded-2xl border border-border-pearl space-y-4 shadow-pearl-sm">
+          <h3 className="text-sm font-bold text-charcoal mb-1">Function Call Graph</h3>
+          <p className="text-xs text-charcoal-muted mb-4 font-normal">Invocations and caller/callee dependencies</p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {(result.callGraph?.nodes || []).map((node) => (
-              <div key={node.id} className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
+              <div key={node.id} className="p-4 rounded-2xl bg-ivory-warm border border-border-pearl space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-bold text-cyan-300">{node.label}</span>
-                  <span className="text-[10px] text-slate-500">Line {node.line || '—'}</span>
+                  <span className="font-mono text-xs font-bold text-terracotta">{node.label}</span>
+                  <span className="text-[10px] text-charcoal-muted font-mono">Line {node.line || '—'}</span>
                 </div>
-                <div className="text-[11px] text-slate-400">
-                  Calls: <strong className="text-indigo-400">{node.callCount} functions</strong>
+                <div className="text-[11px] text-charcoal-muted">
+                  Calls: <strong className="text-charcoal">{node.callCount} functions</strong>
                 </div>
               </div>
             ))}
@@ -686,36 +637,25 @@ export const AnalysisPage: React.FC = () => {
       {activeTab === 'tests' && (
         <div className="space-y-4">
           {(result.testCases || []).map((tc, idx) => (
-            <div key={idx} className="glass-panel p-5 rounded-2xl border border-slate-800 bg-slate-900/60 space-y-3">
+            <div key={idx} className="pearl-card p-5 rounded-2xl border border-border-pearl space-y-3 shadow-pearl-sm">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-cyan-300 text-xs font-mono font-bold">
+                  <span className="px-2.5 py-0.5 rounded-full bg-terracotta-light text-terracotta text-xs font-mono font-bold border border-terracotta/20">
                     {tc.id}
                   </span>
-                  <span className="text-xs font-bold text-white">{tc.type}</span>
+                  <span className="text-xs font-bold text-charcoal">{tc.type}</span>
                 </div>
                 <button
                   onClick={() => handleCopy(tc.codeSnippet, `test-${idx}`)}
-                  className="text-xs text-slate-400 hover:text-white flex items-center gap-1"
+                  className="text-xs text-charcoal-muted hover:text-charcoal flex items-center gap-1 font-semibold"
                 >
                   <Copy className="w-3.5 h-3.5" />
                   <span>{copiedId === `test-${idx}` ? 'Copied' : 'Copy Test'}</span>
                 </button>
               </div>
 
-              <p className="text-xs text-slate-300">{tc.description}</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
-                <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-slate-300">
-                  <span className="text-[10px] text-slate-500 block">Input:</span>
-                  {tc.input}
-                </div>
-                <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-emerald-400">
-                  <span className="text-[10px] text-slate-500 block">Expected Output:</span>
-                  {tc.expectedOutput}
-                </div>
-              </div>
-
-              <pre className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-cyan-300 whitespace-pre-wrap overflow-x-auto">
+              <p className="text-xs text-charcoal-muted">{tc.description}</p>
+              <pre className="p-3 rounded-xl bg-ivory-warm border border-border-pearl text-xs font-mono text-charcoal whitespace-pre-wrap overflow-x-auto">
                 {tc.codeSnippet}
               </pre>
             </div>
@@ -727,21 +667,15 @@ export const AnalysisPage: React.FC = () => {
       {activeTab === 'similarity' && (
         <div className="space-y-4">
           {(result.similarCode || []).map((item, idx) => (
-            <div key={idx} className="glass-panel p-5 rounded-2xl border border-slate-800 bg-slate-900/60 space-y-3">
+            <div key={idx} className="pearl-card p-5 rounded-2xl border border-border-pearl space-y-3 shadow-pearl-sm">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-bold text-white">{item.functionName}</h3>
-                  <span className="text-[10px] text-slate-400 font-mono">{item.repository}</span>
+                  <h3 className="text-sm font-bold text-charcoal">{item.functionName}</h3>
+                  <span className="text-[10px] text-charcoal-muted font-mono">{item.repository}</span>
                 </div>
-
-                <div className="text-right">
-                  <span className="text-sm font-black text-emerald-400">{item.similarityScore}%</span>
-                  <span className="text-[10px] text-slate-500 block">Similarity Match</span>
-                </div>
+                <span className="text-sm font-black text-terracotta">{item.similarityScore}% Match</span>
               </div>
-
-              <p className="text-xs text-slate-300">{item.explanation}</p>
-              <pre className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 whitespace-pre-wrap overflow-x-auto">
+              <pre className="p-3 rounded-xl bg-ivory-warm border border-border-pearl text-xs font-mono text-charcoal whitespace-pre-wrap overflow-x-auto">
                 {item.code}
               </pre>
             </div>
@@ -749,7 +683,7 @@ export const AnalysisPage: React.FC = () => {
         </div>
       )}
 
-      {/* 12. PROJECT-AWARE AI ASSISTANT (CONVERSATIONAL INTERACTION) */}
+      {/* 12. PROJECT-AWARE AI ASSISTANT */}
       {activeTab === 'assistant' && (
         <ProjectAwareAssistant
           projectId={analysisMeta?.projectId}
@@ -763,20 +697,3 @@ export const AnalysisPage: React.FC = () => {
     </div>
   );
 };
-
-// Helper recursive tree renderer for AST
-function renderASTTree(node?: ASTNode, depth = 0) {
-  if (!node) return <div className="text-slate-500">AST parsing not available for this language.</div>;
-  return (
-    <div className="space-y-1" style={{ paddingLeft: depth * 16 }}>
-      <div className="text-indigo-400">
-        <span className="text-slate-500">[{node.type}]</span>{' '}
-        <span className="text-cyan-300 font-bold">{node.name || ''}</span>
-        {node.loc && <span className="text-slate-500 text-[10px] ml-2">L:{node.loc.start}-{node.loc.end}</span>}
-      </div>
-      {node.children?.map((child, idx) => (
-        <React.Fragment key={idx}>{renderASTTree(child, depth + 1)}</React.Fragment>
-      ))}
-    </div>
-  );
-}

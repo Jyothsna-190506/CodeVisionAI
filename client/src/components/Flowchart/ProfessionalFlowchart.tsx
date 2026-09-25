@@ -5,8 +5,6 @@ import {
   Square,
   Repeat,
   HelpCircle,
-  Maximize2,
-  Minimize2,
   ZoomIn,
   ZoomOut,
   RotateCcw,
@@ -15,8 +13,6 @@ import {
   Terminal,
   Layers,
   ArrowDown,
-  CheckCircle2,
-  ChevronRight,
   Code2
 } from 'lucide-react';
 import { FlowchartData, FlowchartNode } from '../../types';
@@ -29,12 +25,10 @@ interface ProfessionalFlowchartProps {
 
 export const ProfessionalFlowchart: React.FC<ProfessionalFlowchartProps> = ({
   flowchart,
-  language = 'cpp',
   onAskAI,
 }) => {
   const [selectedNode, setSelectedNode] = useState<FlowchartNode | null>(null);
   const [zoomLevel, setZoomLevel] = useState<number>(1);
-  const [viewMode, setViewMode] = useState<'vertical' | 'grid'>('vertical');
   const [activeFilter, setActiveFilter] = useState<string>('all');
 
   const nodes = flowchart?.nodes || [];
@@ -42,10 +36,10 @@ export const ProfessionalFlowchart: React.FC<ProfessionalFlowchartProps> = ({
 
   if (nodes.length === 0) {
     return (
-      <div className="glass-panel p-12 rounded-2xl border border-slate-800 text-center space-y-3">
-        <GitBranch className="w-10 h-10 text-slate-600 mx-auto" />
-        <h4 className="text-sm font-bold text-slate-300">No Flowchart Data Generated</h4>
-        <p className="text-xs text-slate-500">Run code analysis to generate an interactive control flow diagram.</p>
+      <div className="p-12 rounded-3xl border border-border-pearl bg-white text-center space-y-3 shadow-sm">
+        <GitBranch className="w-10 h-10 text-secondary-text mx-auto" />
+        <h4 className="text-sm font-bold text-charcoal">No Flowchart Data Generated</h4>
+        <p className="text-xs text-secondary-text">Run code analysis to generate an interactive control flow diagram.</p>
       </div>
     );
   }
@@ -62,17 +56,17 @@ export const ProfessionalFlowchart: React.FC<ProfessionalFlowchartProps> = ({
     switch (type) {
       case 'start':
       case 'end':
-        return <Play className="w-3.5 h-3.5 text-cyan-400" />;
+        return <Play className="w-3.5 h-3.5 text-terracotta" />;
       case 'loop':
-        return <Repeat className="w-3.5 h-3.5 text-purple-400" />;
+        return <Repeat className="w-3.5 h-3.5 text-orange-warm" />;
       case 'condition':
-        return <HelpCircle className="w-3.5 h-3.5 text-amber-400" />;
+        return <HelpCircle className="w-3.5 h-3.5 text-amber-600" />;
       case 'io':
-        return <Terminal className="w-3.5 h-3.5 text-emerald-400" />;
+        return <Terminal className="w-3.5 h-3.5 text-lime-700" />;
       case 'function':
-        return <Code2 className="w-3.5 h-3.5 text-indigo-400" />;
+        return <Code2 className="w-3.5 h-3.5 text-terracotta" />;
       default:
-        return <Square className="w-3.5 h-3.5 text-blue-400" />;
+        return <Square className="w-3.5 h-3.5 text-secondary-text" />;
     }
   };
 
@@ -81,37 +75,37 @@ export const ProfessionalFlowchart: React.FC<ProfessionalFlowchartProps> = ({
     let base = 'relative transition-all duration-200 cursor-pointer ';
 
     if (isSelected) {
-      base += 'ring-2 ring-cyan-400 ring-offset-2 ring-offset-slate-950 shadow-xl shadow-cyan-500/20 scale-105 ';
+      base += 'ring-2 ring-terracotta ring-offset-2 ring-offset-ivory shadow-lg shadow-terracotta/15 scale-105 ';
     } else {
-      base += 'hover:scale-[1.02] hover:shadow-lg ';
+      base += 'hover:scale-[1.02] hover:shadow-md ';
     }
 
     switch (type) {
       case 'start':
       case 'end':
-        return base + 'bg-gradient-to-r from-cyan-950/80 to-blue-950/80 border-2 border-cyan-500/60 rounded-full px-6 py-3 text-cyan-200';
+        return base + 'bg-gradient-to-r from-terracotta/10 to-orange-warm/10 border-2 border-terracotta/50 rounded-full px-6 py-3 text-charcoal';
       case 'loop':
-        return base + 'bg-gradient-to-r from-purple-950/80 to-indigo-950/80 border-2 border-purple-500/60 rounded-xl px-5 py-3.5 text-purple-200';
+        return base + 'bg-orange-warm/10 border-2 border-orange-warm/40 rounded-2xl px-5 py-3.5 text-charcoal';
       case 'condition':
-        return base + 'bg-gradient-to-r from-amber-950/80 to-orange-950/80 border-2 border-amber-500/60 rounded-xl px-5 py-3.5 text-amber-200';
+        return base + 'bg-amber-50 border-2 border-amber-400/50 rounded-2xl px-5 py-3.5 text-charcoal';
       case 'io':
-        return base + 'bg-gradient-to-r from-emerald-950/80 to-teal-950/80 border-2 border-emerald-500/60 rounded-xl px-5 py-3.5 text-emerald-200';
+        return base + 'bg-lime-digital/15 border-2 border-lime-digital/40 rounded-2xl px-5 py-3.5 text-charcoal';
       case 'function':
-        return base + 'bg-gradient-to-r from-indigo-950/80 to-slate-900 border-2 border-indigo-500/60 rounded-xl px-5 py-3.5 text-indigo-200';
+        return base + 'bg-terracotta/5 border-2 border-terracotta/30 rounded-2xl px-5 py-3.5 text-charcoal';
       default:
-        return base + 'bg-slate-900/90 border-2 border-slate-700/80 rounded-xl px-5 py-3.5 text-slate-200';
+        return base + 'bg-white border-2 border-border-pearl rounded-2xl px-5 py-3.5 text-charcoal shadow-sm';
     }
   };
 
   return (
     <div className="space-y-4">
       {/* Top Controls Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800">
+      <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-white border border-border-pearl shadow-sm">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-white flex items-center gap-1.5">
-            <GitBranch className="w-4 h-4 text-cyan-400" /> Control Flow Diagram
+          <span className="text-xs font-black text-charcoal flex items-center gap-1.5">
+            <GitBranch className="w-4 h-4 text-terracotta" /> Control Flow Diagram
           </span>
-          <span className="px-2 py-0.5 rounded-md bg-slate-800 text-[10px] font-mono text-slate-400">
+          <span className="px-2.5 py-0.5 rounded-md bg-secondary-card text-[10px] font-mono text-secondary-text font-bold">
             {nodes.length} Nodes • {edges.length} Edges
           </span>
         </div>
@@ -127,10 +121,10 @@ export const ProfessionalFlowchart: React.FC<ProfessionalFlowchartProps> = ({
             <button
               key={tab.id}
               onClick={() => setActiveFilter(tab.id)}
-              className={`px-2.5 py-1 rounded-lg font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-xl font-bold transition-all ${
                 activeFilter === tab.id
-                  ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  ? 'bg-terracotta text-white shadow-sm shadow-terracotta/20'
+                  : 'text-secondary-text hover:text-charcoal hover:bg-secondary-card'
               }`}
             >
               {tab.label}
@@ -142,22 +136,22 @@ export const ProfessionalFlowchart: React.FC<ProfessionalFlowchartProps> = ({
         <div className="flex items-center gap-1">
           <button
             onClick={() => setZoomLevel((z) => Math.max(0.7, z - 0.1))}
-            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300"
+            className="p-2 rounded-xl bg-secondary-card hover:bg-border-pearl text-charcoal"
             title="Zoom Out"
           >
             <ZoomOut className="w-3.5 h-3.5" />
           </button>
-          <span className="text-[11px] font-mono text-slate-400 px-1.5">{Math.round(zoomLevel * 100)}%</span>
+          <span className="text-[11px] font-mono text-secondary-text px-1.5 font-bold">{Math.round(zoomLevel * 100)}%</span>
           <button
             onClick={() => setZoomLevel((z) => Math.min(1.4, z + 0.1))}
-            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300"
+            className="p-2 rounded-xl bg-secondary-card hover:bg-border-pearl text-charcoal"
             title="Zoom In"
           >
             <ZoomIn className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => setZoomLevel(1)}
-            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 ml-1"
+            className="p-2 rounded-xl bg-secondary-card hover:bg-border-pearl text-charcoal ml-1"
             title="Reset Zoom"
           >
             <RotateCcw className="w-3.5 h-3.5" />
@@ -167,13 +161,13 @@ export const ProfessionalFlowchart: React.FC<ProfessionalFlowchartProps> = ({
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         {/* Main Interactive Diagram Canvas */}
-        <div className="lg:col-span-8 glass-panel p-6 rounded-2xl border border-slate-800 bg-slate-950/60 overflow-hidden min-h-[520px] flex flex-col items-center justify-start relative">
-          {/* Subtle Grid Background */}
-          <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
+        <div className="lg:col-span-8 p-6 rounded-3xl border border-border-pearl bg-ivory overflow-hidden min-h-[520px] flex flex-col items-center justify-start relative shadow-sm">
+          {/* Subtle Technical Grid Background */}
+          <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#242321_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
 
           {/* Diagram Flow Container */}
           <div
-            className="w-full flex flex-col items-center space-y-3 transition-transform duration-200 my-4"
+            className="w-full flex flex-col items-center space-y-3 transition-transform duration-200 my-4 relative z-10"
             style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'top center' }}
           >
             {filteredNodes.map((node, idx) => {
@@ -190,23 +184,23 @@ export const ProfessionalFlowchart: React.FC<ProfessionalFlowchartProps> = ({
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
                         {getNodeIcon(node.data?.nodeType)}
-                        <span className="text-[10px] font-mono uppercase font-bold tracking-wider opacity-75">
+                        <span className="text-[10px] font-mono uppercase font-black tracking-wider opacity-85 text-charcoal">
                           {node.data?.nodeType || 'process'}
                         </span>
                       </div>
                       {node.data?.line && (
-                        <span className="px-2 py-0.5 rounded bg-black/40 text-[10px] font-mono text-slate-400">
+                        <span className="px-2 py-0.5 rounded-md bg-secondary-card text-[10px] font-mono text-secondary-text font-bold">
                           Line {node.data.line}
                         </span>
                       )}
                     </div>
 
-                    <div className="mt-1.5 font-bold text-xs leading-snug">
+                    <div className="mt-1.5 font-bold text-xs text-charcoal leading-snug">
                       {node.data?.label}
                     </div>
 
                     {node.data?.code && (
-                      <div className="mt-1.5 p-1.5 rounded-lg bg-slate-950/80 border border-white/5 font-mono text-[11px] text-slate-300 truncate">
+                      <div className="mt-1.5 p-2 rounded-xl bg-pearl border border-border-pearl font-mono text-[11px] text-charcoal truncate">
                         {node.data.code}
                       </div>
                     )}
@@ -215,8 +209,8 @@ export const ProfessionalFlowchart: React.FC<ProfessionalFlowchartProps> = ({
                   {/* Connecting Flow Arrow with Label */}
                   {!isLast && (
                     <div className="flex flex-col items-center py-0.5">
-                      <div className="w-0.5 h-6 bg-gradient-to-b from-indigo-500 to-cyan-500 relative flex items-center justify-center">
-                        <ArrowDown className="w-3.5 h-3.5 text-cyan-400 absolute -bottom-2" />
+                      <div className="w-0.5 h-6 bg-gradient-to-b from-terracotta to-orange-warm relative flex items-center justify-center">
+                        <ArrowDown className="w-3.5 h-3.5 text-terracotta absolute -bottom-2" />
                       </div>
                     </div>
                   )}
@@ -227,13 +221,13 @@ export const ProfessionalFlowchart: React.FC<ProfessionalFlowchartProps> = ({
         </div>
 
         {/* Right Node Inspector & AI Query Drawer */}
-        <div className="lg:col-span-4 glass-panel p-5 rounded-2xl border border-slate-800 bg-slate-900/60 space-y-4 flex flex-col justify-between">
+        <div className="lg:col-span-4 p-6 rounded-3xl border border-border-pearl bg-white space-y-4 flex flex-col justify-between shadow-sm">
           <div>
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-              <h4 className="text-xs font-bold text-white flex items-center gap-1.5">
-                <Info className="w-4 h-4 text-cyan-400" /> Node Inspector
+            <div className="flex items-center justify-between pb-3 border-b border-border-pearl">
+              <h4 className="text-xs font-black text-charcoal flex items-center gap-1.5">
+                <Info className="w-4 h-4 text-terracotta" /> Node Inspector
               </h4>
-              <span className="text-[10px] font-mono text-slate-500">
+              <span className="text-[10px] font-mono text-secondary-text font-semibold">
                 {selectedNode ? selectedNode.id : 'Click a node to inspect'}
               </span>
             </div>
@@ -241,22 +235,23 @@ export const ProfessionalFlowchart: React.FC<ProfessionalFlowchartProps> = ({
             {selectedNode ? (
               <div className="mt-4 space-y-3.5 text-xs">
                 {/* Node Metadata Card */}
-                <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+                <div className="p-4 rounded-2xl bg-secondary-card/60 border border-border-pearl space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-mono uppercase text-slate-400">Type</span>
-                    <span className="px-2 py-0.5 rounded-md bg-indigo-500/20 text-cyan-300 font-bold uppercase text-[10px]">
+                    <span className="text-[10px] font-mono uppercase text-secondary-text font-bold">Type</span>
+                    <span className="px-2.5 py-0.5 rounded-full bg-terracotta/10 text-terracotta font-bold uppercase text-[10px] border border-terracotta/20">
                       {selectedNode.data?.nodeType}
                     </span>
                   </div>
+
                   {selectedNode.data?.line && (
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-mono text-slate-400">Source Location</span>
-                      <span className="font-mono text-slate-200">Line {selectedNode.data.line}</span>
+                      <span className="text-[10px] font-mono text-secondary-text font-bold">Source Location</span>
+                      <span className="font-mono text-charcoal font-bold">Line {selectedNode.data.line}</span>
                     </div>
                   )}
-                  <div className="pt-2 border-t border-slate-800/80">
-                    <span className="text-[10px] text-slate-400 block mb-1">Execution Summary</span>
-                    <p className="text-slate-300 text-[11px] leading-relaxed">
+                  <div className="pt-2 border-t border-border-pearl">
+                    <span className="text-[10px] text-secondary-text font-bold block mb-1">Execution Summary</span>
+                    <p className="text-secondary-text text-[11px] leading-relaxed">
                       {selectedNode.data?.description || 'Executes runtime logic and transitions to next control step.'}
                     </p>
                   </div>
@@ -265,8 +260,8 @@ export const ProfessionalFlowchart: React.FC<ProfessionalFlowchartProps> = ({
                 {/* Source Code Snippet */}
                 {selectedNode.data?.code && (
                   <div>
-                    <span className="text-[10px] font-mono text-slate-400 block mb-1">Source Statement</span>
-                    <pre className="p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-[11px] text-amber-300 whitespace-pre-wrap overflow-x-auto">
+                    <span className="text-[10px] font-mono text-secondary-text font-bold block mb-1">Source Statement</span>
+                    <pre className="p-3 rounded-2xl bg-pearl border border-border-pearl font-mono text-[11px] text-charcoal whitespace-pre-wrap overflow-x-auto">
                       {selectedNode.data.code}
                     </pre>
                   </div>
@@ -279,36 +274,36 @@ export const ProfessionalFlowchart: React.FC<ProfessionalFlowchartProps> = ({
                       const prompt = `Explain the flowchart node: "${selectedNode.data?.label}" at line ${selectedNode.data?.line || 'N/A'}. What is its purpose and control flow role in this program?`;
                       onAskAI(prompt);
                     }}
-                    className="w-full mt-2 py-2.5 px-3 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white font-semibold text-xs flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/10 transition-all"
+                    className="w-full mt-2 py-3 px-4 rounded-2xl bg-terracotta hover:bg-orange-warm text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md shadow-terracotta/20 transition-all cursor-pointer"
                   >
-                    <Sparkles className="w-3.5 h-3.5 text-cyan-200" />
+                    <Sparkles className="w-3.5 h-3.5 text-white" />
                     <span>Ask AI About This Flowchart Node</span>
                   </button>
                 )}
               </div>
             ) : (
-              <div className="py-12 text-center text-xs text-slate-500 space-y-2">
-                <Layers className="w-8 h-8 mx-auto text-slate-700" />
+              <div className="py-12 text-center text-xs text-secondary-text space-y-2">
+                <Layers className="w-8 h-8 mx-auto text-secondary-text/40" />
                 <p>Select any node in the diagram to inspect its execution semantics, source line, and variables.</p>
               </div>
             )}
           </div>
 
           {/* Flowchart Legend */}
-          <div className="pt-4 border-t border-slate-800">
-            <span className="text-[10px] font-bold uppercase text-slate-400 block mb-2">Diagram Legend</span>
+          <div className="pt-4 border-t border-border-pearl">
+            <span className="text-[10px] font-bold uppercase text-secondary-text block mb-2 font-mono">Diagram Legend</span>
             <div className="grid grid-cols-2 gap-2 text-[10px] font-mono">
-              <div className="flex items-center gap-1.5 text-cyan-300">
-                <div className="w-2.5 h-2.5 rounded-full bg-cyan-400" /> Start / End
+              <div className="flex items-center gap-1.5 text-charcoal font-semibold">
+                <div className="w-2.5 h-2.5 rounded-full bg-terracotta" /> Start / End
               </div>
-              <div className="flex items-center gap-1.5 text-purple-300">
-                <div className="w-2.5 h-2.5 rounded-sm bg-purple-400" /> Loop Iteration
+              <div className="flex items-center gap-1.5 text-charcoal font-semibold">
+                <div className="w-2.5 h-2.5 rounded-sm bg-orange-warm" /> Loop Iteration
               </div>
-              <div className="flex items-center gap-1.5 text-amber-300">
-                <div className="w-2.5 h-2.5 rounded-sm bg-amber-400" /> Decision / Branch
+              <div className="flex items-center gap-1.5 text-charcoal font-semibold">
+                <div className="w-2.5 h-2.5 rounded-sm bg-amber-500" /> Decision / Branch
               </div>
-              <div className="flex items-center gap-1.5 text-emerald-300">
-                <div className="w-2.5 h-2.5 rounded-sm bg-emerald-400" /> Input / Output
+              <div className="flex items-center gap-1.5 text-charcoal font-semibold">
+                <div className="w-2.5 h-2.5 rounded-sm bg-lime-digital" /> Input / Output
               </div>
             </div>
           </div>

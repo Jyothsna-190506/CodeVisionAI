@@ -177,36 +177,35 @@ export const EditorPage: React.FC = () => {
     }
   };
 
-  // Quick stats calculation
   const lineCount = code.split('\n').length;
   const charCount = code.length;
   const hasLoop = code.includes('for') || code.includes('while');
 
   return (
-    <div className="h-[calc(100vh-4rem)] flex flex-col bg-[#030712] relative overflow-hidden">
+    <div className="h-[calc(100vh-4rem)] flex flex-col bg-pearl relative overflow-hidden">
       {/* Top IDE Toolbar */}
-      <div className="h-14 border-b border-slate-800/80 bg-[#080d1a]/90 backdrop-blur-xl px-4 flex items-center justify-between gap-4 flex-shrink-0 z-20">
+      <div className="h-14 border-b border-border-pearl bg-ivory/95 px-4 flex items-center justify-between gap-4 flex-shrink-0 z-20 shadow-pearl-sm">
         {/* Left Project Name & Language */}
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
-            <Code2 className="w-4 h-4 text-cyan-400" />
+            <Code2 className="w-4 h-4 text-terracotta" />
             <input
               type="text"
               value={projectName}
               onChange={(e) => setProjectName(e.target.value)}
               placeholder="Project Name..."
-              className="bg-transparent border-b border-transparent hover:border-slate-700 focus:border-cyan-500 text-xs font-bold text-white focus:outline-none px-1 py-0.5 max-w-[200px] sm:max-w-xs transition-colors"
+              className="bg-transparent border-b border-transparent hover:border-border-pearl focus:border-terracotta text-xs font-bold text-charcoal focus:outline-none px-1 py-0.5 max-w-[200px] sm:max-w-xs transition-colors"
             />
           </div>
 
-          <div className="h-4 w-px bg-slate-800 hidden sm:block"></div>
+          <div className="h-4 w-px bg-border-pearl hidden sm:block"></div>
 
           {/* Language Selector */}
           <div className="relative">
             <select
               value={language}
               onChange={(e) => handleLanguageChange(e.target.value)}
-              className="bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-200 text-xs font-mono font-medium rounded-xl px-3 py-1.5 focus:outline-none focus:border-cyan-500 cursor-pointer appearance-none pr-8"
+              className="bg-white border border-border-pearl hover:border-border-warm text-charcoal text-xs font-mono font-semibold rounded-xl px-3 py-1.5 focus:outline-none focus:border-terracotta cursor-pointer appearance-none pr-8 shadow-pearl-sm"
             >
               {SUPPORTED_LANGUAGES.map((lang) => (
                 <option key={lang.id} value={lang.id}>
@@ -214,7 +213,7 @@ export const EditorPage: React.FC = () => {
                 </option>
               ))}
             </select>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <ChevronDown className="w-3.5 h-3.5 text-charcoal-muted absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
         </div>
 
@@ -230,7 +229,7 @@ export const EditorPage: React.FC = () => {
 
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="px-3 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-300 text-xs font-medium border border-slate-800 flex items-center gap-1.5 transition-colors hidden sm:flex"
+            className="px-3 py-1.5 rounded-xl bg-white hover:bg-ivory-warm text-charcoal-muted hover:text-charcoal text-xs font-semibold border border-border-pearl flex items-center gap-1.5 transition-colors hidden sm:flex shadow-pearl-sm"
             title="Import source file"
           >
             <Upload className="w-3.5 h-3.5" />
@@ -240,9 +239,9 @@ export const EditorPage: React.FC = () => {
           <button
             onClick={handleSave}
             disabled={isSaving}
-            className="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-700 hover:border-slate-600 flex items-center gap-1.5 transition-all disabled:opacity-50"
+            className="px-3.5 py-1.5 rounded-xl bg-white hover:bg-ivory-warm text-charcoal text-xs font-semibold border border-border-pearl hover:border-border-warm flex items-center gap-1.5 transition-all disabled:opacity-50 shadow-pearl-sm"
           >
-            <Save className="w-3.5 h-3.5 text-indigo-400" />
+            <Save className="w-3.5 h-3.5 text-terracotta" />
             <span>{isSaving ? 'Saving...' : 'Save'}</span>
           </button>
 
@@ -252,7 +251,7 @@ export const EditorPage: React.FC = () => {
             size="sm"
             variant="primary"
           >
-            <Play className="w-3.5 h-3.5 fill-cyan-200 text-cyan-200" />
+            <Play className="w-3.5 h-3.5 fill-white" />
             <span>{isAnalyzing ? 'Analyzing...' : 'Analyze Code'}</span>
           </GlassAIButton>
         </div>
@@ -261,24 +260,24 @@ export const EditorPage: React.FC = () => {
       {/* Notifications bar */}
       {(saveStatus || errorMsg) && (
         <div className={`px-4 py-1.5 text-xs flex items-center justify-between z-20 ${
-          errorMsg ? 'bg-rose-500/20 text-rose-300 border-b border-rose-500/30' : 'bg-emerald-500/20 text-emerald-300 border-b border-emerald-500/30'
+          errorMsg ? 'bg-rose-50 border-b border-rose-200 text-rose-700' : 'bg-lime-soft border-b border-lime-digital text-charcoal font-semibold'
         }`}>
           <span>{errorMsg || saveStatus}</span>
-          <button onClick={() => { setErrorMsg(null); setSaveStatus(null); }} className="text-slate-400 hover:text-white">✕</button>
+          <button onClick={() => { setErrorMsg(null); setSaveStatus(null); }} className="text-charcoal-muted hover:text-charcoal">✕</button>
         </div>
       )}
 
-      {/* Main Split Layout: Monaco Editor + Side Telemetry Panel */}
+      {/* Main Split Layout: Light Monaco Editor + Side Telemetry Panel */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 min-h-0 relative">
-        {/* Left Monaco IDE */}
-        <div className="lg:col-span-8 h-full border-r border-slate-800/80 bg-[#02050c] relative flex flex-col justify-between">
+        {/* Left Light Monaco IDE */}
+        <div className="lg:col-span-8 h-full border-r border-border-pearl bg-white relative flex flex-col justify-between">
           <div className="flex-1 min-h-0">
             <MonacoEditor
               height="100%"
               language={SUPPORTED_LANGUAGES.find((l) => l.id === language)?.monaco || 'cpp'}
               value={code}
               onChange={(value) => setCode(value || '')}
-              theme="vs-dark"
+              theme="light"
               options={{
                 fontSize,
                 minimap: { enabled: minimap },
@@ -294,21 +293,21 @@ export const EditorPage: React.FC = () => {
           </div>
 
           {/* IDE Bottom Status Bar */}
-          <div className="h-7 bg-[#050914] border-t border-slate-800/80 px-4 flex items-center justify-between text-[11px] font-mono text-slate-400 select-none">
+          <div className="h-7 bg-ivory border-t border-border-pearl px-4 flex items-center justify-between text-[11px] font-mono text-charcoal-muted select-none">
             <div className="flex items-center gap-4">
-              <span>LANG: <strong className="text-cyan-400 uppercase">{language}</strong></span>
+              <span>LANG: <strong className="text-terracotta uppercase">{language}</strong></span>
               <span>LINES: <strong>{lineCount}</strong></span>
               <span>CHARS: <strong>{charCount}</strong></span>
             </div>
             <div className="flex items-center gap-3">
               <span>UTF-8</span>
-              <span className="text-emerald-400">● READY</span>
+              <span className="text-lime-digital font-bold">● READY</span>
             </div>
           </div>
         </div>
 
         {/* Right Side Telemetry & Quick Action Panel */}
-        <div className="lg:col-span-4 h-full bg-[#060b18]/90 backdrop-blur-md p-5 flex flex-col justify-between overflow-y-auto space-y-4">
+        <div className="lg:col-span-4 h-full bg-ivory p-5 flex flex-col justify-between overflow-y-auto space-y-4">
           {isAnalyzing ? (
             <div className="my-auto">
               <ThreeUplinkLoader
@@ -320,33 +319,33 @@ export const EditorPage: React.FC = () => {
             <>
               {/* Telemetry Header */}
               <div className="space-y-3">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-                  <h3 className="text-xs font-bold text-white flex items-center gap-2">
-                    <Cpu className="w-4 h-4 text-cyan-400" /> Active Code Telemetry
+                <div className="flex items-center justify-between pb-3 border-b border-border-pearl">
+                  <h3 className="text-xs font-bold text-charcoal flex items-center gap-2">
+                    <Cpu className="w-4 h-4 text-terracotta" /> Active Code Telemetry
                   </h3>
-                  <span className="text-[10px] font-mono text-slate-500 uppercase">Live Scope</span>
+                  <span className="text-[10px] font-mono text-charcoal-muted uppercase font-bold">Live Scope</span>
                 </div>
 
                 {/* Metric Summary Cards */}
                 <div className="grid grid-cols-2 gap-2.5">
-                  <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1">
-                    <span className="text-[10px] text-slate-400 font-mono block">Estimated Time</span>
-                    <span className="text-sm font-bold text-cyan-300 font-mono">
+                  <div className="pearl-card p-3 rounded-xl border border-border-pearl space-y-1">
+                    <span className="text-[10px] text-charcoal-muted font-mono block">Estimated Time</span>
+                    <span className="text-sm font-black text-terracotta font-mono">
                       {hasLoop ? 'O(n)' : 'O(1)'}
                     </span>
                   </div>
-                  <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1">
-                    <span className="text-[10px] text-slate-400 font-mono block">Auxiliary Space</span>
-                    <span className="text-sm font-bold text-emerald-300 font-mono">O(1) Constant</span>
+                  <div className="pearl-card p-3 rounded-xl border border-border-pearl space-y-1">
+                    <span className="text-[10px] text-charcoal-muted font-mono block">Auxiliary Space</span>
+                    <span className="text-sm font-black text-charcoal font-mono">O(1) Constant</span>
                   </div>
                 </div>
 
                 {/* Quick Inspection Summary */}
-                <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 text-xs space-y-2">
-                  <span className="text-[10px] uppercase font-mono font-bold text-indigo-400 block">
+                <div className="pearl-card p-3.5 rounded-xl border border-border-pearl text-xs space-y-2">
+                  <span className="text-[10px] uppercase font-mono font-bold text-terracotta block">
                     Pre-Analysis Static Audit
                   </span>
-                  <p className="text-slate-300 text-[11px] leading-relaxed">
+                  <p className="text-charcoal-muted text-[11px] leading-relaxed font-normal">
                     Source code contains <strong>{lineCount} statements</strong>. Ready to compute complete AST hierarchy, memory execution trace, and automated test cases.
                   </p>
                 </div>
@@ -354,47 +353,47 @@ export const EditorPage: React.FC = () => {
 
               {/* Quick AI Action Triggers */}
               <div className="space-y-2.5">
-                <span className="text-[10px] font-bold uppercase text-slate-400 font-mono block">
+                <span className="text-[10px] font-bold uppercase text-charcoal-muted font-mono block">
                   Quick AI Operations
                 </span>
 
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={handleAnalyze}
-                    className="p-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-cyan-500/40 text-left text-xs text-slate-200 transition-all flex items-center gap-2"
+                    className="p-2.5 rounded-xl bg-white hover:bg-ivory-warm border border-border-pearl hover:border-terracotta/50 text-left text-xs text-charcoal transition-all flex items-center gap-2 shadow-pearl-sm"
                   >
-                    <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                    <Sparkles className="w-3.5 h-3.5 text-terracotta" />
                     <span>Explain Code</span>
                   </button>
 
                   <button
                     onClick={handleAnalyze}
-                    className="p-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-amber-500/40 text-left text-xs text-slate-200 transition-all flex items-center gap-2"
+                    className="p-2.5 rounded-xl bg-white hover:bg-ivory-warm border border-border-pearl hover:border-orange-warm/50 text-left text-xs text-charcoal transition-all flex items-center gap-2 shadow-pearl-sm"
                   >
-                    <Zap className="w-3.5 h-3.5 text-amber-400" />
+                    <Zap className="w-3.5 h-3.5 text-orange-warm" />
                     <span>Optimize</span>
                   </button>
 
                   <button
                     onClick={handleAnalyze}
-                    className="p-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-rose-500/40 text-left text-xs text-slate-200 transition-all flex items-center gap-2"
+                    className="p-2.5 rounded-xl bg-white hover:bg-ivory-warm border border-border-pearl hover:border-terracotta/50 text-left text-xs text-charcoal transition-all flex items-center gap-2 shadow-pearl-sm"
                   >
-                    <Bug className="w-3.5 h-3.5 text-rose-400" />
+                    <Bug className="w-3.5 h-3.5 text-terracotta" />
                     <span>Find Bugs</span>
                   </button>
 
                   <button
                     onClick={handleAnalyze}
-                    className="p-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-emerald-500/40 text-left text-xs text-slate-200 transition-all flex items-center gap-2"
+                    className="p-2.5 rounded-xl bg-white hover:bg-ivory-warm border border-border-pearl hover:border-lime-digital/60 text-left text-xs text-charcoal transition-all flex items-center gap-2 shadow-pearl-sm"
                   >
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-lime-digital" />
                     <span>Generate Tests</span>
                   </button>
                 </div>
               </div>
 
               {/* Primary Analyze Trigger */}
-              <div className="pt-3 border-t border-slate-800">
+              <div className="pt-3 border-t border-border-pearl">
                 <GlassAIButton
                   onClick={handleAnalyze}
                   disabled={isAnalyzing}
@@ -402,7 +401,7 @@ export const EditorPage: React.FC = () => {
                   variant="primary"
                   className="w-full"
                 >
-                  <Sparkles className="w-4 h-4 text-cyan-300" />
+                  <Sparkles className="w-4 h-4 text-white" />
                   <span>Execute Full 11-Domain Analysis</span>
                 </GlassAIButton>
               </div>

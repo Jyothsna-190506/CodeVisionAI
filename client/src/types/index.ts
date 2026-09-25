@@ -44,10 +44,14 @@ export interface MetricData {
   cyclomaticComplexity: number;
   nestingDepth: number;
   maintainabilityIndex: number;
+  linesOfCode?: number;
+  halsteadVolume?: number;
+  halsteadDifficulty?: number;
 }
 
 export interface QualityScore {
   overall: number;
+  grade?: string;
   breakdown: {
     readability: number;
     maintainability: number;

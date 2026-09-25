@@ -3,7 +3,7 @@ import { Sparkles } from 'lucide-react';
 
 interface GlassAIButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
-  variant?: 'primary' | 'cyan' | 'purple' | 'subtle';
+  variant?: 'primary' | 'lime' | 'subtle' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   icon?: React.ReactNode;
   glow?: boolean;
@@ -13,31 +13,30 @@ export const GlassAIButton: React.FC<GlassAIButtonProps> = ({
   children,
   variant = 'primary',
   size = 'md',
-  icon = <Sparkles className="w-4 h-4 text-cyan-300" />,
+  icon = <Sparkles className="w-3.5 h-3.5" />,
   glow = true,
   className = '',
   disabled,
   ...props
 }) => {
-  let variantStyles = 'bg-gradient-to-r from-indigo-600/90 via-indigo-700/80 to-cyan-600/90 hover:from-indigo-500 hover:to-cyan-500 text-white border-indigo-400/40';
-  if (variant === 'cyan') {
-    variantStyles = 'bg-gradient-to-r from-cyan-600/80 via-blue-600/80 to-indigo-600/80 hover:from-cyan-500 hover:to-indigo-500 text-white border-cyan-400/50';
-  } else if (variant === 'purple') {
-    variantStyles = 'bg-gradient-to-r from-purple-600/80 via-indigo-600/80 to-blue-600/80 hover:from-purple-500 hover:to-blue-500 text-white border-purple-400/50';
+  let variantStyles = 'bg-gradient-to-r from-terracotta to-orange-warm hover:from-terracotta-hover hover:to-terracotta text-white border-transparent shadow-terracotta-glow';
+  
+  if (variant === 'lime') {
+    variantStyles = 'bg-lime-digital hover:bg-[#a6c73e] text-charcoal font-bold border-transparent shadow-lime-glow';
   } else if (variant === 'subtle') {
-    variantStyles = 'bg-slate-900/80 hover:bg-slate-800 text-slate-200 border-slate-700 hover:border-slate-600';
+    variantStyles = 'bg-white hover:bg-ivory-warm text-charcoal border border-border-pearl shadow-pearl-sm';
+  } else if (variant === 'ghost') {
+    variantStyles = 'bg-transparent hover:bg-ivory-warm text-charcoal-muted hover:text-charcoal border border-transparent';
   }
 
   let sizeStyles = 'px-4 py-2 text-xs';
   if (size === 'sm') sizeStyles = 'px-3 py-1.5 text-[11px]';
-  if (size === 'lg') sizeStyles = 'px-6 py-3 text-sm font-bold';
-
-  const glowEffect = glow && !disabled ? 'hover:shadow-[0_0_25px_rgba(99,102,241,0.5)]' : '';
+  if (size === 'lg') sizeStyles = 'px-6 py-3.5 text-sm font-bold tracking-tight';
 
   return (
     <button
       disabled={disabled}
-      className={`relative inline-flex items-center justify-center gap-2 rounded-xl font-semibold border backdrop-blur-md transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ${variantStyles} ${sizeStyles} ${glowEffect} ${className}`}
+      className={`relative inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed ${variantStyles} ${sizeStyles} ${className}`}
       {...props}
     >
       {icon}

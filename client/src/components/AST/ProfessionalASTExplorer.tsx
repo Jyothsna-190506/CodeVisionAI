@@ -5,15 +5,9 @@ import {
   ChevronRight,
   Search,
   Sparkles,
-  Layers,
-  Code2,
-  Maximize2,
-  Minimize2,
   Copy,
   Info,
-  ExternalLink,
   FolderTree,
-  Tag
 } from 'lucide-react';
 import { ASTData, ASTNode } from '../../types';
 
@@ -25,7 +19,6 @@ interface ProfessionalASTExplorerProps {
 
 export const ProfessionalASTExplorer: React.FC<ProfessionalASTExplorerProps> = ({
   ast,
-  language = 'cpp',
   onAskAI,
 }) => {
   const [selectedNode, setSelectedNode] = useState<ASTNode | null>(ast?.tree || null);
@@ -40,10 +33,10 @@ export const ProfessionalASTExplorer: React.FC<ProfessionalASTExplorerProps> = (
 
   if (!tree) {
     return (
-      <div className="glass-panel p-12 rounded-2xl border border-slate-800 text-center space-y-3">
-        <FolderTree className="w-10 h-10 text-slate-600 mx-auto" />
-        <h4 className="text-sm font-bold text-slate-300">No AST Tree Available</h4>
-        <p className="text-xs text-slate-500">Run code analysis to generate the hierarchical syntax tree.</p>
+      <div className="p-12 rounded-3xl border border-border-pearl bg-white text-center space-y-3 shadow-sm">
+        <FolderTree className="w-10 h-10 text-secondary-text mx-auto" />
+        <h4 className="text-sm font-bold text-charcoal">No AST Tree Available</h4>
+        <p className="text-xs text-secondary-text">Run code analysis to generate the hierarchical syntax tree.</p>
       </div>
     );
   }
@@ -72,21 +65,21 @@ export const ProfessionalASTExplorer: React.FC<ProfessionalASTExplorerProps> = (
 
   const getNodeBadgeColor = (type = '', category = '') => {
     if (category === 'Function' || type.includes('Function')) {
-      return 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40';
+      return 'bg-terracotta/10 text-terracotta border-terracotta/30';
     }
     if (category === 'Iteration' || type.includes('For') || type.includes('While') || type.includes('Loop')) {
-      return 'bg-purple-500/20 text-purple-300 border-purple-500/40';
+      return 'bg-orange-warm/15 text-orange-warm border-orange-warm/30';
     }
     if (category === 'Declaration' || type.includes('Variable') || type.includes('Class')) {
-      return 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40';
+      return 'bg-amber-100 text-amber-800 border-amber-300';
     }
     if (category === 'ControlFlow' || type.includes('If') || type.includes('Return')) {
-      return 'bg-amber-500/20 text-amber-300 border-amber-500/40';
+      return 'bg-terracotta/15 text-terracotta border-terracotta/40';
     }
     if (category === 'Expression' || type.includes('Call') || type.includes('Binary')) {
-      return 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40';
+      return 'bg-lime-digital/25 text-lime-800 border-lime-digital/40';
     }
-    return 'bg-slate-800 text-slate-300 border-slate-700';
+    return 'bg-secondary-card text-charcoal border-border-pearl';
   };
 
   const handleCopyJSON = () => {
@@ -98,16 +91,16 @@ export const ProfessionalASTExplorer: React.FC<ProfessionalASTExplorerProps> = (
   return (
     <div className="space-y-4">
       {/* Top AST Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-2xl bg-slate-900/80 border border-slate-800">
+      <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-white border border-border-pearl shadow-sm">
         <div className="flex items-center gap-3">
-          <span className="text-xs font-bold text-white flex items-center gap-1.5">
-            <FolderTree className="w-4 h-4 text-indigo-400" /> Abstract Syntax Tree (AST)
+          <span className="text-xs font-black text-charcoal flex items-center gap-1.5">
+            <FolderTree className="w-4 h-4 text-terracotta" /> Abstract Syntax Tree (AST)
           </span>
-          <span className="px-2 py-0.5 rounded-md bg-slate-800 text-[10px] font-mono text-cyan-300">
+          <span className="px-2.5 py-0.5 rounded-md bg-secondary-card text-[10px] font-mono text-terracotta font-bold">
             {ast?.totalNodes || 14} Syntax Nodes
           </span>
           {ast?.maxDepth && (
-            <span className="px-2 py-0.5 rounded-md bg-slate-800 text-[10px] font-mono text-purple-300">
+            <span className="px-2.5 py-0.5 rounded-md bg-secondary-card text-[10px] font-mono text-orange-warm font-bold">
               Depth: {ast.maxDepth} Levels
             </span>
           )}
@@ -116,42 +109,42 @@ export const ProfessionalASTExplorer: React.FC<ProfessionalASTExplorerProps> = (
         {/* Search & Actions */}
         <div className="flex items-center gap-2">
           <div className="relative">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-3.5 h-3.5 text-secondary-text absolute left-2.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search AST nodes..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8 pr-3 py-1 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 w-44"
+              className="pl-8 pr-3 py-1.5 rounded-xl bg-pearl border border-border-pearl text-xs text-charcoal placeholder-secondary-text focus:outline-none focus:border-terracotta w-44"
             />
           </div>
 
           <button
             onClick={handleExpandAll}
-            className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-medium"
+            className="px-3 py-1.5 rounded-xl bg-secondary-card hover:bg-border-pearl text-charcoal text-[11px] font-bold transition-all cursor-pointer"
           >
             Expand All
           </button>
           <button
             onClick={handleCollapseAll}
-            className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-medium"
+            className="px-3 py-1.5 rounded-xl bg-secondary-card hover:bg-border-pearl text-charcoal text-[11px] font-bold transition-all cursor-pointer"
           >
             Collapse
           </button>
 
-          <div className="flex items-center bg-slate-950 border border-slate-800 rounded-lg p-0.5 ml-2">
+          <div className="flex items-center bg-secondary-card border border-border-pearl rounded-xl p-0.5 ml-2">
             <button
               onClick={() => setViewFormat('tree')}
-              className={`px-2 py-1 rounded text-[11px] font-medium transition-colors ${
-                viewFormat === 'tree' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
+              className={`px-3 py-1 rounded-lg text-[11px] font-bold transition-all ${
+                viewFormat === 'tree' ? 'bg-terracotta text-white shadow-sm' : 'text-secondary-text hover:text-charcoal'
               }`}
             >
               Tree View
             </button>
             <button
               onClick={() => setViewFormat('json')}
-              className={`px-2 py-1 rounded text-[11px] font-medium transition-colors ${
-                viewFormat === 'json' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
+              className={`px-3 py-1 rounded-lg text-[11px] font-bold transition-all ${
+                viewFormat === 'json' ? 'bg-terracotta text-white shadow-sm' : 'text-secondary-text hover:text-charcoal'
               }`}
             >
               JSON
@@ -163,7 +156,7 @@ export const ProfessionalASTExplorer: React.FC<ProfessionalASTExplorerProps> = (
       {/* Main Content: Split Tree Explorer and Inspector */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         {/* Left Tree Explorer Canvas */}
-        <div className="lg:col-span-8 glass-panel p-5 rounded-2xl border border-slate-800 bg-slate-950/60 min-h-[500px] max-h-[620px] overflow-y-auto">
+        <div className="lg:col-span-8 p-6 rounded-3xl border border-border-pearl bg-ivory min-h-[500px] max-h-[620px] overflow-y-auto shadow-sm">
           {viewFormat === 'tree' ? (
             <div className="space-y-1 font-mono text-xs">
               <TreeNodeItem
@@ -181,12 +174,12 @@ export const ProfessionalASTExplorer: React.FC<ProfessionalASTExplorerProps> = (
             <div className="relative">
               <button
                 onClick={handleCopyJSON}
-                className="absolute top-2 right-2 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs flex items-center gap-1.5"
+                className="absolute top-2 right-2 px-3 py-1.5 rounded-xl bg-white border border-border-pearl hover:bg-pearl text-charcoal text-xs font-bold flex items-center gap-1.5 shadow-sm"
               >
                 <Copy className="w-3.5 h-3.5" />
                 <span>{copied ? 'Copied' : 'Copy JSON'}</span>
               </button>
-              <pre className="p-4 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs text-indigo-300 whitespace-pre-wrap overflow-x-auto">
+              <pre className="p-4 rounded-2xl bg-pearl border border-border-pearl font-mono text-xs text-charcoal whitespace-pre-wrap overflow-x-auto">
                 {JSON.stringify(tree, null, 2)}
               </pre>
             </div>
@@ -194,25 +187,25 @@ export const ProfessionalASTExplorer: React.FC<ProfessionalASTExplorerProps> = (
         </div>
 
         {/* Right Node Inspector & AI Assistant Hook */}
-        <div className="lg:col-span-4 glass-panel p-5 rounded-2xl border border-slate-800 bg-slate-900/60 space-y-4 flex flex-col justify-between">
+        <div className="lg:col-span-4 p-6 rounded-3xl border border-border-pearl bg-white space-y-4 flex flex-col justify-between shadow-sm">
           <div>
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-              <h4 className="text-xs font-bold text-white flex items-center gap-1.5">
-                <Info className="w-4 h-4 text-indigo-400" /> AST Node Inspector
+            <div className="flex items-center justify-between pb-3 border-b border-border-pearl">
+              <h4 className="text-xs font-black text-charcoal flex items-center gap-1.5">
+                <Info className="w-4 h-4 text-terracotta" /> AST Node Inspector
               </h4>
-              <span className="text-[10px] font-mono text-slate-500">
+              <span className="text-[10px] font-mono text-secondary-text font-bold">
                 {selectedNode ? selectedNode.type : 'Select node'}
               </span>
             </div>
 
             {selectedNode ? (
-              <div className="mt-4 space-y-3 text-xs">
+              <div className="mt-4 space-y-3.5 text-xs">
                 {/* Node Identity Card */}
-                <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+                <div className="p-4 rounded-2xl bg-secondary-card/60 border border-border-pearl space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] uppercase font-mono text-slate-400">Node Type</span>
+                    <span className="text-[10px] uppercase font-mono text-secondary-text font-bold">Node Type</span>
                     <span
-                      className={`px-2 py-0.5 rounded-md border text-[10px] font-bold font-mono ${getNodeBadgeColor(
+                      className={`px-2.5 py-0.5 rounded-full border text-[10px] font-bold font-mono ${getNodeBadgeColor(
                         selectedNode.type,
                         selectedNode.category
                       )}`}
@@ -223,8 +216,8 @@ export const ProfessionalASTExplorer: React.FC<ProfessionalASTExplorerProps> = (
 
                   {selectedNode.name && (
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] uppercase font-mono text-slate-400">Identifier / Value</span>
-                      <span className="font-mono text-cyan-300 font-bold truncate max-w-[180px]">
+                      <span className="text-[10px] uppercase font-mono text-secondary-text font-bold">Identifier / Value</span>
+                      <span className="font-mono text-charcoal font-bold truncate max-w-[180px]">
                         {selectedNode.name}
                       </span>
                     </div>
@@ -232,16 +225,16 @@ export const ProfessionalASTExplorer: React.FC<ProfessionalASTExplorerProps> = (
 
                   {selectedNode.loc && (
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] uppercase font-mono text-slate-400">Source Range</span>
-                      <span className="font-mono text-slate-300">
+                      <span className="text-[10px] uppercase font-mono text-secondary-text font-bold">Source Range</span>
+                      <span className="font-mono text-secondary-text font-semibold">
                         Line {selectedNode.loc.start} → {selectedNode.loc.end}
                       </span>
                     </div>
                   )}
 
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] uppercase font-mono text-slate-400">Child Branches</span>
-                    <span className="font-mono text-purple-300">
+                    <span className="text-[10px] uppercase font-mono text-secondary-text font-bold">Child Branches</span>
+                    <span className="font-mono text-terracotta font-bold">
                       {selectedNode.children ? selectedNode.children.length : 0} Direct Sub-Nodes
                     </span>
                   </div>
@@ -250,8 +243,8 @@ export const ProfessionalASTExplorer: React.FC<ProfessionalASTExplorerProps> = (
                 {/* Source Code Snippet */}
                 {selectedNode.snippet && (
                   <div>
-                    <span className="text-[10px] font-mono text-slate-400 block mb-1">Source Statement</span>
-                    <pre className="p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-[11px] text-amber-300 whitespace-pre-wrap overflow-x-auto">
+                    <span className="text-[10px] font-mono text-secondary-text font-bold block mb-1">Source Statement</span>
+                    <pre className="p-3 rounded-2xl bg-pearl border border-border-pearl font-mono text-[11px] text-charcoal whitespace-pre-wrap overflow-x-auto">
                       {selectedNode.snippet}
                     </pre>
                   </div>
@@ -264,36 +257,36 @@ export const ProfessionalASTExplorer: React.FC<ProfessionalASTExplorerProps> = (
                       const prompt = `Explain the AST Node: [${selectedNode.type}] "${selectedNode.name || ''}" located at line ${selectedNode.loc?.start || 'N/A'}. What is its syntax role and semantic behavior in this program?`;
                       onAskAI(prompt);
                     }}
-                    className="w-full mt-2 py-2.5 px-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold text-xs flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/10 transition-all"
+                    className="w-full mt-2 py-3 px-4 rounded-2xl bg-terracotta hover:bg-orange-warm text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md shadow-terracotta/20 transition-all cursor-pointer"
                   >
-                    <Sparkles className="w-3.5 h-3.5 text-cyan-200" />
+                    <Sparkles className="w-3.5 h-3.5 text-white" />
                     <span>Ask AI About This AST Node</span>
                   </button>
                 )}
               </div>
             ) : (
-              <div className="py-12 text-center text-xs text-slate-500 space-y-2">
-                <Binary className="w-8 h-8 mx-auto text-slate-700" />
+              <div className="py-12 text-center text-xs text-secondary-text space-y-2">
+                <Binary className="w-8 h-8 mx-auto text-secondary-text/40" />
                 <p>Click any node in the AST hierarchy to inspect its syntax type, attributes, and source tokens.</p>
               </div>
             )}
           </div>
 
           {/* AST Categorization Legend */}
-          <div className="pt-4 border-t border-slate-800">
-            <span className="text-[10px] font-bold uppercase text-slate-400 block mb-2">AST Node Categories</span>
+          <div className="pt-4 border-t border-border-pearl">
+            <span className="text-[10px] font-bold uppercase text-secondary-text block mb-2 font-mono">AST Node Categories</span>
             <div className="grid grid-cols-2 gap-2 text-[10px] font-mono">
-              <div className="flex items-center gap-1.5 text-indigo-300">
-                <div className="w-2.5 h-2.5 rounded-sm bg-indigo-500" /> Functions
+              <div className="flex items-center gap-1.5 text-charcoal font-semibold">
+                <div className="w-2.5 h-2.5 rounded-sm bg-terracotta" /> Functions
               </div>
-              <div className="flex items-center gap-1.5 text-purple-300">
-                <div className="w-2.5 h-2.5 rounded-sm bg-purple-500" /> Iteration / Loops
+              <div className="flex items-center gap-1.5 text-charcoal font-semibold">
+                <div className="w-2.5 h-2.5 rounded-sm bg-orange-warm" /> Iteration / Loops
               </div>
-              <div className="flex items-center gap-1.5 text-cyan-300">
-                <div className="w-2.5 h-2.5 rounded-sm bg-cyan-500" /> Declarations
+              <div className="flex items-center gap-1.5 text-charcoal font-semibold">
+                <div className="w-2.5 h-2.5 rounded-sm bg-amber-500" /> Declarations
               </div>
-              <div className="flex items-center gap-1.5 text-amber-300">
-                <div className="w-2.5 h-2.5 rounded-sm bg-amber-500" /> Control Flow
+              <div className="flex items-center gap-1.5 text-charcoal font-semibold">
+                <div className="w-2.5 h-2.5 rounded-sm bg-lime-digital" /> Expressions
               </div>
             </div>
           </div>
@@ -344,8 +337,8 @@ const TreeNodeItem: React.FC<TreeNodeItemProps> = ({
         onClick={() => onSelectNode(node)}
         className={`flex items-center gap-1.5 py-1.5 px-2.5 rounded-xl cursor-pointer transition-all ${
           isSelected
-            ? 'bg-indigo-600/30 border border-indigo-500/50 text-white font-bold'
-            : 'hover:bg-slate-900/80 text-slate-300 border border-transparent'
+            ? 'bg-terracotta/15 border border-terracotta/40 text-charcoal font-bold shadow-sm'
+            : 'hover:bg-white text-charcoal border border-transparent'
         }`}
         style={{ paddingLeft: `${Math.max(10, depth * 20)}px` }}
       >
@@ -356,13 +349,13 @@ const TreeNodeItem: React.FC<TreeNodeItemProps> = ({
               e.stopPropagation();
               onToggleExpand(nodeId);
             }}
-            className="p-0.5 hover:bg-slate-800 rounded text-slate-400"
+            className="p-0.5 hover:bg-secondary-card rounded text-secondary-text"
           >
             {isExpanded ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
           </button>
         ) : (
           <div className="w-4 h-4 flex items-center justify-center">
-            <div className="w-1.5 h-1.5 rounded-full bg-slate-700" />
+            <div className="w-1.5 h-1.5 rounded-full bg-border-pearl" />
           </div>
         )}
 
@@ -378,14 +371,14 @@ const TreeNodeItem: React.FC<TreeNodeItemProps> = ({
 
         {/* Node Name / Value */}
         {node.name && (
-          <span className="text-cyan-300 font-semibold text-[11px] truncate max-w-[260px]">
+          <span className="text-charcoal font-semibold text-[11px] truncate max-w-[260px]">
             {node.name}
           </span>
         )}
 
         {/* Line indicator */}
         {node.loc && (
-          <span className="text-[10px] text-slate-500 font-mono ml-auto">
+          <span className="text-[10px] text-secondary-text font-mono ml-auto">
             L{node.loc.start}{node.loc.end !== node.loc.start ? `-${node.loc.end}` : ''}
           </span>
         )}
@@ -393,7 +386,7 @@ const TreeNodeItem: React.FC<TreeNodeItemProps> = ({
 
       {/* Render Children Recursively */}
       {hasChildren && isExpanded && (
-        <div className="border-l border-slate-800/80 ml-4">
+        <div className="border-l border-border-pearl ml-4">
           {node.children!.map((child, idx) => (
             <TreeNodeItem
               key={child.id || `${nodeId}_child_${idx}`}
