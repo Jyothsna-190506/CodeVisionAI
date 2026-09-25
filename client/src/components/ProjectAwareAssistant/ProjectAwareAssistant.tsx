@@ -18,6 +18,7 @@ import {
   Bug,
   BookOpen,
 } from 'lucide-react';
+import { GlassAIButton } from '../ThreeUI/GlassAIButton';
 
 interface ProjectAwareAssistantProps {
   projectId?: string;

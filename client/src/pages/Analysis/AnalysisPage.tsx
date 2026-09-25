@@ -6,6 +6,8 @@ import { AIExplanationView } from '../../components/AIExplanation/AIExplanationV
 import { ProjectAwareAssistant } from '../../components/ProjectAwareAssistant/ProjectAwareAssistant';
 import { ProfessionalFlowchart } from '../../components/Flowchart/ProfessionalFlowchart';
 import { ProfessionalASTExplorer } from '../../components/AST/ProfessionalASTExplorer';
+import { ThreeUplinkLoader } from '../../components/ThreeUI/ThreeUplinkLoader';
+import { GlassAIButton } from '../../components/ThreeUI/GlassAIButton';
 import {
   LayoutDashboard,
   Sparkles,
@@ -161,12 +163,11 @@ export const AnalysisPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[80vh] flex flex-col items-center justify-center text-cyan-400">
-        <div className="w-10 h-10 border-3 border-cyan-400 border-t-transparent rounded-full animate-spin mb-4"></div>
-        <h3 className="text-sm font-bold text-slate-200">Executing Analysis Pipeline...</h3>
-        <p className="text-xs text-slate-400 mt-1">
-          Extracting AST, calculating complexity, generating AI explanation & unit tests
-        </p>
+      <div className="min-h-[75vh] flex flex-col items-center justify-center p-6">
+        <ThreeUplinkLoader
+          status="Executing 11-Domain AI Analysis Pipeline..."
+          stage="AST Extraction → Flowchart → Asymptotic Complexity → Step Simulation"
+        />
       </div>
     );
   }

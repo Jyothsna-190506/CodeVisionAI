@@ -17,258 +17,367 @@ import {
   Network,
   Bug,
   Lock,
+  GitBranch,
+  Play,
+  FileCode,
+  Check,
+  ChevronRight,
+  Command,
+  Database
 } from 'lucide-react';
+import { ThreeBackground } from '../../components/ThreeUI/ThreeBackground';
+import { GlassAIButton } from '../../components/ThreeUI/GlassAIButton';
 
 export const WelcomePage: React.FC = () => {
   const navigate = useNavigate();
 
   const features = [
     {
-      title: 'Full AST & Code Metrics',
-      desc: 'Deep multi-language AST parsing extracting cyclomatic complexity, Halstead maintainability index, and nesting depth.',
-      icon: Binary,
-      color: 'text-indigo-400',
-      bg: 'bg-indigo-500/10 border-indigo-500/20',
-    },
-    {
-      title: 'AI Step-by-Step Simulation',
-      desc: 'Line-by-line runtime execution simulator tracing active memory variables, heap allocations, and call stacks.',
+      title: 'AI Code Explanation',
+      desc: '11-section progressive architectural breakdown explaining execution flow, functions, key variables, and asymptotic Big-O complexity.',
       icon: Sparkles,
       color: 'text-cyan-400',
-      bg: 'bg-cyan-500/10 border-cyan-500/20',
+      tag: 'LLM Reasoning',
     },
     {
-      title: 'Static & AI Bug Detection',
-      desc: 'Categorized security and logic audits flagging unhandled exceptions, resource leaks, and infinite loop risks.',
+      title: 'Deep Static & AI Bug Audits',
+      desc: 'Pinpoints null references, buffer overflows, off-by-one loops, and security vulnerabilities with actionable patch fixes.',
       icon: Bug,
       color: 'text-rose-400',
-      bg: 'bg-rose-500/10 border-rose-500/20',
+      tag: 'Security & Logic',
     },
     {
-      title: 'Automated Optimizations',
-      desc: 'Algorithmic complexity reduction and modern idioms with side-by-side diffs and expected performance gains.',
+      title: 'Automated Optimization',
+      desc: 'Side-by-side algorithmic refactoring reducing time/space bounds ($O(n^2) \\to O(n)$) with SIMD vectorization proposals.',
       icon: Zap,
       color: 'text-amber-400',
-      bg: 'bg-amber-500/10 border-amber-500/20',
+      tag: 'Performance',
     },
     {
-      title: 'Control Flow & Call Graphs',
-      desc: 'Visual node diagrams rendering program branches, condition evaluation paths, and caller/callee graphs.',
-      icon: GitFork,
+      title: 'Interactive Flowchart Generation',
+      desc: 'Visual control flow diagrams rendering branches, decision nodes, and loop iteration paths.',
+      icon: GitBranch,
+      color: 'text-indigo-400',
+      tag: 'Visual Graph',
+    },
+    {
+      title: 'Abstract Syntax Tree (AST)',
+      desc: 'Multi-language hierarchical syntax explorer with node categorization, search, depth metrics, and JSON export.',
+      icon: Binary,
       color: 'text-purple-400',
-      bg: 'bg-purple-500/10 border-purple-500/20',
+      tag: 'Parser Engine',
     },
     {
-      title: 'Unit Test Case Generation',
-      desc: 'AI-generated test suites covering normal, boundary, edge, invalid, and exception stress scenarios with runnable snippets.',
+      title: 'Function Call Graphs',
+      desc: 'Inspects caller/callee invocations, recursion trees, and modular dependency depth.',
+      icon: Network,
+      color: 'text-blue-400',
+      tag: 'Call Hierarchy',
+    },
+    {
+      title: 'Test Case Generation',
+      desc: 'Instant unit test suites covering normal, boundary, negative, zero, and exception scenarios with ready-to-run code.',
       icon: CheckCircle2,
       color: 'text-emerald-400',
-      bg: 'bg-emerald-500/10 border-emerald-500/20',
+      tag: 'Automated QA',
+    },
+    {
+      title: 'Project-Aware AI Assistant',
+      desc: 'Multi-turn conversational coding companion with dynamic context injection, interview explanations, and line-specific insights.',
+      icon: Code2,
+      color: 'text-pink-400',
+      tag: 'Conversational AI',
+    },
+  ];
+
+  const workflowSteps = [
+    {
+      step: '01',
+      title: 'Write or Upload Code',
+      desc: 'Paste or import source code in C++, Python, Java, JavaScript, TypeScript, or Go into the Monaco IDE.',
+    },
+    {
+      step: '02',
+      title: 'AI Analysis Pipeline',
+      desc: 'CodeVision triggers static AST analysis, complexity calculation, and LLM reasoning concurrently.',
+    },
+    {
+      step: '03',
+      title: 'Interactive Visualizations',
+      desc: 'Explore step-by-step memory traces, control flow diagrams, AST hierarchies, and call graphs.',
+    },
+    {
+      step: '04',
+      title: 'Refactor & Improve',
+      desc: 'Apply optimizations, resolve detected bugs, generate unit tests, and query the Project-Aware Assistant.',
     },
   ];
 
   const supportedLangs = [
-    { name: 'Python', ext: 'py', desc: 'Lists, Functions, Comprehensions & AI logic', badge: '🐍 Python' },
-    { name: 'C++', ext: 'cpp', desc: 'Pointers, Arrays, Loops & Recursion', badge: '⚡ C++' },
-    { name: 'Java', ext: 'java', desc: 'OOP, Methods, Loops & DSA Structures', badge: '☕ Java' },
-    { name: 'JavaScript', ext: 'js', desc: 'Closures, Promises, Arrays & Async flow', badge: '🟨 JavaScript' },
-    { name: 'TypeScript', ext: 'ts', desc: 'Static types, interfaces & typed AST', badge: '🔷 TypeScript' },
-    { name: 'Go / Rust', ext: 'go', desc: 'Concurrency, struct layouts & safety', badge: '🦀 Rust / Go' },
+    { name: 'C++', icon: '⚡', desc: 'Pointers, Arrays, Loops & DSA' },
+    { name: 'Python', icon: '🐍', desc: 'Comprehensions, Lists & AI' },
+    { name: 'Java', icon: '☕', desc: 'OOP, Methods & Classes' },
+    { name: 'JavaScript', icon: '🟨', desc: 'Async, Closures & Events' },
+    { name: 'TypeScript', icon: '🔷', desc: 'Interfaces & Static Types' },
+    { name: 'Go', icon: '🐹', desc: 'Goroutines, Structs & Channels' },
+    { name: 'Rust', icon: '🦀', desc: 'Memory safety & Borrowing' },
+    { name: 'C#', icon: '🟣', desc: 'LINQ, Classes & .NET' },
+    { name: 'SQL', icon: '🗄️', desc: 'Queries, Joins & Schemas' },
   ];
 
   return (
-    <div className="min-h-screen bg-[#0A0F1D] text-slate-100 flex flex-col font-sans overflow-x-hidden">
-      {/* Hero Navbar */}
-      <header className="h-16 border-b border-slate-800/80 bg-[#0F172A]/80 backdrop-blur-md sticky top-0 z-50 px-6 max-w-7xl mx-auto w-full flex items-center justify-between">
+    <div className="min-h-screen bg-[#030712] text-slate-100 flex flex-col font-sans relative overflow-x-hidden selection:bg-cyan-500/30 selection:text-cyan-200">
+      {/* Subtle ThreeUI Constellation Background */}
+      <ThreeBackground opacity={0.25} />
+
+      {/* Floating Top Dock Header */}
+      <header className="sticky top-4 z-50 max-w-6xl mx-auto w-[92%] glass-dock rounded-2xl px-5 py-3 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-cyan-400 p-0.5 shadow-lg shadow-indigo-500/25 flex items-center justify-center">
-            <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-              <Code2 className="w-5 h-5 text-cyan-400" />
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-cyan-400 p-0.5 shadow-lg shadow-indigo-500/25 flex items-center justify-center">
+            <div className="w-full h-full bg-[#030712] rounded-[9px] flex items-center justify-center">
+              <Code2 className="w-4 h-4 text-cyan-400" />
             </div>
           </div>
-          <span className="text-lg font-black tracking-tight text-white">CodeVision AI</span>
+          <span className="text-sm font-black tracking-tight text-white flex items-center gap-1">
+            CodeVision <span className="text-cyan-400 font-extrabold">AI</span>
+          </span>
         </Link>
 
         <div className="flex items-center gap-3">
           <Link
             to="/login"
-            className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+            className="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-colors"
           >
             Sign In
           </Link>
-          <Link
-            to="/register"
-            className="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white text-xs font-bold shadow-md shadow-indigo-500/20 transition-all"
-          >
-            Get Started
+          <Link to="/register">
+            <GlassAIButton size="sm" variant="primary">
+              <span>Get Started Free</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </GlassAIButton>
           </Link>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative pt-16 pb-20 px-4 sm:px-6 max-w-7xl mx-auto text-center flex flex-col items-center">
-        {/* Glow Effects */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute top-1/3 left-1/3 w-64 h-64 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
-
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-cyan-300 text-xs font-semibold mb-6 shadow-lg shadow-indigo-500/10">
-          <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-          <span>Understand • Analyze • Visualize • Improve Code</span>
-        </div>
-
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight leading-tight max-w-5xl mb-6">
-          Intelligent Full-Stack <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-cyan-400 to-indigo-200">
-            Code Analysis & Visualization
-          </span>
-        </h1>
-
-        <p className="text-sm sm:text-lg text-slate-300 max-w-2xl mb-8 leading-relaxed">
-          Unlock profound insight into your codebases with AI-driven execution simulation, AST trees, complexity calculations, security audits, and automated test generators.
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-4 items-center mb-16">
-          <Link
-            to="/editor"
-            className="px-8 py-4 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white font-bold text-base flex items-center gap-3 shadow-xl shadow-indigo-500/30 hover:scale-105 transition-all duration-200"
-          >
-            <span>Start Analyzing Code</span>
-            <ArrowRight className="w-5 h-5" />
-          </Link>
-
-          <Link
-            to="/register"
-            className="px-6 py-4 rounded-2xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 font-semibold text-sm border border-slate-700 transition-colors"
-          >
-            Create Free Account
-          </Link>
-        </div>
-
-        {/* Live Interactive Preview Box */}
-        <div className="w-full max-w-4xl glass-panel p-4 sm:p-6 rounded-3xl border border-slate-800 shadow-2xl relative overflow-hidden bg-slate-900/90 text-left">
-          <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-800">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-rose-500/80"></div>
-              <div className="w-3 h-3 rounded-full bg-amber-500/80"></div>
-              <div className="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+      {/* Hero Section: Perspective Cinematic Dashboard */}
+      <section className="relative z-10 pt-16 pb-20 px-6 max-w-7xl mx-auto w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          {/* Left Hero Pitch */}
+          <div className="lg:col-span-6 space-y-6 text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-indigo-500/20 to-cyan-500/20 border border-indigo-500/30 text-cyan-300 text-xs font-mono font-medium">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Next-Gen AI Code Analysis & Visual IDE</span>
             </div>
-            <span className="text-xs font-mono text-slate-400 flex items-center gap-1.5">
-              <Activity className="w-3.5 h-3.5 text-cyan-400" /> Real-time Execution Pipeline
-            </span>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-white">
+              Understand. Analyze.{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-300 to-purple-400">
+                Visualize.
+              </span>{' '}
+              Improve.
+            </h1>
+
+            <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl">
+              Commercial-grade AI code intelligence platform with interactive execution traces, control flow diagrams, abstract syntax trees, and a project-aware assistant.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-3.5 pt-2">
+              <Link to="/register">
+                <GlassAIButton size="lg" variant="primary">
+                  <Play className="w-4 h-4 fill-white" />
+                  <span>Start Analyzing Code</span>
+                </GlassAIButton>
+              </Link>
+              <Link to="/login">
+                <GlassAIButton size="lg" variant="subtle">
+                  <span>Explore Platform</span>
+                  <ChevronRight className="w-4 h-4" />
+                </GlassAIButton>
+              </Link>
+            </div>
+
+            <div className="flex items-center gap-6 pt-4 text-xs font-mono text-slate-400">
+              <div className="flex items-center gap-1.5">
+                <Check className="w-4 h-4 text-emerald-400" /> Multi-Language AST
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Check className="w-4 h-4 text-cyan-400" /> Real-time Memory Traces
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Check className="w-4 h-4 text-purple-400" /> Zero Mock Data
+              </div>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 font-mono text-xs text-indigo-300">
-              <span className="text-slate-500 text-[10px]">1 |</span> def binary_search(arr, target):<br />
-              <span className="bg-indigo-600/30 text-amber-300 p-1 rounded block my-1">
-                2 | mid = (low + high) // 2
-              </span>
-              <span className="text-slate-500 text-[10px]">3 |</span> return mid
-            </div>
-
-            <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs">
-              <div className="text-cyan-400 font-bold mb-2 flex items-center gap-1">
-                <Zap className="w-3.5 h-3.5" /> Memory State & Stack
+          {/* Right Hero: Cinematic CodeVision Dashboard Preview */}
+          <div className="lg:col-span-6 relative">
+            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-indigo-500/30 via-cyan-500/20 to-purple-500/30 blur-2xl opacity-50 pointer-events-none" />
+            
+            <div className="relative glass-panel rounded-2xl border border-slate-700/80 shadow-2xl bg-[#080d1a]/95 p-5 space-y-4">
+              {/* Window Header */}
+              <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-rose-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-amber-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
+                  <span className="text-[11px] font-mono text-slate-400 ml-2">array_sum.cpp — CodeVision Engine</span>
+                </div>
+                <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-500/20 text-cyan-300 font-bold">
+                  Quality Score: 92/100
+                </span>
               </div>
-              <div className="font-mono text-slate-200">low = 0, high = 15</div>
-              <div className="font-mono text-amber-400 font-bold">mid = 7 (Computed)</div>
-            </div>
 
-            <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 text-xs">
-              <div className="text-emerald-400 font-bold mb-2 flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5" /> Quality Audit: 94/100
+              {/* Code + Live Metrics Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                {/* Code Snippet Box */}
+                <div className="sm:col-span-7 p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-[11px] leading-relaxed text-slate-300 space-y-1">
+                  <div><span className="text-slate-600">1</span> <span className="text-indigo-400">#include</span> <span className="text-emerald-300">&lt;iostream&gt;</span></div>
+                  <div><span className="text-slate-600">2</span> <span className="text-indigo-400">int</span> <span className="text-cyan-300">main</span>() &#123;</div>
+                  <div><span className="text-slate-600">3</span>   <span className="text-indigo-400">int</span> arr[] = &#123;2, 4, 6&#125;;</div>
+                  <div><span className="text-slate-600">4</span>   <span className="text-indigo-400">int</span> sum = <span className="text-amber-300">0</span>;</div>
+                  <div className="bg-indigo-500/20 px-1 rounded"><span className="text-slate-600">5</span>   <span className="text-purple-400">for</span> (<span className="text-indigo-400">int</span> i = <span className="text-amber-300">0</span>; i &lt; <span className="text-amber-300">3</span>; i++) &#123;</div>
+                  <div><span className="text-slate-600">6</span>     sum += arr[i];</div>
+                  <div><span className="text-slate-600">7</span>   &#125;</div>
+                  <div><span className="text-slate-600">8</span>   std::cout &lt;&lt; sum;</div>
+                  <div><span className="text-slate-600">9</span> &#125;</div>
+                </div>
+
+                {/* Live Analysis Highlights */}
+                <div className="sm:col-span-5 space-y-2 text-xs">
+                  <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+                    <span className="text-[10px] font-mono text-slate-400 block">Time Complexity</span>
+                    <span className="text-sm font-bold text-cyan-300">O(n) Linear Time</span>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+                    <span className="text-[10px] font-mono text-slate-400 block">Auxiliary Memory</span>
+                    <span className="text-sm font-bold text-emerald-300">O(1) Constant</span>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-indigo-950/40 border border-indigo-500/30">
+                    <span className="text-[10px] font-mono text-indigo-300 block flex items-center gap-1">
+                      <Sparkles className="w-3 h-3 text-cyan-400" /> AI Optimization
+                    </span>
+                    <span className="text-[11px] text-slate-200 block mt-0.5">Use std::accumulate for SIMD auto-vectorization</span>
+                  </div>
+                </div>
               </div>
-              <p className="text-slate-300 leading-snug">
-                Logarithmic O(log n) time complexity verified. No recursive stack overflow risk.
-              </p>
+
+              {/* Bottom Quick Flow Node */}
+              <div className="p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center justify-between text-xs font-mono">
+                <div className="flex items-center gap-2 text-slate-300">
+                  <GitBranch className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>Control Flow: 7 Nodes Active</span>
+                </div>
+                <span className="text-emerald-400 font-bold">0 Critical Vulnerabilities</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Grid */}
-      <section className="py-16 px-4 sm:px-6 max-w-7xl mx-auto w-full">
-        <div className="text-center mb-12">
-          <h2 className="text-2xl sm:text-4xl font-black text-white mb-3">
-            Engineered for DSA Mastery & Code Quality
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-400 max-w-xl mx-auto">
-            CodeVision AI breaks down complex algorithmic flows into intuitive step-by-step visual representations and audit reports.
+      {/* 4-Step Process Section */}
+      <section className="relative z-10 py-16 px-6 max-w-7xl mx-auto w-full border-t border-slate-800/60">
+        <div className="text-center space-y-3 mb-12">
+          <span className="text-xs font-mono uppercase font-bold text-cyan-400 tracking-wider">
+            Intelligent Execution Flow
+          </span>
+          <h2 className="text-3xl font-black text-white">How CodeVision AI Works</h2>
+          <p className="text-xs text-slate-400 max-w-lg mx-auto">
+            From raw source code to deep multi-dimensional analysis in sub-second latency.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((f, i) => {
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {workflowSteps.map((s, idx) => (
+            <div
+              key={idx}
+              className="glass-card p-5 rounded-2xl border border-slate-800/80 hover:border-indigo-500/40 transition-all hover:scale-[1.02] space-y-3 relative group"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-2xl font-black font-mono text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">
+                  {s.step}
+                </span>
+                <span className="w-2 h-2 rounded-full bg-cyan-400 opacity-50 group-hover:opacity-100 group-hover:animate-ping" />
+              </div>
+              <h3 className="text-sm font-bold text-white">{s.title}</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">{s.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Features Grid */}
+      <section className="relative z-10 py-16 px-6 max-w-7xl mx-auto w-full border-t border-slate-800/60">
+        <div className="text-center space-y-3 mb-12">
+          <span className="text-xs font-mono uppercase font-bold text-indigo-400 tracking-wider">
+            Platform Capabilities
+          </span>
+          <h2 className="text-3xl font-black text-white">Comprehensive Developer Suite</h2>
+          <p className="text-xs text-slate-400 max-w-lg mx-auto">
+            All analytical modules powered by strict static inspection, AST parsing, and real LLM reasoning.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {features.map((f, idx) => {
             const Icon = f.icon;
             return (
               <div
-                key={i}
-                className="glass-panel p-6 rounded-3xl border border-slate-800 hover:border-indigo-500/50 transition-all duration-300 flex flex-col justify-between bg-slate-900/60"
+                key={idx}
+                className="glass-panel p-5 rounded-2xl border border-slate-800/80 hover:border-indigo-500/40 hover:shadow-xl hover:shadow-indigo-500/5 transition-all space-y-3"
               >
-                <div>
-                  <div className={`w-12 h-12 rounded-2xl ${f.bg} flex items-center justify-center mb-4`}>
-                    <Icon className={`w-6 h-6 ${f.color}`} />
+                <div className="flex items-center justify-between">
+                  <div className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center">
+                    <Icon className={`w-5 h-5 ${f.color}`} />
                   </div>
-                  <h3 className="text-base font-bold text-white mb-2">{f.title}</h3>
-                  <p className="text-xs text-slate-400 leading-relaxed">{f.desc}</p>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-900 text-slate-400 border border-slate-800">
+                    {f.tag}
+                  </span>
                 </div>
+                <h3 className="text-sm font-bold text-white">{f.title}</h3>
+                <p className="text-xs text-slate-400 leading-relaxed">{f.desc}</p>
               </div>
             );
           })}
         </div>
       </section>
 
-      {/* Supported Languages Section */}
-      <section className="py-12 px-4 sm:px-6 max-w-7xl mx-auto w-full text-center">
-        <div className="glass-panel p-8 sm:p-12 rounded-3xl border border-indigo-500/20 bg-slate-900/60">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">
-            Multi-Language AST Architecture
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-400 mb-8">
-            Specialized parser support across all popular engineering languages.
-          </p>
+      {/* Supported Languages Carousel */}
+      <section className="relative z-10 py-16 px-6 max-w-7xl mx-auto w-full border-t border-slate-800/60">
+        <div className="text-center space-y-3 mb-10">
+          <span className="text-xs font-mono uppercase font-bold text-purple-400 tracking-wider">
+            Ecosystem Support
+          </span>
+          <h2 className="text-3xl font-black text-white">Supported Languages & Dialects</h2>
+        </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {supportedLangs.map((lang, idx) => (
-              <div
-                key={idx}
-                className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 flex flex-col items-center justify-center gap-1 hover:border-indigo-500 transition-colors"
-              >
-                <span className="text-sm font-bold text-indigo-300">{lang.badge}</span>
-                <span className="text-[10px] text-slate-500 font-mono">.{lang.ext}</span>
-              </div>
-            ))}
-          </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-3">
+          {supportedLangs.map((lang, idx) => (
+            <div
+              key={idx}
+              className="p-3 rounded-xl bg-slate-950/80 border border-slate-800/80 text-center hover:border-cyan-500/40 transition-colors"
+            >
+              <span className="text-xl block mb-1">{lang.icon}</span>
+              <span className="text-xs font-bold text-white block">{lang.name}</span>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-16 px-4 text-center">
-        <div className="max-w-3xl mx-auto glass-panel p-10 rounded-3xl border border-slate-800 bg-gradient-to-b from-indigo-950/40 to-slate-900/80 space-y-6">
-          <h2 className="text-3xl font-black text-white">Ready to elevate your code intelligence?</h2>
-          <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto">
-            Create an account or jump straight into the editor to experience real-time execution analysis.
-          </p>
-          <div className="flex justify-center gap-3">
-            <Link
-              to="/register"
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-cyan-500 text-white font-bold text-xs shadow-lg shadow-indigo-500/25"
-            >
-              Sign Up Now
-            </Link>
-            <Link
-              to="/editor"
-              className="px-6 py-3 rounded-xl bg-slate-800 text-slate-200 font-semibold text-xs border border-slate-700 hover:bg-slate-700"
-            >
-              Try Live Editor
-            </Link>
+      {/* Call to Action Footer */}
+      <footer className="relative z-10 mt-auto border-t border-slate-800/80 bg-[#02050c]/90 py-12 px-6">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-2">
+            <Code2 className="w-5 h-5 text-cyan-400" />
+            <span className="font-bold text-sm text-white">CodeVision AI Platform</span>
+            <span className="text-xs text-slate-500 ml-2">© 2026. Commercial Developer Release.</span>
+          </div>
+
+          <div className="flex items-center gap-4 text-xs font-medium text-slate-400">
+            <Link to="/login" className="hover:text-white transition-colors">Sign In</Link>
+            <Link to="/register" className="hover:text-white transition-colors">Create Account</Link>
+            <Link to="/editor" className="hover:text-white transition-colors">IDE Sandbox</Link>
           </div>
         </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t border-slate-800/80 py-8 px-6 text-center text-xs text-slate-500">
-        <p>© 2026 CodeVision AI. Intelligent Full-Stack Code Analysis, Visualization and Learning Platform.</p>
       </footer>
     </div>
   );

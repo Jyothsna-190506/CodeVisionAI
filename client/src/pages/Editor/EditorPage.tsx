@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import MonacoEditor from '@monaco-editor/react';
 import apiClient from '../../services/apiClient';
 import { SAMPLE_CODES, SampleCode } from '../../constants/samples';
@@ -16,11 +16,19 @@ import {
   CheckCircle2,
   AlertCircle,
   FolderKanban,
+  Cpu,
+  Layers,
+  Terminal,
+  Bug,
+  HelpCircle,
+  ExternalLink
 } from 'lucide-react';
+import { GlassAIButton } from '../../components/ThreeUI/GlassAIButton';
+import { ThreeUplinkLoader } from '../../components/ThreeUI/ThreeUplinkLoader';
 
 const SUPPORTED_LANGUAGES = [
-  { id: 'python', name: 'Python', monaco: 'python' },
   { id: 'cpp', name: 'C++', monaco: 'cpp' },
+  { id: 'python', name: 'Python', monaco: 'python' },
   { id: 'java', name: 'Java', monaco: 'java' },
   { id: 'javascript', name: 'JavaScript', monaco: 'javascript' },
   { id: 'typescript', name: 'TypeScript', monaco: 'typescript' },
@@ -29,31 +37,27 @@ const SUPPORTED_LANGUAGES = [
   { id: 'go', name: 'Go', monaco: 'go' },
   { id: 'rust', name: 'Rust', monaco: 'rust' },
   { id: 'sql', name: 'SQL', monaco: 'sql' },
-  { id: 'html', name: 'HTML', monaco: 'html' },
-  { id: 'css', name: 'CSS', monaco: 'css' },
-  { id: 'php', name: 'PHP', monaco: 'php' },
-  { id: 'ruby', name: 'Ruby', monaco: 'ruby' },
-  { id: 'kotlin', name: 'Kotlin', monaco: 'kotlin' },
-  { id: 'swift', name: 'Swift', monaco: 'swift' },
 ];
 
 export const EditorPage: React.FC = () => {
-  const { projectId } = useParams<{ projectId?: string }>();
+  const [searchParams] = useSearchParams();
+  const projectId = searchParams.get('projectId');
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [language, setLanguage] = useState('python');
-  const [code, setCode] = useState<string>(SAMPLE_CODES[0]?.code || '# Enter your code here\n');
-  const [projectName, setProjectName] = useState('Untitled Workspace');
+  const [language, setLanguage] = useState('cpp');
+  const [code, setCode] = useState<string>(
+    `#include <iostream>\nusing namespace std;\n\nint main() {\n    int arr[] = {2, 4, 6};\n    int sum = 0;\n\n    for (int i = 0; i < 3; i++) {\n        sum += arr[i];\n    }\n\n    cout << "Total Sum: " << sum << endl;\n    return 0;\n}`
+  );
+  const [projectName, setProjectName] = useState('Array Sum Optimization');
   const [isSaving, setIsSaving] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [saveStatus, setSaveStatus] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Editor configuration
+  // Editor layout options
   const [fontSize, setFontSize] = useState(14);
-  const [minimap, setMinimap] = useState(true);
-  const [wordWrap, setWordWrap] = useState<'on' | 'off'>('on');
+  const [minimap, setMinimap] = useState(false);
 
   // Fetch project details if editing an existing project
   useEffect(() => {
@@ -63,7 +67,7 @@ export const EditorPage: React.FC = () => {
           const res = await apiClient.get(`/projects/${projectId}`);
           if (res.data.success && res.data.project) {
             setProjectName(res.data.project.name);
-            setLanguage(res.data.project.language || 'python');
+            setLanguage(res.data.project.language || 'cpp');
             setCode(res.data.project.code || '');
           }
         } catch (err: any) {
@@ -76,16 +80,10 @@ export const EditorPage: React.FC = () => {
 
   const handleLanguageChange = (newLang: string) => {
     setLanguage(newLang);
-    // If empty or default, switch to matching sample
     const sample = SAMPLE_CODES.find((s) => s.language === newLang);
     if (sample && !projectId) {
       setCode(sample.code);
     }
-  };
-
-  const handleLoadSample = (sample: SampleCode) => {
-    setLanguage(sample.language);
-    setCode(sample.code);
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,261 +94,320 @@ export const EditorPage: React.FC = () => {
     reader.onload = (event) => {
       const content = event.target?.result as string;
       setCode(content);
-
-      // Auto-detect language by file extension
       const ext = file.name.split('.').pop()?.toLowerCase();
       if (ext === 'py') setLanguage('python');
-      else if (ext === 'cpp' || ext === 'cc' || ext === 'h') setLanguage('cpp');
+      else if (ext === 'cpp' || ext === 'cc') setLanguage('cpp');
       else if (ext === 'java') setLanguage('java');
-      else if (ext === 'js' || ext === 'jsx') setLanguage('javascript');
-      else if (ext === 'ts' || ext === 'tsx') setLanguage('typescript');
+      else if (ext === 'js') setLanguage('javascript');
+      else if (ext === 'ts') setLanguage('typescript');
       else if (ext === 'go') setLanguage('go');
       else if (ext === 'rs') setLanguage('rust');
+      setProjectName(file.name.replace(/\.[^/.]+$/, ''));
     };
     reader.readAsText(file);
   };
 
-  const handleSaveProject = async () => {
-    setIsSaving(true);
-    setSaveStatus(null);
+  const handleSave = async () => {
     try {
+      setIsSaving(true);
+      setSaveStatus(null);
+      setErrorMsg(null);
+
       if (projectId) {
         await apiClient.put(`/projects/${projectId}`, {
           name: projectName,
           language,
           code,
         });
-        setSaveStatus('Project saved successfully');
       } else {
         const res = await apiClient.post('/projects', {
-          name: projectName === 'Untitled Workspace' ? 'New Algorithm Project' : projectName,
+          name: projectName,
           language,
           code,
         });
-        if (res.data.success) {
-          setSaveStatus('Project created in MongoDB');
-          navigate(`/editor/${res.data.project._id}`, { replace: true });
+        if (res.data.success && res.data.project) {
+          navigate(`/editor?projectId=${res.data.project._id}`, { replace: true });
         }
       }
+      setSaveStatus('Project saved successfully');
+      setTimeout(() => setSaveStatus(null), 3000);
     } catch (err: any) {
-      setErrorMsg(err.message || 'Failed to save project');
+      setErrorMsg(err.response?.data?.message || 'Failed to save project.');
     } finally {
       setIsSaving(false);
-      setTimeout(() => setSaveStatus(null), 3000);
     }
   };
 
-  const handleRunAnalysis = async () => {
+  const handleAnalyze = async () => {
     if (!code.trim()) {
-      setErrorMsg('Please write or upload code before analyzing.');
+      setErrorMsg('Please enter code to analyze.');
       return;
     }
 
-    setIsAnalyzing(true);
-    setErrorMsg(null);
-
     try {
+      setIsAnalyzing(true);
+      setErrorMsg(null);
+
+      let currentProjId = projectId;
+      if (!currentProjId) {
+        const projRes = await apiClient.post('/projects', {
+          name: projectName || 'Source Unit Analysis',
+          language,
+          code,
+        });
+        if (projRes.data.success) {
+          currentProjId = projRes.data.project._id;
+        }
+      }
+
       const res = await apiClient.post('/analysis', {
-        projectId: projectId || undefined,
-        language,
+        projectId: currentProjId,
         code,
+        language,
         analysisType: 'full',
       });
 
-      if (res.data.success && res.data.analysisId) {
-        navigate(`/analysis/${res.data.analysisId}`);
-      } else if (res.data.data) {
-        // If ephemeral without ID, we can still navigate with state
-        navigate('/analysis/session', { state: { resultData: res.data.data, code, language } });
+      if (res.data.success && res.data.analysis) {
+        navigate(`/analysis/${res.data.analysis._id}`);
       }
     } catch (err: any) {
-      setErrorMsg(err.message || 'Analysis failed. Please check your syntax.');
+      setErrorMsg(err.response?.data?.message || 'Failed to run analysis pipeline.');
     } finally {
       setIsAnalyzing(false);
     }
   };
 
-  const currentLangObj = SUPPORTED_LANGUAGES.find((l) => l.id === language) || SUPPORTED_LANGUAGES[0];
+  // Quick stats calculation
+  const lineCount = code.split('\n').length;
+  const charCount = code.length;
+  const hasLoop = code.includes('for') || code.includes('while');
 
   return (
-    <div className="h-[calc(100vh-4rem)] flex flex-col bg-[#0A0F1D] overflow-hidden">
-      {/* Top Editor Toolbar */}
-      <div className="h-14 border-b border-slate-800/80 bg-slate-900/80 px-4 flex items-center justify-between gap-3">
-        {/* Left Toolbar Items: Project Title & Language Picker */}
+    <div className="h-[calc(100vh-4rem)] flex flex-col bg-[#030712] relative overflow-hidden">
+      {/* Top IDE Toolbar */}
+      <div className="h-14 border-b border-slate-800/80 bg-[#080d1a]/90 backdrop-blur-xl px-4 flex items-center justify-between gap-4 flex-shrink-0 z-20">
+        {/* Left Project Name & Language */}
         <div className="flex items-center gap-3">
-          <input
-            type="text"
-            value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
-            className="text-xs font-bold text-white bg-transparent border-b border-transparent hover:border-slate-700 focus:border-indigo-500 focus:outline-none px-1 py-0.5 max-w-[200px] truncate"
-            title="Click to rename project"
-          />
+          <div className="flex items-center gap-2">
+            <Code2 className="w-4 h-4 text-cyan-400" />
+            <input
+              type="text"
+              value={projectName}
+              onChange={(e) => setProjectName(e.target.value)}
+              placeholder="Project Name..."
+              className="bg-transparent border-b border-transparent hover:border-slate-700 focus:border-cyan-500 text-xs font-bold text-white focus:outline-none px-1 py-0.5 max-w-[200px] sm:max-w-xs transition-colors"
+            />
+          </div>
 
-          <div className="h-4 w-px bg-slate-800"></div>
+          <div className="h-4 w-px bg-slate-800 hidden sm:block"></div>
 
           {/* Language Selector */}
-          <select
-            value={language}
-            onChange={(e) => handleLanguageChange(e.target.value)}
-            className="px-2.5 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-xs font-semibold text-cyan-300 focus:outline-none focus:border-indigo-500"
-          >
-            {SUPPORTED_LANGUAGES.map((l) => (
-              <option key={l.id} value={l.id}>
-                {l.name}
-              </option>
-            ))}
-          </select>
-
-          {/* Preset Samples */}
-          <div className="relative group hidden sm:block">
-            <button className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-300 flex items-center gap-1 border border-slate-700">
-              <FileCode className="w-3.5 h-3.5 text-indigo-400" />
-              <span>Algorithm Samples</span>
-              <ChevronDown className="w-3 h-3" />
-            </button>
-
-            <div className="absolute left-0 top-full mt-1 w-56 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl z-50 hidden group-hover:block p-1.5">
-              {SAMPLE_CODES.map((sample) => (
-                <button
-                  key={sample.id}
-                  onClick={() => handleLoadSample(sample)}
-                  className="w-full text-left px-3 py-2 text-xs text-slate-300 hover:bg-indigo-600 hover:text-white rounded-lg flex items-center justify-between transition-colors my-0.5"
-                >
-                  <span className="truncate font-medium">{sample.name}</span>
-                  <span className="text-[10px] uppercase font-mono text-slate-400 group-hover:text-indigo-200">
-                    {sample.language}
-                  </span>
-                </button>
+          <div className="relative">
+            <select
+              value={language}
+              onChange={(e) => handleLanguageChange(e.target.value)}
+              className="bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-200 text-xs font-mono font-medium rounded-xl px-3 py-1.5 focus:outline-none focus:border-cyan-500 cursor-pointer appearance-none pr-8"
+            >
+              {SUPPORTED_LANGUAGES.map((lang) => (
+                <option key={lang.id} value={lang.id}>
+                  {lang.name}
+                </option>
               ))}
-            </div>
+            </select>
+            <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
         </div>
 
-        {/* Right Toolbar Items: Upload, Save, Analyze */}
+        {/* Right Actions */}
         <div className="flex items-center gap-2">
-          {saveStatus && (
-            <span className="text-[11px] text-emerald-400 flex items-center gap-1 font-medium mr-2">
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              {saveStatus}
-            </span>
-          )}
-
-          {/* Upload Button */}
           <input
             type="file"
             ref={fileInputRef}
             onChange={handleFileUpload}
             className="hidden"
-            accept=".py,.cpp,.java,.js,.ts,.c,.cs,.go,.rs,.sql,.html,.css,.php"
+            accept=".py,.cpp,.c,.java,.js,.ts,.go,.rs,.sql"
           />
+
           <button
             onClick={() => fileInputRef.current?.click()}
-            title="Upload code file"
-            className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-xs flex items-center gap-1.5 border border-slate-700 transition-colors"
+            className="px-3 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-300 text-xs font-medium border border-slate-800 flex items-center gap-1.5 transition-colors hidden sm:flex"
+            title="Import source file"
           >
             <Upload className="w-3.5 h-3.5" />
-            <span className="hidden md:inline">Upload</span>
+            <span>Upload</span>
           </button>
 
-          {/* Save Project Button */}
           <button
-            onClick={handleSaveProject}
+            onClick={handleSave}
             disabled={isSaving}
-            className="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-1.5 border border-slate-700 transition-colors"
+            className="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-700 hover:border-slate-600 flex items-center gap-1.5 transition-all disabled:opacity-50"
           >
-            <Save className="w-3.5 h-3.5 text-cyan-400" />
+            <Save className="w-3.5 h-3.5 text-indigo-400" />
             <span>{isSaving ? 'Saving...' : 'Save'}</span>
           </button>
 
-          {/* Primary Action: Run Full Analysis */}
-          <button
-            onClick={handleRunAnalysis}
-            disabled={isAnalyzing || !code.trim()}
-            className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-indigo-500/25 disabled:opacity-50 transition-all"
+          <GlassAIButton
+            onClick={handleAnalyze}
+            disabled={isAnalyzing}
+            size="sm"
+            variant="primary"
           >
-            {isAnalyzing ? (
-              <>
-                <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                <span>Analyzing Pipeline...</span>
-              </>
-            ) : (
-              <>
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Run Full Analysis</span>
-              </>
-            )}
-          </button>
+            <Play className="w-3.5 h-3.5 fill-cyan-200 text-cyan-200" />
+            <span>{isAnalyzing ? 'Analyzing...' : 'Analyze Code'}</span>
+          </GlassAIButton>
         </div>
       </div>
 
-      {/* Error Alert */}
-      {errorMsg && (
-        <div className="px-4 py-2 bg-rose-500/10 border-b border-rose-500/30 text-rose-300 text-xs flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-rose-400" />
-            <span>{errorMsg}</span>
-          </div>
-          <button onClick={() => setErrorMsg(null)} className="font-bold hover:text-white">
-            Dismiss
-          </button>
+      {/* Notifications bar */}
+      {(saveStatus || errorMsg) && (
+        <div className={`px-4 py-1.5 text-xs flex items-center justify-between z-20 ${
+          errorMsg ? 'bg-rose-500/20 text-rose-300 border-b border-rose-500/30' : 'bg-emerald-500/20 text-emerald-300 border-b border-emerald-500/30'
+        }`}>
+          <span>{errorMsg || saveStatus}</span>
+          <button onClick={() => { setErrorMsg(null); setSaveStatus(null); }} className="text-slate-400 hover:text-white">✕</button>
         </div>
       )}
 
-      {/* Main Monaco Editor Container */}
-      <div className="flex-1 min-h-0 relative">
-        <MonacoEditor
-          height="100%"
-          language={currentLangObj.monaco}
-          theme="vs-dark"
-          value={code}
-          onChange={(val) => setCode(val || '')}
-          options={{
-            fontSize,
-            minimap: { enabled: minimap },
-            wordWrap,
-            lineNumbers: 'on',
-            roundedSelection: true,
-            scrollBeyondLastLine: false,
-            automaticLayout: true,
-            padding: { top: 12, bottom: 12 },
-            fontFamily: "'Fira Code', 'Cascadia Code', Consolas, monospace",
-            cursorBlinking: 'smooth',
-            cursorSmoothCaretAnimation: 'on',
-            bracketPairColorization: { enabled: true },
-          }}
-        />
-      </div>
+      {/* Main Split Layout: Monaco Editor + Side Telemetry Panel */}
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 min-h-0 relative">
+        {/* Left Monaco IDE */}
+        <div className="lg:col-span-8 h-full border-r border-slate-800/80 bg-[#02050c] relative flex flex-col justify-between">
+          <div className="flex-1 min-h-0">
+            <MonacoEditor
+              height="100%"
+              language={SUPPORTED_LANGUAGES.find((l) => l.id === language)?.monaco || 'cpp'}
+              value={code}
+              onChange={(value) => setCode(value || '')}
+              theme="vs-dark"
+              options={{
+                fontSize,
+                minimap: { enabled: minimap },
+                scrollBeyondLastLine: false,
+                lineNumbers: 'on',
+                renderLineHighlight: 'all',
+                automaticLayout: true,
+                padding: { top: 16, bottom: 16 },
+                cursorBlinking: 'smooth',
+                fontFamily: "'JetBrains Mono', 'Fira Code', 'Courier New', monospace",
+              }}
+            />
+          </div>
 
-      {/* Bottom Status Bar */}
-      <div className="h-7 border-t border-slate-800 bg-[#080C17] px-4 flex items-center justify-between text-[11px] text-slate-400">
-        <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
-            {currentLangObj.name} Engine
-          </span>
-          <span>{code.split('\n').length} lines</span>
-          <span>{code.length} chars</span>
+          {/* IDE Bottom Status Bar */}
+          <div className="h-7 bg-[#050914] border-t border-slate-800/80 px-4 flex items-center justify-between text-[11px] font-mono text-slate-400 select-none">
+            <div className="flex items-center gap-4">
+              <span>LANG: <strong className="text-cyan-400 uppercase">{language}</strong></span>
+              <span>LINES: <strong>{lineCount}</strong></span>
+              <span>CHARS: <strong>{charCount}</strong></span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span>UTF-8</span>
+              <span className="text-emerald-400">● READY</span>
+            </div>
+          </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setWordWrap(wordWrap === 'on' ? 'off' : 'on')}
-            className="hover:text-slate-200"
-          >
-            Wrap: {wordWrap}
-          </button>
-          <button
-            onClick={() => setMinimap(!minimap)}
-            className="hover:text-slate-200"
-          >
-            Minimap: {minimap ? 'On' : 'Off'}
-          </button>
-          <button
-            onClick={() => setFontSize(fontSize === 14 ? 16 : fontSize === 16 ? 12 : 14)}
-            className="hover:text-slate-200"
-          >
-            Font: {fontSize}px
-          </button>
+        {/* Right Side Telemetry & Quick Action Panel */}
+        <div className="lg:col-span-4 h-full bg-[#060b18]/90 backdrop-blur-md p-5 flex flex-col justify-between overflow-y-auto space-y-4">
+          {isAnalyzing ? (
+            <div className="my-auto">
+              <ThreeUplinkLoader
+                status="Executing 11-Domain AI Analysis..."
+                stage="AST Parsing → Complexity Calculation → Step Simulation"
+              />
+            </div>
+          ) : (
+            <>
+              {/* Telemetry Header */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+                  <h3 className="text-xs font-bold text-white flex items-center gap-2">
+                    <Cpu className="w-4 h-4 text-cyan-400" /> Active Code Telemetry
+                  </h3>
+                  <span className="text-[10px] font-mono text-slate-500 uppercase">Live Scope</span>
+                </div>
+
+                {/* Metric Summary Cards */}
+                <div className="grid grid-cols-2 gap-2.5">
+                  <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1">
+                    <span className="text-[10px] text-slate-400 font-mono block">Estimated Time</span>
+                    <span className="text-sm font-bold text-cyan-300 font-mono">
+                      {hasLoop ? 'O(n)' : 'O(1)'}
+                    </span>
+                  </div>
+                  <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1">
+                    <span className="text-[10px] text-slate-400 font-mono block">Auxiliary Space</span>
+                    <span className="text-sm font-bold text-emerald-300 font-mono">O(1) Constant</span>
+                  </div>
+                </div>
+
+                {/* Quick Inspection Summary */}
+                <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 text-xs space-y-2">
+                  <span className="text-[10px] uppercase font-mono font-bold text-indigo-400 block">
+                    Pre-Analysis Static Audit
+                  </span>
+                  <p className="text-slate-300 text-[11px] leading-relaxed">
+                    Source code contains <strong>{lineCount} statements</strong>. Ready to compute complete AST hierarchy, memory execution trace, and automated test cases.
+                  </p>
+                </div>
+              </div>
+
+              {/* Quick AI Action Triggers */}
+              <div className="space-y-2.5">
+                <span className="text-[10px] font-bold uppercase text-slate-400 font-mono block">
+                  Quick AI Operations
+                </span>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={handleAnalyze}
+                    className="p-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-cyan-500/40 text-left text-xs text-slate-200 transition-all flex items-center gap-2"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>Explain Code</span>
+                  </button>
+
+                  <button
+                    onClick={handleAnalyze}
+                    className="p-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-amber-500/40 text-left text-xs text-slate-200 transition-all flex items-center gap-2"
+                  >
+                    <Zap className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Optimize</span>
+                  </button>
+
+                  <button
+                    onClick={handleAnalyze}
+                    className="p-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-rose-500/40 text-left text-xs text-slate-200 transition-all flex items-center gap-2"
+                  >
+                    <Bug className="w-3.5 h-3.5 text-rose-400" />
+                    <span>Find Bugs</span>
+                  </button>
+
+                  <button
+                    onClick={handleAnalyze}
+                    className="p-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-850 border border-slate-800 hover:border-emerald-500/40 text-left text-xs text-slate-200 transition-all flex items-center gap-2"
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Generate Tests</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Primary Analyze Trigger */}
+              <div className="pt-3 border-t border-slate-800">
+                <GlassAIButton
+                  onClick={handleAnalyze}
+                  disabled={isAnalyzing}
+                  size="md"
+                  variant="primary"
+                  className="w-full"
+                >
+                  <Sparkles className="w-4 h-4 text-cyan-300" />
+                  <span>Execute Full 11-Domain Analysis</span>
+                </GlassAIButton>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

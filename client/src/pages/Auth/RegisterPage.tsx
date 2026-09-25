@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Code2, Lock, Mail, User, Eye, EyeOff, ArrowRight, AlertCircle, CheckCircle } from 'lucide-react';
+import { Code2, Lock, Mail, User, Eye, EyeOff, ArrowRight, AlertCircle, CheckCircle, Check } from 'lucide-react';
+import { ThreeBackground } from '../../components/ThreeUI/ThreeBackground';
+import { GlassAIButton } from '../../components/ThreeUI/GlassAIButton';
 
 export const RegisterPage: React.FC = () => {
   const { register } = useAuth();
@@ -12,7 +14,7 @@ export const RegisterPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [termsAgreed, setTermsAgreed] = useState(false);
+  const [termsAgreed, setTermsAgreed] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -64,33 +66,66 @@ export const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0F1D] flex items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none"></div>
+    <div className="min-h-screen bg-[#030712] flex items-center justify-center p-4 sm:p-8 relative overflow-hidden">
+      {/* ThreeUI Constellation Background */}
+      <ThreeBackground opacity={0.3} />
 
-      <div className="w-full max-w-md relative z-10 my-8">
-        <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center gap-2.5 mb-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-cyan-400 p-0.5 shadow-lg shadow-indigo-500/25 flex items-center justify-center">
-              <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-                <Code2 className="w-5 h-5 text-cyan-400" />
+      <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-12 glass-panel rounded-3xl border border-slate-800/80 shadow-2xl overflow-hidden relative z-10">
+        {/* Left Manifesto Pane */}
+        <div className="md:col-span-5 bg-gradient-to-b from-[#080d1a] to-[#040711] p-8 flex flex-col justify-between border-b md:border-b-0 md:border-r border-slate-800/80">
+          <div>
+            <Link to="/" className="inline-flex items-center gap-2.5 mb-8">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-cyan-400 p-0.5 shadow-lg shadow-indigo-500/25 flex items-center justify-center">
+                <div className="w-full h-full bg-[#030712] rounded-[10px] flex items-center justify-center">
+                  <Code2 className="w-4 h-4 text-cyan-400" />
+                </div>
               </div>
+              <span className="text-base font-black tracking-tight text-white">CodeVision AI</span>
+            </Link>
+
+            <div className="space-y-4">
+              <h2 className="text-2xl font-black text-white leading-snug">
+                Accelerate code mastery with{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">
+                  AI-powered AST insight.
+                </span>
+              </h2>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Create a persistent developer profile with custom projects, automated test generation, and AI explanations.
+              </p>
             </div>
-            <span className="text-2xl font-black tracking-tight text-white">CodeVision AI</span>
-          </Link>
-          <p className="text-xs text-slate-400">Join the AI-powered code analysis and visualization ecosystem</p>
+          </div>
+
+          <div className="pt-8 space-y-2 text-[11px] font-mono text-slate-400">
+            <div className="flex items-center gap-2">
+              <Check className="w-3.5 h-3.5 text-emerald-400" /> Instant Execution Traces
+            </div>
+            <div className="flex items-center gap-2">
+              <Check className="w-3.5 h-3.5 text-cyan-400" /> Automated Code Refactoring
+            </div>
+            <div className="flex items-center gap-2">
+              <Check className="w-3.5 h-3.5 text-purple-400" /> Interactive AST Visualizer
+            </div>
+          </div>
         </div>
 
-        <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-3xl p-8 shadow-2xl">
+        {/* Right Registration Form */}
+        <div className="md:col-span-7 p-8 sm:p-10 bg-[#060b18]/90 flex flex-col justify-center space-y-5">
+          <div>
+            <h3 className="text-xl font-bold text-white">Create Developer Account</h3>
+            <p className="text-xs text-slate-400 mt-1">Get started with full-stack code analysis in seconds.</p>
+          </div>
+
           {error && (
-            <div className="mb-6 p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2.5">
+            <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2.5">
               <AlertCircle className="w-4 h-4 text-rose-400 flex-shrink-0" />
               <span>{error}</span>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3.5">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">Full Name</label>
+              <label className="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
               <div className="relative">
                 <User className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
@@ -99,117 +134,101 @@ export const RegisterPage: React.FC = () => {
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Ada Lovelace"
                   required
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950/60 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">Email Address</label>
+              <label className="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
               <div className="relative">
                 <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="developer@codevision.ai"
+                  placeholder="ada@example.com"
                   required
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950/60 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-all"
                 />
               </div>
             </div>
 
-            <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">Password</label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Minimum 6 characters"
-                  required
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-950/60 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-semibold text-slate-300 mb-1">Password</label>
+                <div className="relative">
+                  <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                    className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-all"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="p-1 text-slate-500 hover:text-slate-300 absolute right-3 top-1/2 -translate-y-1/2"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
 
-              {/* Password strength meter */}
-              {password && (
-                <div className="mt-2">
-                  <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden flex">
-                    <div
-                      className={`h-full transition-all duration-300 ${
-                        strength <= 25 ? 'bg-rose-500' : strength <= 50 ? 'bg-amber-500' : strength <= 75 ? 'bg-blue-500' : 'bg-emerald-500'
-                      }`}
-                      style={{ width: `${strength}%` }}
-                    ></div>
-                  </div>
-                  <span className="text-[10px] text-slate-400 mt-1 block">
-                    Strength:{' '}
-                    {strength <= 25 ? 'Weak' : strength <= 50 ? 'Fair' : strength <= 75 ? 'Good' : 'Strong'}
+              <div>
+                <label className="block text-xs font-semibold text-slate-300 mb-1">Confirm Password</label>
+                <div className="relative">
+                  <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-all"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Password Strength Indicator */}
+            {password && (
+              <div className="space-y-1 pt-1">
+                <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
+                  <span>Password Complexity</span>
+                  <span className={strength >= 75 ? 'text-emerald-400' : strength >= 50 ? 'text-amber-400' : 'text-rose-400'}>
+                    {strength >= 75 ? 'Strong' : strength >= 50 ? 'Medium' : 'Weak'}
                   </span>
                 </div>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">Confirm Password</label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Repeat your password"
-                  required
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950/60 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
-                />
+                <div className="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden">
+                  <div
+                    className={`h-full transition-all duration-300 ${
+                      strength >= 75 ? 'bg-emerald-400' : strength >= 50 ? 'bg-amber-400' : 'bg-rose-500'
+                    }`}
+                    style={{ width: `${strength}%` }}
+                  />
+                </div>
               </div>
-            </div>
+            )}
 
-            <div className="flex items-center gap-2 pt-1">
-              <input
-                type="checkbox"
-                id="terms"
-                checked={termsAgreed}
-                onChange={(e) => setTermsAgreed(e.target.checked)}
-                className="rounded border-slate-700 bg-slate-950 text-indigo-600 focus:ring-indigo-500"
-              />
-              <label htmlFor="terms" className="text-xs text-slate-400">
-                I agree to the Terms of Service & Privacy Policy
-              </label>
-            </div>
-
-            <button
+            <GlassAIButton
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/25 disabled:opacity-50 transition-all duration-200 group mt-6"
+              size="md"
+              variant="primary"
+              className="w-full mt-2"
             >
-              {isSubmitting ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>Creating Account...</span>
-                </>
-              ) : (
-                <>
-                  <span>Create Account</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </>
-              )}
-            </button>
+              <span>{isSubmitting ? 'Creating Profile...' : 'Create Account'}</span>
+              <ArrowRight className="w-4 h-4" />
+            </GlassAIButton>
           </form>
 
-          <div className="mt-6 pt-6 border-t border-slate-800/80 text-center text-xs text-slate-400">
+          <div className="pt-1 text-center text-xs text-slate-400">
             Already have an account?{' '}
-            <Link to="/login" className="font-semibold text-cyan-400 hover:text-cyan-300">
-              Sign in
+            <Link to="/login" className="text-cyan-400 font-semibold hover:underline">
+              Sign In
             </Link>
           </div>
         </div>
