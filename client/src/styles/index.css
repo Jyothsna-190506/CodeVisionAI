@@ -119,6 +119,40 @@
   box-shadow: 0 0 0 3px rgba(216, 92, 50, 0.18) !important;
 }
 
+/* Button Classes With Guaranteed High-Contrast */
+.btn-terracotta,
+button.bg-terracotta,
+a.bg-terracotta {
+  background-color: #D85C32 !important;
+  color: #FFFFFF !important;
+  border: 1px solid transparent !important;
+  box-shadow: 0 4px 14px rgba(216, 92, 50, 0.35) !important;
+  font-weight: 700 !important;
+}
+
+.btn-terracotta:hover,
+button.bg-terracotta:hover,
+a.bg-terracotta:hover {
+  background-color: #B94722 !important;
+}
+
+.btn-white,
+button.bg-white,
+a.bg-white {
+  background-color: #FFFFFF !important;
+  color: #242321 !important;
+  border: 1.5px solid #D5CEBF !important;
+  box-shadow: 0 2px 8px rgba(36, 35, 33, 0.08) !important;
+  font-weight: 700 !important;
+}
+
+.btn-white:hover,
+button.bg-white:hover,
+a.bg-white:hover {
+  background-color: #F2EEE5 !important;
+  border-color: #C8BFB0 !important;
+}
+
 @layer utilities {
   /* Pearl Code Lab Glassmorphism */
   .pearl-glass {
