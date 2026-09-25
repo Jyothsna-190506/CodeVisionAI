@@ -157,14 +157,14 @@ export const WelcomePage: React.FC = () => {
             <div className="flex flex-wrap items-center gap-3.5 pt-2">
               <Link to="/editor">
                 <GlassAIButton size="lg" variant="primary">
-                  <Play className="w-4 h-4 fill-white" />
+                  <Play className="w-4 h-4 fill-white text-white" />
                   <span>Analyze Your Code</span>
                 </GlassAIButton>
               </Link>
               <Link to="/login">
                 <GlassAIButton size="lg" variant="subtle">
                   <span>Explore Platform</span>
-                  <ChevronRight className="w-4 h-4 text-charcoal-muted" />
+                  <ChevronRight className="w-4 h-4 text-charcoal" />
                 </GlassAIButton>
               </Link>
             </div>
