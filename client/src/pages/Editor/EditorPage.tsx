@@ -194,7 +194,7 @@ export const EditorPage: React.FC = () => {
               value={projectName}
               onChange={(e) => setProjectName(e.target.value)}
               placeholder="Project Name..."
-              className="bg-transparent border-b border-transparent hover:border-border-pearl focus:border-terracotta text-xs font-bold text-charcoal focus:outline-none px-1 py-0.5 max-w-[200px] sm:max-w-xs transition-colors"
+              className="bg-white border border-[#D5CEBF] hover:border-terracotta focus:border-terracotta text-xs font-bold text-charcoal focus:outline-none px-2.5 py-1 rounded-xl max-w-[200px] sm:max-w-xs transition-colors shadow-sm"
             />
           </div>
 

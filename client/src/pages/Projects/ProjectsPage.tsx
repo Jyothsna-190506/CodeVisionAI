@@ -166,7 +166,7 @@ export const ProjectsPage: React.FC = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search projects, tags..."
-            className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-pearl border border-border-pearl text-xs text-charcoal placeholder-secondary-text focus:outline-none focus:border-terracotta transition-all font-medium"
+            className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white border border-[#D5CEBF] text-xs text-charcoal placeholder-secondary-text focus:outline-none focus:border-terracotta shadow-sm transition-all font-medium"
           />
         </div>
 
@@ -175,7 +175,7 @@ export const ProjectsPage: React.FC = () => {
           <select
             value={languageFilter}
             onChange={(e) => setLanguageFilter(e.target.value)}
-            className="px-3.5 py-2.5 rounded-2xl bg-pearl border border-border-pearl text-xs text-charcoal font-bold focus:outline-none focus:border-terracotta"
+            className="px-3.5 py-2.5 rounded-2xl bg-white border border-[#D5CEBF] text-xs text-charcoal font-bold focus:outline-none focus:border-terracotta shadow-sm"
           >
             <option value="">All Languages</option>
             <option value="python">Python</option>
@@ -334,7 +334,7 @@ export const ProjectsPage: React.FC = () => {
                   onChange={(e) => setNewName(e.target.value)}
                   placeholder="e.g. Binary Search Tree / Pathfinding Solver"
                   required
-                  className="w-full px-4 py-2.5 rounded-2xl bg-pearl border border-border-pearl text-xs text-charcoal placeholder-secondary-text focus:outline-none focus:border-terracotta font-medium"
+                  className="w-full px-4 py-2.5 rounded-2xl bg-white border border-[#D5CEBF] text-xs text-charcoal placeholder-secondary-text focus:outline-none focus:border-terracotta shadow-sm font-medium"
                 />
               </div>
 
@@ -343,7 +343,7 @@ export const ProjectsPage: React.FC = () => {
                 <select
                   value={newLang}
                   onChange={(e) => setNewLang(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-2xl bg-pearl border border-border-pearl text-xs text-charcoal font-bold focus:outline-none focus:border-terracotta"
+                  className="w-full px-4 py-2.5 rounded-2xl bg-white border border-[#D5CEBF] text-xs text-charcoal font-bold focus:outline-none focus:border-terracotta shadow-sm"
                 >
                   <option value="python">Python</option>
                   <option value="cpp">C++</option>
@@ -363,7 +363,7 @@ export const ProjectsPage: React.FC = () => {
                   onChange={(e) => setNewDesc(e.target.value)}
                   rows={2}
                   placeholder="Short description of algorithmic structure"
-                  className="w-full px-4 py-2.5 rounded-2xl bg-pearl border border-border-pearl text-xs text-charcoal placeholder-secondary-text focus:outline-none focus:border-terracotta resize-none font-medium"
+                  className="w-full px-4 py-2.5 rounded-2xl bg-white border border-[#D5CEBF] text-xs text-charcoal placeholder-secondary-text focus:outline-none focus:border-terracotta resize-none shadow-sm font-medium"
                 ></textarea>
               </div>
 
@@ -374,7 +374,7 @@ export const ProjectsPage: React.FC = () => {
                   value={newTags}
                   onChange={(e) => setNewTags(e.target.value)}
                   placeholder="dsa, recursion, sorting"
-                  className="w-full px-4 py-2.5 rounded-2xl bg-pearl border border-border-pearl text-xs text-charcoal placeholder-secondary-text focus:outline-none focus:border-terracotta font-medium"
+                  className="w-full px-4 py-2.5 rounded-2xl bg-white border border-[#D5CEBF] text-xs text-charcoal placeholder-secondary-text focus:outline-none focus:border-terracotta shadow-sm font-medium"
                 />
               </div>
 

@@ -67,7 +67,7 @@ export const HistoryPage: React.FC = () => {
           <select
             value={actionFilter}
             onChange={(e) => setActionFilter(e.target.value)}
-            className="px-3.5 py-2.5 rounded-2xl bg-white border border-border-pearl text-xs text-charcoal font-bold focus:outline-none focus:border-terracotta shadow-sm"
+            className="px-3.5 py-2.5 rounded-2xl bg-white border border-[#D5CEBF] text-xs text-charcoal font-bold focus:outline-none focus:border-terracotta shadow-sm"
           >
             <option value="">All Actions</option>
             <option value="ANALYZED_CODE">Analyzed Code</option>
@@ -79,7 +79,7 @@ export const HistoryPage: React.FC = () => {
           <select
             value={languageFilter}
             onChange={(e) => setLanguageFilter(e.target.value)}
-            className="px-3.5 py-2.5 rounded-2xl bg-white border border-border-pearl text-xs text-charcoal font-bold focus:outline-none focus:border-terracotta shadow-sm"
+            className="px-3.5 py-2.5 rounded-2xl bg-white border border-[#D5CEBF] text-xs text-charcoal font-bold focus:outline-none focus:border-terracotta shadow-sm"
           >
             <option value="">All Languages</option>
             <option value="python">Python</option>

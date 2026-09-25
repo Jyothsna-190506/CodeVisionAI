@@ -15,7 +15,7 @@
   --cv-primary-hover: #B94722;
   --cv-orange: #F28A3D;
   --cv-lime: #B7D94B;
-  --cv-border: rgba(36, 35, 33, 0.12);
+  --cv-border: rgba(36, 35, 33, 0.16);
   --cv-shadow: 0 10px 35px rgba(50, 40, 30, 0.08);
 
   /* Standard aliases */
@@ -26,7 +26,7 @@
   --text-primary: #242321;
   --text-secondary: #625E57;
   --text-muted: #858078;
-  --border: rgba(36, 35, 33, 0.12);
+  --border: rgba(36, 35, 33, 0.16);
   --primary: #D85C32;
   --primary-hover: #B94722;
   --accent: #B7D94B;
@@ -55,21 +55,25 @@
     color: inherit;
   }
 
-  /* Input fields with crisp light contrast */
-  input, select, textarea {
+  /* Text boxes, inputs, selects, textareas with bold high-contrast visibility */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+  select,
+  textarea {
     background-color: #FFFFFF !important;
     color: #242321 !important;
-    border: 1px solid rgba(36, 35, 33, 0.14) !important;
+    border: 1.5px solid #D5CEBF !important;
+    box-shadow: 0 1px 3px rgba(36, 35, 33, 0.06) !important;
   }
 
   input::placeholder, textarea::placeholder {
     color: #858078 !important;
+    opacity: 1 !important;
   }
 
   input:focus, select:focus, textarea:focus {
     border-color: #D85C32 !important;
     outline: none !important;
-    box-shadow: 0 0 0 3px rgba(216, 92, 50, 0.12) !important;
+    box-shadow: 0 0 0 3px rgba(216, 92, 50, 0.18) !important;
   }
 }
 
@@ -102,26 +106,39 @@
   color: #799718 !important;
 }
 
+/* Dedicated high-visibility textbox class */
+.cv-input {
+  background-color: #FFFFFF !important;
+  color: #242321 !important;
+  border: 1.5px solid #D5CEBF !important;
+  box-shadow: 0 1px 3px rgba(36, 35, 33, 0.06) !important;
+}
+
+.cv-input:focus {
+  border-color: #D85C32 !important;
+  box-shadow: 0 0 0 3px rgba(216, 92, 50, 0.18) !important;
+}
+
 @layer utilities {
   /* Pearl Code Lab Glassmorphism */
   .pearl-glass {
     background: rgba(255, 255, 255, 0.88);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(36, 35, 33, 0.10);
+    border: 1px solid rgba(36, 35, 33, 0.12);
     box-shadow: 0 10px 35px rgba(50, 40, 30, 0.08);
   }
 
   .pearl-card {
     background: #FFFFFF;
-    border: 1px solid rgba(36, 35, 33, 0.10);
+    border: 1px solid rgba(36, 35, 33, 0.12);
     box-shadow: 0 4px 20px -4px rgba(50, 40, 30, 0.06);
     color: #242321;
   }
 
   .pearl-card-alt {
     background: #F2EEE5;
-    border: 1px solid rgba(36, 35, 33, 0.09);
+    border: 1px solid rgba(36, 35, 33, 0.12);
     color: #242321;
   }
 
@@ -129,7 +146,7 @@
     background: rgba(255, 255, 255, 0.88);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(36, 35, 33, 0.10);
+    border: 1px solid rgba(36, 35, 33, 0.12);
     box-shadow: 0 10px 35px rgba(50, 40, 30, 0.08);
   }
 
@@ -138,7 +155,7 @@
     background: rgba(255, 255, 255, 0.94);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(36, 35, 33, 0.10);
+    border: 1px solid rgba(36, 35, 33, 0.12);
     box-shadow: 0 15px 45px rgba(50, 40, 30, 0.10);
     color: #242321;
   }
@@ -147,8 +164,8 @@
   .pearl-grid-bg {
     background-image: 
       radial-gradient(circle at 50% 0%, rgba(216, 92, 50, 0.05) 0%, transparent 60%),
-      linear-gradient(to right, rgba(36, 35, 33, 0.04) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(36, 35, 33, 0.04) 1px, transparent 1px);
+      linear-gradient(to right, rgba(36, 35, 33, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(36, 35, 33, 0.05) 1px, transparent 1px);
     background-size: 100% 100%, 32px 32px, 32px 32px;
   }
 

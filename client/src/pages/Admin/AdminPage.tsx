@@ -185,7 +185,7 @@ export const AdminPage: React.FC = () => {
                 value={userSearch}
                 onChange={(e) => setUserSearch(e.target.value)}
                 placeholder="Search user name or email..."
-                className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white border border-border-pearl text-xs text-charcoal placeholder-secondary-text focus:outline-none focus:border-terracotta shadow-sm font-medium"
+                className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white border border-[#D5CEBF] text-xs text-charcoal placeholder-secondary-text focus:outline-none focus:border-terracotta shadow-sm font-medium"
               />
             </div>
           </div>
@@ -211,7 +211,7 @@ export const AdminPage: React.FC = () => {
                       <select
                         value={u.role}
                         onChange={(e) => handleChangeRole(u.id, e.target.value)}
-                        className="px-2.5 py-1 rounded-xl bg-pearl border border-border-pearl text-[11px] font-mono text-terracotta font-bold focus:outline-none"
+                        className="px-2.5 py-1 rounded-xl bg-white border border-[#D5CEBF] text-[11px] font-mono text-terracotta font-bold focus:outline-none shadow-sm"
                       >
                         <option value="USER">USER</option>
                         <option value="ADMIN">ADMIN</option>

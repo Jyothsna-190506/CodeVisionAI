@@ -147,7 +147,7 @@ export const SettingsPage: React.FC = () => {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-2xl bg-pearl border border-border-pearl text-xs text-charcoal focus:outline-none focus:border-terracotta font-medium"
+                  className="w-full px-4 py-2.5 rounded-2xl bg-white border border-[#D5CEBF] text-xs text-charcoal focus:outline-none focus:border-terracotta shadow-sm font-medium"
                 />
               </div>
 
@@ -157,7 +157,7 @@ export const SettingsPage: React.FC = () => {
                   type="email"
                   value={user?.email || ''}
                   disabled
-                  className="w-full px-4 py-2.5 rounded-2xl bg-secondary-card border border-border-pearl text-xs text-secondary-text cursor-not-allowed font-mono font-medium"
+                  className="w-full px-4 py-2.5 rounded-2xl bg-secondary-card border border-[#D5CEBF] text-xs text-secondary-text cursor-not-allowed font-mono font-medium"
                 />
               </div>
 
@@ -189,7 +189,7 @@ export const SettingsPage: React.FC = () => {
                     max={24}
                     value={fontSize}
                     onChange={(e) => setFontSize(Number(e.target.value))}
-                    className="w-full px-4 py-2.5 rounded-2xl bg-pearl border border-border-pearl text-xs text-charcoal focus:outline-none focus:border-terracotta font-mono font-bold"
+                    className="w-full px-4 py-2.5 rounded-2xl bg-white border border-[#D5CEBF] text-xs text-charcoal focus:outline-none focus:border-terracotta shadow-sm font-mono font-bold"
                   />
                 </div>
 
@@ -198,7 +198,7 @@ export const SettingsPage: React.FC = () => {
                   <select
                     value={wordWrap}
                     onChange={(e) => setWordWrap(e.target.value as any)}
-                    className="w-full px-4 py-2.5 rounded-2xl bg-pearl border border-border-pearl text-xs text-charcoal font-bold focus:outline-none focus:border-terracotta"
+                    className="w-full px-4 py-2.5 rounded-2xl bg-white border border-[#D5CEBF] text-xs text-charcoal font-bold focus:outline-none focus:border-terracotta shadow-sm"
                   >
                     <option value="on">Enabled (On)</option>
                     <option value="off">Disabled (Off)</option>
@@ -212,7 +212,7 @@ export const SettingsPage: React.FC = () => {
                   id="minimapCheck"
                   checked={minimap}
                   onChange={(e) => setMinimap(e.target.checked)}
-                  className="rounded border-border-pearl accent-terracotta cursor-pointer"
+                  className="rounded border-[#D5CEBF] accent-terracotta cursor-pointer"
                 />
                 <label htmlFor="minimapCheck" className="text-xs text-charcoal font-medium cursor-pointer">
                   Display Code Minimap on right margin
@@ -244,7 +244,7 @@ export const SettingsPage: React.FC = () => {
                   <select
                     value={aiProvider}
                     onChange={(e) => setAiProvider(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-2xl bg-pearl border border-border-pearl text-xs text-charcoal font-bold focus:outline-none focus:border-terracotta"
+                    className="w-full px-4 py-2.5 rounded-2xl bg-white border border-[#D5CEBF] text-xs text-charcoal font-bold focus:outline-none focus:border-terracotta shadow-sm"
                   >
                     <option value="groq">Groq (Llama 3.3 70B - Ultra Fast)</option>
                     <option value="openrouter">OpenRouter API</option>
@@ -258,7 +258,7 @@ export const SettingsPage: React.FC = () => {
                     type="text"
                     value={aiModel}
                     onChange={(e) => setAiModel(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-2xl bg-pearl border border-border-pearl text-xs text-charcoal focus:outline-none focus:border-terracotta font-mono font-bold"
+                    className="w-full px-4 py-2.5 rounded-2xl bg-white border border-[#D5CEBF] text-xs text-charcoal focus:outline-none focus:border-terracotta shadow-sm font-mono font-bold"
                   />
                 </div>
               </div>
@@ -309,7 +309,7 @@ export const SettingsPage: React.FC = () => {
                   onChange={(e) => setCurrentPassword(e.target.value)}
                   placeholder="••••••••"
                   required
-                  className="w-full px-4 py-2.5 rounded-2xl bg-pearl border border-border-pearl text-xs text-charcoal focus:outline-none focus:border-terracotta font-medium"
+                  className="w-full px-4 py-2.5 rounded-2xl bg-white border border-[#D5CEBF] text-xs text-charcoal focus:outline-none focus:border-terracotta shadow-sm font-medium"
                 />
               </div>
 
@@ -322,7 +322,7 @@ export const SettingsPage: React.FC = () => {
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="••••••••"
                     required
-                    className="w-full px-4 py-2.5 rounded-2xl bg-pearl border border-border-pearl text-xs text-charcoal focus:outline-none focus:border-terracotta font-medium"
+                    className="w-full px-4 py-2.5 rounded-2xl bg-white border border-[#D5CEBF] text-xs text-charcoal focus:outline-none focus:border-terracotta shadow-sm font-medium"
                   />
                 </div>
 
@@ -334,7 +334,7 @@ export const SettingsPage: React.FC = () => {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="••••••••"
                     required
-                    className="w-full px-4 py-2.5 rounded-2xl bg-pearl border border-border-pearl text-xs text-charcoal focus:outline-none focus:border-terracotta font-medium"
+                    className="w-full px-4 py-2.5 rounded-2xl bg-white border border-[#D5CEBF] text-xs text-charcoal focus:outline-none focus:border-terracotta shadow-sm font-medium"
                   />
                 </div>
               </div>

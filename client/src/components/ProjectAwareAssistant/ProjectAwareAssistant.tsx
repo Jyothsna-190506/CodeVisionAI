@@ -313,7 +313,7 @@ export const ProjectAwareAssistant: React.FC<ProjectAwareAssistantProps> = ({
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask anything about your code, Big-O complexity, refactoring, or tests..."
           disabled={isThinking}
-          className="flex-1 px-4 py-2.5 rounded-xl bg-pearl border border-border-pearl text-xs text-charcoal placeholder-secondary-text focus:outline-none focus:border-terracotta disabled:opacity-50 font-medium"
+          className="flex-1 px-4 py-2.5 rounded-xl bg-white border border-[#D5CEBF] text-xs text-charcoal placeholder-secondary-text focus:outline-none focus:border-terracotta disabled:opacity-50 font-medium shadow-sm"
         />
         <button
           type="submit"

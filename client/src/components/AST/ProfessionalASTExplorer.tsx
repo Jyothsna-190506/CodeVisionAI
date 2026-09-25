@@ -115,7 +115,7 @@ export const ProfessionalASTExplorer: React.FC<ProfessionalASTExplorerProps> = (
               placeholder="Search AST nodes..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8 pr-3 py-1.5 rounded-xl bg-pearl border border-border-pearl text-xs text-charcoal placeholder-secondary-text focus:outline-none focus:border-terracotta w-44"
+              className="pl-8 pr-3 py-1.5 rounded-xl bg-white border border-[#D5CEBF] text-xs text-charcoal placeholder-secondary-text focus:outline-none focus:border-terracotta shadow-sm w-44 font-medium"
             />
           </div>
 
