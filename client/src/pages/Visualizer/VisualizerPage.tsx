@@ -7,6 +7,7 @@ import { ControlBar } from '../../components/ControlBar/ControlBar';
 import { SAMPLE_CODES, SampleCode } from '../../constants/samples';
 import { visualizeCode, VisualizeResponse, Step, Summary } from '../../services/api';
 import { Play, Trash2, Code, Sparkles, AlertCircle, FileCode } from 'lucide-react';
+import { GlassAIButton } from '../../components/ThreeUI/GlassAIButton';
 
 export const VisualizerPage: React.FC = () => {
   // Input state
@@ -103,17 +104,17 @@ export const VisualizerPage: React.FC = () => {
   const activeLine = activeStep ? activeStep.line : null;
 
   return (
-    <div className="h-[calc(100vh-4rem)] p-3 sm:p-4 max-w-[1800px] mx-auto flex flex-col gap-3 overflow-hidden">
+    <div className="h-[calc(100vh-4rem)] p-3 sm:p-4 max-w-[1800px] mx-auto flex flex-col gap-3 overflow-hidden font-sans text-charcoal">
       {/* Top Banner Alert (If Any Error) */}
       {errorMsg && (
-        <div className="glass-panel px-4 py-2.5 rounded-xl border border-rose-500/40 bg-rose-950/40 text-rose-200 text-xs flex items-center justify-between shadow-lg">
+        <div className="px-4 py-2.5 rounded-2xl border border-rose-200 bg-rose-50 text-rose-800 text-xs flex items-center justify-between shadow-pearl-sm">
           <div className="flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-rose-400 flex-shrink-0" />
+            <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0" />
             <span>{errorMsg}</span>
           </div>
           <button
             onClick={() => setErrorMsg(null)}
-            className="text-slate-400 hover:text-white text-xs font-bold"
+            className="text-rose-600 hover:text-rose-800 text-xs font-bold"
           >
             Dismiss
           </button>
@@ -123,10 +124,10 @@ export const VisualizerPage: React.FC = () => {
       {/* Main 3-Panel Responsive Layout */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3.5 min-h-0">
         
-        {/* LEFT PANEL (33% -> 4/12 cols - Increased Horizontal Space for Code Editor) */}
-        <div className="lg:col-span-4 glass-panel p-3.5 rounded-2xl border border-slate-800 flex flex-col gap-3 min-h-0 bg-slate-900/70">
+        {/* LEFT PANEL (Code Editor) */}
+        <div className="lg:col-span-4 pearl-card p-3.5 rounded-2xl border border-border-pearl flex flex-col gap-3 min-h-0 shadow-pearl-sm">
           {/* Header Controls: Language Selector & Sample dropdown */}
-          <div className="flex items-center justify-between gap-2 pb-2 border-b border-slate-800">
+          <div className="flex items-center justify-between gap-2 pb-2 border-b border-border-pearl">
             <LanguageSelector
               selectedLanguage={language}
               onChange={handleLanguageChange}
@@ -136,22 +137,22 @@ export const VisualizerPage: React.FC = () => {
             {/* Sample Selector */}
             <div className="relative group">
               <button
-                className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300 flex items-center gap-1 border border-slate-700 transition-colors"
+                className="px-2.5 py-1.5 rounded-xl bg-ivory-warm hover:bg-white text-xs font-semibold text-charcoal flex items-center gap-1 border border-border-pearl transition-colors shadow-pearl-sm"
                 title="Load preset algorithm sample"
               >
-                <FileCode className="w-3.5 h-3.5 text-indigo-400" />
+                <FileCode className="w-3.5 h-3.5 text-terracotta" />
                 <span>Samples</span>
               </button>
 
-              <div className="absolute right-0 top-full mt-1 w-52 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl z-50 hidden group-hover:block p-1.5">
+              <div className="absolute right-0 top-full mt-1 w-52 bg-white border border-border-pearl rounded-2xl shadow-pearl-lg z-50 hidden group-hover:block p-1.5">
                 {SAMPLE_CODES.map((sample) => (
                   <button
                     key={sample.id}
                     onClick={() => handleLoadSample(sample)}
-                    className="w-full text-left px-3 py-2 text-xs text-slate-300 hover:bg-indigo-600 hover:text-white rounded-lg flex items-center justify-between transition-colors my-0.5"
+                    className="w-full text-left px-3 py-2 text-xs text-charcoal hover:bg-terracotta hover:text-white rounded-xl flex items-center justify-between transition-colors my-0.5"
                   >
                     <span className="truncate font-medium">{sample.name}</span>
-                    <span className="text-[10px] uppercase font-mono text-slate-400 group-hover:text-indigo-200">
+                    <span className="text-[10px] uppercase font-mono text-charcoal-muted group-hover:text-white">
                       {sample.language}
                     </span>
                   </button>
@@ -172,36 +173,29 @@ export const VisualizerPage: React.FC = () => {
 
           {/* Buttons Toolbar: Visualize & Clear */}
           <div className="flex items-center gap-2">
-            <button
+            <GlassAIButton
               onClick={handleVisualize}
               disabled={isAnalyzing || !code.trim()}
-              className="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/25 disabled:opacity-40 transition-all duration-200"
+              variant="primary"
+              size="md"
+              className="flex-1"
+              icon={isAnalyzing ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> : <Play className="w-4 h-4 fill-white" />}
             >
-              {isAnalyzing ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>Analyzing...</span>
-                </>
-              ) : (
-                <>
-                  <Play className="w-4 h-4 fill-white" />
-                  <span>Visualize</span>
-                </>
-              )}
-            </button>
+              {isAnalyzing ? 'Analyzing...' : 'Visualize'}
+            </GlassAIButton>
 
             <button
               onClick={handleClear}
               disabled={isAnalyzing}
               title="Clear Editor"
-              className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-400 hover:text-rose-400 disabled:opacity-40 transition-colors"
+              className="p-2.5 rounded-xl bg-white border border-border-pearl hover:bg-ivory-warm text-charcoal-muted hover:text-rose-600 disabled:opacity-40 transition-colors shadow-pearl-sm"
             >
               <Trash2 className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        {/* CENTER PANEL (42% -> 5/12 cols for Spacious Visualization View) */}
+        {/* CENTER PANEL (Visualization Canvas) */}
         <div className="lg:col-span-5 flex flex-col gap-3 min-h-0">
           <div className="flex-1 min-h-0 overflow-y-auto">
             <VisualizationCanvas
@@ -234,8 +228,8 @@ export const VisualizerPage: React.FC = () => {
           />
         </div>
 
-        {/* RIGHT PANEL (25% -> 3/12 cols) */}
-        <div className="lg:col-span-3 glass-panel p-3.5 rounded-2xl border border-slate-800 flex flex-col min-h-0 bg-slate-900/70">
+        {/* RIGHT PANEL (Step Details Card) */}
+        <div className="lg:col-span-3 pearl-card p-3.5 rounded-2xl border border-border-pearl flex flex-col min-h-0 shadow-pearl-sm">
           <StepCard
             step={activeStep}
             summary={summary}

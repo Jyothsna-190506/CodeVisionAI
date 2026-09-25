@@ -36,28 +36,29 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   const handleEditorDidMount: OnMount = (editor, monaco) => {
     editorRef.current = editor;
 
-    // Custom dark theme configuration
-    monaco.editor.defineTheme('codevision-dark', {
-      base: 'vs-dark',
+    // Custom Pearl Code Lab Light Theme
+    monaco.editor.defineTheme('pearl-code-light', {
+      base: 'vs',
       inherit: true,
       rules: [
-        { token: 'comment', foreground: '64748B', fontStyle: 'italic' },
-        { token: 'keyword', foreground: '818CF8', fontStyle: 'bold' },
-        { token: 'number', foreground: '38BDF8' },
-        { token: 'string', foreground: '34D399' },
-        { token: 'type', foreground: 'F472B6' },
+        { token: 'comment', foreground: '858078', fontStyle: 'italic' },
+        { token: 'keyword', foreground: 'D85C32', fontStyle: 'bold' },
+        { token: 'number', foreground: 'F28A3D' },
+        { token: 'string', foreground: '799718' },
+        { token: 'type', foreground: 'D85C32' },
+        { token: 'identifier', foreground: '242321' },
       ],
       colors: {
-        'editor.background': '#0F172A',
-        'editor.foreground': '#F8FAFC',
-        'editor.lineHighlightBackground': '#1E293B',
-        'editorLineNumber.foreground': '#475569',
-        'editorLineNumber.activeForeground': '#818CF8',
-        'editorGutter.background': '#0F172A',
+        'editor.background': '#FFFDF8',
+        'editor.foreground': '#242321',
+        'editor.lineHighlightBackground': '#F5EFE6',
+        'editorLineNumber.foreground': '#858078',
+        'editorLineNumber.activeForeground': '#D85C32',
+        'editorGutter.background': '#FFFDF8',
       }
     });
 
-    monaco.editor.setTheme('codevision-dark');
+    monaco.editor.setTheme('pearl-code-light');
   };
 
   // Update line highlighting when activeLine changes
@@ -90,7 +91,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   }, [activeLine]);
 
   return (
-    <div className="w-full h-full rounded-xl overflow-hidden border border-slate-800 bg-[#0F172A] shadow-inner">
+    <div className="w-full h-full rounded-2xl overflow-hidden border border-border-pearl bg-[#FFFDF8] shadow-pearl-sm">
       <Editor
         height="100%"
         language={getMonacoLanguage(language)}
@@ -100,7 +101,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
         options={{
           readOnly: readOnly,
           minimap: { enabled: false },
-          fontSize: 14,
+          fontSize: 13,
           fontFamily: "'JetBrains Mono', monospace",
           lineNumbers: 'on',
           scrollBeyondLastLine: false,

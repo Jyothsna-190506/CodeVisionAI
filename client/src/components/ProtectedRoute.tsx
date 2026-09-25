@@ -8,10 +8,10 @@ export const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ childr
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0F172A]">
-        <div className="flex flex-col items-center gap-3 text-cyan-400">
-          <div className="w-8 h-8 border-3 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
-          <span className="text-sm font-medium text-slate-300">Authenticating...</span>
+      <div className="min-h-screen flex items-center justify-center bg-pearl">
+        <div className="flex flex-col items-center gap-3 text-terracotta">
+          <div className="w-8 h-8 border-3 border-terracotta border-t-transparent rounded-full animate-spin"></div>
+          <span className="text-sm font-semibold text-charcoal">Authenticating...</span>
         </div>
       </div>
     );
@@ -30,8 +30,8 @@ export const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0F172A]">
-        <div className="w-8 h-8 border-3 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+      <div className="min-h-screen flex items-center justify-center bg-pearl">
+        <div className="w-8 h-8 border-3 border-terracotta border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }

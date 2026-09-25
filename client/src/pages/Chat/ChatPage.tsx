@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import apiClient from '../../services/apiClient';
 import { Project } from '../../types';
 import { MessageSquare, Send, Sparkles, FolderKanban, Trash2, Code2 } from 'lucide-react';
+import { GlassAIButton } from '../../components/ThreeUI/GlassAIButton';
 
 export const ChatPage: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -88,15 +89,15 @@ export const ChatPage: React.FC = () => {
   ];
 
   return (
-    <div className="p-6 max-w-5xl mx-auto h-[calc(100vh-4rem)] flex flex-col space-y-4">
+    <div className="p-6 max-w-5xl mx-auto h-[calc(100vh-4rem)] flex flex-col space-y-4 font-sans text-charcoal">
       {/* Top Bar */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-border-pearl">
         <div>
-          <h1 className="text-xl font-extrabold text-white flex items-center gap-2">
-            <MessageSquare className="w-5 h-5 text-cyan-400" />
+          <h1 className="text-xl font-extrabold text-charcoal flex items-center gap-2">
+            <MessageSquare className="w-5 h-5 text-terracotta" />
             <span>AI Code Assistant</span>
           </h1>
-          <p className="text-xs text-slate-400">Context-aware conversational code reasoning & debugging</p>
+          <p className="text-xs text-charcoal-muted">Context-aware conversational code reasoning & debugging</p>
         </div>
 
         <div className="flex items-center gap-2">
@@ -104,7 +105,7 @@ export const ChatPage: React.FC = () => {
           <select
             value={selectedProjectId}
             onChange={(e) => setSelectedProjectId(e.target.value)}
-            className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-indigo-500"
+            className="px-3 py-1.5 rounded-xl bg-white border border-border-pearl text-xs text-charcoal focus:outline-none focus:border-terracotta shadow-pearl-sm"
           >
             <option value="">General (No Project Context)</option>
             {projects.map((p) => (
@@ -118,7 +119,7 @@ export const ChatPage: React.FC = () => {
             <button
               onClick={handleClear}
               title="Clear history"
-              className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-rose-400"
+              className="p-2 rounded-xl bg-white border border-border-pearl text-charcoal-muted hover:text-rose-600 hover:bg-ivory-warm shadow-pearl-sm transition-colors"
             >
               <Trash2 className="w-4 h-4" />
             </button>
@@ -130,12 +131,12 @@ export const ChatPage: React.FC = () => {
       <div className="flex-1 overflow-y-auto space-y-3.5 pr-2">
         {messages.length === 0 ? (
           <div className="text-center py-12 space-y-6">
-            <div className="w-12 h-12 rounded-2xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center mx-auto text-cyan-400">
+            <div className="w-12 h-12 rounded-2xl bg-terracotta-light border border-terracotta/20 flex items-center justify-center mx-auto text-terracotta shadow-pearl-sm">
               <Sparkles className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-200">How can I assist your coding today?</h3>
-              <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto">
+              <h3 className="text-base font-bold text-charcoal">How can I assist your coding today?</h3>
+              <p className="text-xs text-charcoal-muted mt-1 max-w-md mx-auto">
                 Ask questions about algorithms, memory allocations, big-O complexity, refactoring, or test cases.
               </p>
             </div>
@@ -146,7 +147,7 @@ export const ChatPage: React.FC = () => {
                 <button
                   key={idx}
                   onClick={() => handleSend(q)}
-                  className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-indigo-500 text-xs text-slate-300 hover:text-white transition-colors"
+                  className="p-3.5 rounded-2xl bg-white border border-border-pearl hover:border-terracotta text-xs text-charcoal hover:text-terracotta shadow-pearl-sm transition-all text-left"
                 >
                   "{q}"
                 </button>
@@ -157,14 +158,25 @@ export const ChatPage: React.FC = () => {
           messages.map((msg, i) => (
             <div
               key={i}
-              className={`p-4 rounded-2xl text-xs max-w-3xl leading-relaxed shadow-lg ${
+              className={`p-4 rounded-2xl text-xs max-w-3xl leading-relaxed shadow-pearl-sm ${
                 msg.role === 'user'
-                  ? 'ml-auto bg-gradient-to-r from-indigo-600 via-indigo-500 to-cyan-600 text-white'
-                  : 'bg-slate-900/90 border border-slate-800 text-slate-200'
+                  ? 'ml-auto bg-terracotta text-white rounded-tr-sm font-medium'
+                  : 'bg-white border border-border-pearl text-charcoal rounded-tl-sm'
               }`}
             >
-              <div className="text-[10px] text-slate-400 font-mono mb-1 uppercase font-semibold">
-                {msg.role === 'user' ? 'You' : 'CodeVision Assistant'}
+              <div
+                className={`text-[10px] font-mono mb-1 uppercase font-semibold flex items-center gap-1.5 ${
+                  msg.role === 'user' ? 'text-white/80' : 'text-terracotta'
+                }`}
+              >
+                {msg.role === 'user' ? (
+                  'You'
+                ) : (
+                  <>
+                    <Sparkles className="w-3 h-3 text-terracotta" />
+                    <span>CodeVision Assistant</span>
+                  </>
+                )}
               </div>
               <p className="whitespace-pre-wrap">{msg.message}</p>
             </div>
@@ -172,8 +184,8 @@ export const ChatPage: React.FC = () => {
         )}
 
         {loading && (
-          <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 text-xs text-slate-400 flex items-center gap-2 max-w-sm">
-            <div className="w-3.5 h-3.5 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+          <div className="p-4 rounded-2xl bg-white border border-border-pearl text-xs text-charcoal-muted flex items-center gap-2 max-w-sm shadow-pearl-sm">
+            <div className="w-3.5 h-3.5 border-2 border-terracotta border-t-transparent rounded-full animate-spin"></div>
             <span>Reasoning over AST & context...</span>
           </div>
         )}
@@ -185,22 +197,24 @@ export const ChatPage: React.FC = () => {
           e.preventDefault();
           handleSend();
         }}
-        className="flex items-center gap-2"
+        className="flex items-center gap-2 pt-2"
       >
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask a technical coding question or request refactoring..."
-          className="flex-1 px-4 py-3 rounded-2xl bg-slate-900 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+          className="flex-1 px-4 py-3 rounded-2xl bg-white border border-border-pearl text-xs text-charcoal placeholder:text-charcoal-muted focus:outline-none focus:border-terracotta shadow-pearl-sm"
         />
-        <button
+        <GlassAIButton
           type="submit"
           disabled={loading || !input.trim()}
-          className="p-3 rounded-2xl bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white disabled:opacity-40 shadow-lg shadow-indigo-500/20"
+          variant="primary"
+          size="md"
+          icon={<Send className="w-4 h-4" />}
         >
-          <Send className="w-4 h-4" />
-        </button>
+          Send
+        </GlassAIButton>
       </form>
     </div>
   );

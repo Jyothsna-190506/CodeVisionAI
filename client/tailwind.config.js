@@ -19,11 +19,16 @@ export default {
         charcoal: {
           DEFAULT: '#242321',
           light: '#3D3B37',
-          muted: '#6F6A61',
+          muted: '#625E57',
         },
+        'primary-text': '#242321',
+        'secondary-text': '#625E57',
+        'muted-text': '#858078',
+        'primary-card': '#FFFFFF',
+        'secondary-card': '#F2EEE5',
         terracotta: {
           DEFAULT: '#D85C32',
-          hover: '#C24D25',
+          hover: '#B94722',
           light: '#F8E8E2',
           glow: 'rgba(216, 92, 50, 0.25)',
         },
@@ -31,12 +36,13 @@ export default {
           warm: '#F28A3D',
         },
         lime: {
-          digital: '#B7D94B',
+          digital: '#799718',
           soft: '#F1F7D9',
+          bright: '#B7D94B',
         },
         border: {
-          pearl: 'rgba(35, 32, 28, 0.10)',
-          warm: 'rgba(35, 32, 28, 0.16)',
+          pearl: 'rgba(36, 35, 33, 0.12)',
+          warm: 'rgba(36, 35, 33, 0.18)',
         }
       },
       fontFamily: {
@@ -45,10 +51,10 @@ export default {
         display: ['Inter', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
-        'pearl-sm': '0 2px 8px rgba(35, 32, 28, 0.04)',
-        'pearl-md': '0 8px 24px rgba(35, 32, 28, 0.06)',
-        'pearl-lg': '0 16px 40px rgba(35, 32, 28, 0.08)',
-        'pearl-glass': '0 20px 50px rgba(35, 32, 28, 0.07), 0 1px 3px rgba(35, 32, 28, 0.05)',
+        'pearl-sm': '0 2px 8px rgba(50, 40, 30, 0.05)',
+        'pearl-md': '0 8px 24px rgba(50, 40, 30, 0.07)',
+        'pearl-lg': '0 16px 40px rgba(50, 40, 30, 0.09)',
+        'pearl-glass': '0 20px 50px rgba(50, 40, 30, 0.08), 0 1px 3px rgba(50, 40, 30, 0.05)',
         'terracotta-glow': '0 10px 30px -5px rgba(216, 92, 50, 0.3)',
         'lime-glow': '0 10px 30px -5px rgba(183, 217, 75, 0.3)',
       }
